@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import App from './App.jsx'
-import Login from './login/login.jsx';
-import LoginGG from './login/loginGG.jsx';
-import Signup from './signup/Signup.jsx';
-import ForgotPassword from './forgotpassword/ForgotPassword.jsx';
+import Login from './components/login/login.jsx';
+import LoginGG from './components/login/loginGG.jsx';
+import Signup from './components/signup/Signup.jsx'
+import ForgotPassword from './components/forgotpassword/ForgotPassword.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
