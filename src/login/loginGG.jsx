@@ -4,7 +4,7 @@ import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 const Login = ()=> {
       return (
             <div>
-                 <h1>hgellll</h1>
+                 <h1>LOGIN GOOGLE</h1>
             </div>
       );
 };
