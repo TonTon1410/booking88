@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 function Signup() {
     return (
         <>
@@ -27,7 +29,10 @@ function Signup() {
                                     Welcome back! We are so happy to have you here. It's great to see you again. We hope you had a safe
                                     and enjoyable time away.
                                 </p>
-                                <button children="signup-btn">No account yet? Signup.</button>
+                                <button children="signup-btn">
+                                    No account yet?
+                                    <Link to="/Signup">Signup.</Link>
+                                </button>
                             </div>
                         </div>
                         <div className="intro-control signup-intro">
