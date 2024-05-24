@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-const Register = () => {
+function Register() {
   const [id, idchange] = useState("");
   const [name, namechange] = useState("");
   const [password, passwordchange] = useState("");

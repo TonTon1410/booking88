@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import './SignUpLogin.css';
 
-import user_icon from '../../assets/person.png';
-import email_icon from '../../assets/email.png';
-import password_icon from '../../assets/password.png';
-import phone_icon from '../../assets/phone.png';
-import google_icon from '../../assets/google.png'; // Thêm biểu tượng Google
+import user_icon from '../../Assets/person.png';
+import email_icon from '../../Assets/email.png';
+import password_icon from '../../Assets/password.png';
+import phone_icon from '../../Assets/phone.png';
+import google_icon from '../../Assets/google.png'; // Thêm biểu tượng Google
 
 const SignUpLogin = () => {
     const [action, setAction] = useState("Đăng Nhập");
@@ -14,7 +14,7 @@ const SignUpLogin = () => {
     const handleGoogleSignIn = () => {
         window.gapi.load('auth2', () => {
             const auth2 = window.gapi.auth2.init({
-                client_id: '598819600423-tp8ku1bsnkc74ul3jfk2u9nclm7f08u7.apps.googleusercontent.com',
+                client_id: 'YOUR_CLIENT_ID.apps.googleusercontent.com',
             });
 
             auth2.signIn().then(googleUser => {
