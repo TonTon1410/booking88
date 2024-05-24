@@ -2,8 +2,11 @@ import React from 'react';
 import '../login/Login.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ThemeProvider } from 'react-bootstrap';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Link } from 'react-router-dom';
+import GGLogin from '../../api/GGlogin';
 
+const clientId="533109554283-2fnqr3dfbr9egqpi3uqdcmhgk24651qj.apps.googleusercontent.com"
 function Login() {
     return (
         <>
@@ -35,11 +38,14 @@ function Login() {
                             </div>
                         </div>
                         <div class="line"></div>
-                        <div className="media-options">
-                            <Link to="/LoginGG" className="field google">
+                        <div className="field button-field">
+                            <GoogleOAuthProvider clientId={clientId}>
+                                <GGLogin/>
+                            </GoogleOAuthProvider>
+                            {/* <Link to="/LoginGG" className="field google">
                                 <i className="gg-google"></i>
                                 <span>Login with Google</span>
-                            </Link>
+                            </Link> */}
                         </div>
                     </div>
                 </section>
