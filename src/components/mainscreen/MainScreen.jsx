@@ -1,4 +1,4 @@
-import Tabbar1 from "../tabbar/Tabbar1"
+
 import Login from "../login/login"
 import Tabbar from "../tabbar/Tabbars"
 

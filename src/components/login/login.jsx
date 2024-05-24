@@ -6,7 +6,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Link } from 'react-router-dom';
 import GGLogin from '../../api/GGlogin';
 
-const clientId="533109554283-2fnqr3dfbr9egqpi3uqdcmhgk24651qj.apps.googleusercontent.com"
+const clientId = "533109554283-2fnqr3dfbr9egqpi3uqdcmhgk24651qj.apps.googleusercontent.com"
 function Login() {
     return (
         <>
@@ -40,13 +40,13 @@ function Login() {
                         <div class="line"></div>
                         <div className="field button-field">
                             <GoogleOAuthProvider clientId={clientId}>
-                                <GGLogin/>
+                                <GGLogin />
                             </GoogleOAuthProvider>
-                            {/* <Link to="/LoginGG" className="field google">
+                        </div>
+                        {/* <Link to="/LoginGG" className="field google">
                                 <i className="gg-google"></i>
                                 <span>Login with Google</span>
                             </Link> */}
-                        </div>
                     </div>
                 </section>
             </div>
