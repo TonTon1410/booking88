@@ -1,0 +1,29 @@
+.header {
+    background-color: #007BFF; /* Blue header */
+    padding: 10px 20px; /* Padding for some space around the content */
+    color: white; /* White text color */
+    text-align: center; /* Center the text inside the header */
+    font-size: 24px; /* Larger text for visibility */
+}
+
+a {
+    color: white; /* White text for links */
+    text-decoration: none; /* No underline */
+    padding: 8px 16px; /* Padding around the link text */
+    margin: 0 10px; /* Space between links */
+    background-color: #17a2b8; /* Light blue background for links */
+    border-radius: 5px; /* Rounded corners for the link blocks */
+}
+
+a:hover {
+    background-color: #138496; /* Darker blue background on hover */
+}
+
+.text-center {
+    text-align: center; /* Center text alignment */
+    font-size: 28px; /* Big size for the main title */
+    color: #343a40; /* Dark grey color */
+    margin-top: 20px; /* Space above the h1 element */
+}
+
+/* Additional styling for the body or specific divs can be added here */

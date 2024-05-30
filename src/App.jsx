@@ -2,29 +2,27 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import home from './home/home'
-import Login from './Login/Login'
+
+import Home from './home/home'
+import Login_api from './Login/Login'
 import Register from './Register/Register'
 import { ToastContainer } from 'react-toastify'
+import { GoogleLogin } from '@react-oauth/google';
 
-
-//// ông impỏt thư vien nay bằng npm á 
+//// ông impỏt thư vien nay bằng npm á "react-toastify
 
 
 function App() {
   return (
     <>
-      <div className="App">
-        <ToastContainer></ToastContainer>
-        <BrowserRouter>
-          <Routes>
-            <Route path='/' element={<home/>}></Route>
-            <Route path='/login' element={<Login/>}></Route>
-            <Route path='/register' element={<Register/>}></Route>
-          </Routes>
-        </BrowserRouter>
-      </div>
+      <GoogleLogin
+        onSuccess={credentialResponse => {
+          console.log(credentialResponse);
+        }}
+        onError={() => {
+          console.log('Login Failed');
+        }}
+      />;
     </>
   )
 }

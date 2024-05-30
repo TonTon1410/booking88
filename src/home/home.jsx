@@ -1,10 +1,15 @@
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-const home = () => {
+const Home = () => {
+
     return (
-        <div>
-                <h1>Welcome to Booking88</h1>
-        </div>
-    )
-}
+        <>
+            <div>
+               <h1> hello</h1>
+            </div>
+        </>
+    );
+};
 
-export default home
+export default Home;
