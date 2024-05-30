@@ -1,57 +1,83 @@
-import React from 'react';
-import '../login/Login.css';
+import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { ThemeProvider } from 'react-bootstrap';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import { Link } from 'react-router-dom';
+import {GoogleOAuthProvider} from '@react-oauth/google';
+import {Link} from 'react-router-dom';
 import GGLogin from '../../api/GGlogin';
+import classNames from "classnames";
+import styles from "../login/LFR.module.css";
+import UserApi from "../../api/UserApi.jsx";
 
 const clientId = "533109554283-2fnqr3dfbr9egqpi3uqdcmhgk24651qj.apps.googleusercontent.com"
-function Login() {
+
+function ForgotPassword() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await UserApi.forgotPassword(email, password);
+            console.log(response);
+        } catch (err) {
+            console.log("Login failed. Please check your credentials and try again.");
+            console.error(err);
+        }
+    };
     return (
         <>
             <div>
-                <section className="container forms">
-                    <div className="form login">
-                        <div className="form-content">
+                <section className={classNames(styles.container, styles.forms)}>
+                    <div className={classNames(styles.form, styles.login)}>
+                        <div className={styles["form-content"]}>
                             <header>GET ACCOUNT</header>
-                            <form>
-                                <div className="field input-field">
-                                    <input type="email" placeholder="Email or numberphone" class="input"></input>
+                            <form onSubmit={handleSubmit}>
+                                <div className={classNames(styles.field, styles['input-field'])}>
+                                    <input
+                                        type="email"
+                                        autoComplete="off"
+                                        placeholder="Email or numberphone"
+                                        className="email"
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        required
+                                    />
                                 </div>
-                                <div class="field input-field">
-                                    <input type="text" placeholder="code" class="code"></input>
+                                <div className={classNames(styles.field, styles['input-field'])}>
+                                    <input type="text" placeholder="code" className="code"></input>
                                 </div>
-                                <div class="field input-field">
-                                    <input type="password" placeholder="Password" class="password"></input>
+                                <div className={classNames(styles.field, styles['input-field'])}>
+                                    <input
+                                        type="password"
+                                        placeholder="Password"
+                                        className="password"
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        required
+                                    />
                                 </div>
-                                <div class="field input-field">
-                                    <input type="password" placeholder="Confirm password" class="passwordConfig"></input>
+                                <div className={classNames(styles.field, styles['input-field'])}>
+                                    <input type="password" placeholder="Confirm password"
+                                           className="passwordConfig"></input>
                                 </div>
-                                <div className="field button-field">
+                                <div className={classNames(styles.field, styles['button-field'])}>
                                     <button>Get</button>
                                 </div>
                             </form>
-                            <div className="form-link">
-                                <span>Come back <a href="#" className="link signup-link">
+                            <div className={styles["form-link"]}>
+                                <span>Come back <a href="#" className={classNames(styles.signup)}>
                                     <Link to="/login">Login</Link>
                                 </a></span>
                             </div>
                         </div>
-                        <div class="line"></div>
-                        <div className="field button-field">
+                        <div className={styles.line}></div>
+                        <div className={classNames(styles.field, styles['button-field'])}>
                             <GoogleOAuthProvider clientId={clientId}>
-                                <GGLogin />
+                                <GGLogin/>
                             </GoogleOAuthProvider>
                         </div>
-                        {/* <Link to="/LoginGG" className="field google">
-                                <i className="gg-google"></i>
-                                <span>Login with Google</span>
-                            </Link> */}
                     </div>
                 </section>
             </div>
         </>
     );
 }
-export default Login;
+
+export default ForgotPassword;

@@ -5,8 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import App from './App.jsx'
 import Register from './components/Register/Register.jsx';
 import Login from './components/login/login.jsx';
-import Signup from './components/signup/Signup.jsx'
 import ForgotPassword from './components/forgotpassword/ForgotPassword.jsx';
+
 
 
 
