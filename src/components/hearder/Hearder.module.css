@@ -83,4 +83,7 @@
     object-fit: cover;
     transform: translate(0px,0px,0px,30px);
 }
+.nav {
+    color: black;
+}
 

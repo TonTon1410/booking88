@@ -1,5 +1,6 @@
 import {useState} from "react";
 import UserApi from "../../api/UserApi.jsx";
+import { Link } from "react-router-dom";
 
 function Register() {
     const [email, setEmail] = useState("");
@@ -28,40 +29,29 @@ function Register() {
                                 <div className="col-lg-6">
                                     <div className="form-group"></div>
                                     <label>User Name <span>*</span> </label>
-                                    <input value="" className="form-control"></input>
+                                    <input required value="" className="form-control"></input>
                                 </div>
 
                                 <div className="col-lg-6">
                                     <div className="form-group"></div>
                                     <label>Password <span>*</span> </label>
-                                    <input value="" type="password" className="form-control"></input>
-                                </div>
-                                <div className="col-lg-6">
-                                    <div className="form-group"></div>
-                                    <label>Full Name <span>*</span> </label>
-                                    <input value="" className="form-control"></input>
+                                    <input required value="" type="password" className="form-control"></input>
                                 </div>
                                 <div className="col-lg-6">
                                     <div className="form-group"></div>
                                     <label>Email <span>*</span> </label>
-                                    <input value="" className="form-control"></input>
+                                    <input required value="" className="form-control"></input>
                                 </div>
                                 <div className="col-lg-6">
                                     <div className="form-group"></div>
                                     <label>Phone <span>*</span> </label>
-                                    <input value="" className="form-control"></input>
-                                </div>
-                                <div className="col-lg-12">
-                                    <div className="form-group">
-                                        <label>address <span>*</span> </label>
-                                        <textarea value="" className="form-control"></textarea>
-                                    </div>
+                                    <input required value="" className="form-control"></input>
                                 </div>
                             </div>
                         </div>
                         <div className="card-footer">
                             <button type="submit" className="btn btn-primary">Register</button>
-                            <a className="btn btn-danger">Back</a>
+                            <Link to={'/login'} className="btn btn-danger">Back</Link>
                         </div>
                     </div>
                 </form>

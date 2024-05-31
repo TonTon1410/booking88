@@ -2,7 +2,7 @@ import axios from 'axios';
 // Set up default config for http requests here
 // Please have a look at here `https://github.com/axios/axios#requestconfig` for the full list of configs
 const axiosClient = axios.create({
-    baseURL: 'https://reqres.in/',
+    baseURL: 'http://157.230.43.225:8080',
     headers: {
         'content-type': 'application/json',
     },

@@ -3,8 +3,12 @@ import axiosClient from "./axiosClient.jsx";
 
 const userApi={
     login: (email, password) => {
-        const url = 'api/login';
+        const url = '/login';
         return axiosClient.post(url, { email, password });
+    },
+    loginGoogle:(token) => {
+        const url = '/login-google';
+        return axiosClient.post(url, { token });
     },
     createUser(email, password) {
         const url = 'api/register';
@@ -22,6 +26,7 @@ const userApi={
         const url = 'api/forgotPassword';
         return axiosClient.put(url, { email, password });
     }
+
     ///Google
 }
 

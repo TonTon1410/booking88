@@ -19,7 +19,7 @@ import LOGO from "../../assets/logo.jpg";
             <Link to="/login" className={styles.login}>About</Link>
             <Link to="/login" className={styles.login}>Portfolio</Link>
             <Link to="/login" className={styles.login}>Services</Link>
-            <Link to="/login" className={styles.login}>Contact</Link>
+            <Link to="/login" className={styles.login}>alo</Link>
             <Link to="/login" className={styles.login}>Login</Link>
             {/* <a.Link to="/login">Login</a.Link> */}
           </nav>
