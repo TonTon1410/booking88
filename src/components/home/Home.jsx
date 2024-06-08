@@ -43,7 +43,7 @@ const Home = () => {
                         </label>
                         <div className="input flex">
                             <input type="text"
-                                placeholder="Enter name here ..." />
+                                placeholder=" Địa chỉ & Tên sân ..." />
                             <FaMapLocationDot className="icon" />
                         </div>
                     </div>
@@ -55,13 +55,13 @@ const Home = () => {
                         <div className="input flex">
                             <input type="date"
                                 placeholder="Enter name here ..." />
-                            <FaMapLocationDot className="icon" />
+                            {/* <FaMapLocationDot className="icon" /> */}
                         </div>
                     </div>
 
                     <div className="priceInput">
                         <div className="label_total flex">
-                            <lable htmlFor="price">Max price:</lable>
+                            <lable htmlFor="price">Giá lớn nhất:</lable>
                             <h3 className="total">{price.toLocaleString('en-US')} vnd</h3>
                         </div>
                         <div className="input flex">
@@ -76,7 +76,7 @@ const Home = () => {
                 </div>
 
 
-                <div className="homeFooterIcons flex">
+                {/* <div className="homeFooterIcons flex">
                     <div data-aos="fade-up" className="rightIcons">
                         <FaFacebook className="icon" />
                         <FaInstagramSquare className="icon" />
@@ -85,7 +85,7 @@ const Home = () => {
                         <FaListUl className="icon" />
                         <TbApps className="icon" />
                     </div>
-                </div>
+                </div> */}
             </div>
         </section>
     )

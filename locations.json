@@ -1,0 +1,279 @@
+{
+  "locations": [
+    {
+      "id": 1,
+      "name": "Cafe Aroma",
+      "imgsrc": "",
+      "description": "A cozy coffee shop offering a variety of brews and pastries.A cozy coffee shop offering a variety of brews and pastries",
+      "address": "123 Main Street, Cityville",
+      "hotline": "0123456789",
+      "openingtime": "07:00",
+      "closingtime": "22:00",
+      "status": "Open"
+    },
+    {
+      "id": 2,
+      "name": "Book Haven",
+      "imgsrc": "",
+      "description": "A small bookstore with a wide selection of genres and a reading corner.",
+      "address": "456 Elm Street, Townsvillehakdkabdkbakdbak",
+      "hotline": "0987654321",
+      "openingtime": "09:00",
+      "closingtime": "20:00",
+      "status": "Closed"
+    },
+    {
+      "id": 3,
+      "name": "Green Grocer",
+      "imgsrc": "",
+      "description": "Organic grocery store with fresh produce and health products.Organic grocery store with fresh produce and health products.Organic grocery store with fresh produce and health products.",
+      "address": "789 Oak Street, Villagetown",
+      "hotline": "0223344556",
+      "openingtime": "08:00",
+      "closingtime": "21:00",
+      "status": "Open"
+    },
+    {
+      "id": 4,
+      "name": "Tech World",
+      "imgsrc": "",
+      "description": "Electronics store specializing in the latest gadgets and accessories.",
+      "address": "101 Pine Street, Metropolis",
+      "hotline": "0112233445",
+      "openingtime": "10:00",
+      "closingtime": "19:00",
+      "status": "Open"
+    },
+    {
+      "id": 5,
+      "name": "Fitness Zone",
+      "imgsrc": "",
+      "description": "Gym and fitness center with modern equipment and personal training services.",
+      "address": "246 Maple Avenue, Fitnessburg",
+      "hotline": "0334455667",
+      "openingtime": "06:00",
+      "closingtime": "23:00",
+      "status": "Open"
+    },
+    {
+      "id": 6,
+      "name": "Pizza Paradise",
+      "imgsrc": "",
+      "description": "Family-friendly pizzeria offering a variety of pizzas, pasta, and sides.",
+      "address": "789 Olive Boulevard, Pizzatown",
+      "hotline": "0445566778",
+      "openingtime": "11:00",
+      "closingtime": "22:30",
+      "status": "Open"
+    },
+    {
+      "id": 7,
+      "name": "Fashionista Boutique",
+      "imgsrc": "",
+      "description": "Trendy boutique featuring the latest fashion trends for men and women.",
+      "address": "321 Rose Street, Fashion City",
+      "hotline": "0556677889",
+      "openingtime": "10:30",
+      "closingtime": "18:30",
+      "status": "Open"
+    },
+    {
+      "id": 8,
+      "name": "Pet Paradise",
+      "imgsrc": "",
+      "description": "Pet grooming salon and supplies store with a focus on pet wellness.",
+      "address": "456 Sapphire Drive, Petville",
+      "hotline": "0667788990",
+      "openingtime": "09:00",
+      "closingtime": "17:00",
+      "status": "Closed"
+    },
+    {
+      "id": 9,
+      "name": "Adventure Zone",
+      "imgsrc": "",
+      "description": "Indoor adventure park with climbing walls, zip lines, and obstacle courses.",
+      "address": "555 Diamond Lane, Adventure City",
+      "hotline": "0778899001",
+      "openingtime": "12:00",
+      "closingtime": "20:00",
+      "status": "Open"
+    },
+    {
+      "id": 10,
+      "name": "Art Gallery X",
+      "imgsrc": "",
+      "description": "Contemporary art gallery showcasing works from local and international artists.",
+      "address": "678 Gallery Street, Artville",
+      "hotline": "0889900112",
+      "openingtime": "11:00",
+      "closingtime": "19:00",
+      "status": "Open"
+    },
+    {
+      "id": 11,
+      "name": "Zen Garden Spa",
+      "imgsrc": "",
+      "description": "Relaxing spa offering massages, facials, and wellness treatments.",
+      "address": "987 Tranquil Avenue, Spatown",
+      "hotline": "0990011223",
+      "openingtime": "08:30",
+      "closingtime": "22:00",
+      "status": "Open"
+    },
+    {
+      "id": 12,
+      "name": "Game Zone",
+      "imgsrc": "",
+      "description": "Arcade and gaming center with a variety of video games and VR experiences.",
+      "address": "234 Arcade Street, Gametown",
+      "hotline": "0011223344",
+      "openingtime": "10:00",
+      "closingtime": "21:00",
+      "status": "Open"
+    },
+    {
+      "id": 13,
+      "name": "Green Thumb Nursery",
+      "imgsrc": "",
+      "description": "Plant nursery specializing in a wide range of indoor and outdoor plants.",
+      "address": "345 Garden Lane, Plantville",
+      "hotline": "0123456789",
+      "openingtime": "07:30",
+      "closingtime": "18:00",
+      "status": "Open"
+    },
+    {
+      "id": 14,
+      "name": "Cinema Royale",
+      "imgsrc": "",
+      "description": "Modern cinema complex with multiple screens and comfortable seating.",
+      "address": "567 Movie Street, Cinemacity",
+      "hotline": "0234567890",
+      "openingtime": "12:00",
+      "closingtime": "23:30",
+      "status": "Open"
+    },
+    {
+      "id": 15,
+      "name": "Tech Hub",
+      "imgsrc": "",
+      "description": "Tech startup incubator and coworking space for innovators and entrepreneurs.",
+      "address": "789 Innovation Drive, Techburg",
+      "hotline": "0345678901",
+      "openingtime": "09:30",
+      "closingtime": "19:30",
+      "status": "Open"
+    },
+    {
+      "id": 16,
+      "name": "Music Haven",
+      "imgsrc": "",
+      "description": "Music store offering instruments, sheet music, and music lessons.",
+      "address": "890 Melody Avenue, Musicville",
+      "hotline": "0456789012",
+      "openingtime": "11:00",
+      "closingtime": "20:30",
+      "status": "Open"
+    },
+    {
+      "id": 17,
+      "name": "Food Fiesta",
+      "imgsrc": "",
+      "description": "Food court with a variety of international cuisines and fast food options.",
+      "address": "123 Fiesta Street, Foodtown",
+      "hotline": "0567890123",
+      "openingtime": "10:00",
+      "closingtime": "22:00",
+      "status": "Open"
+    },
+    {
+      "id": 18,
+      "name": "Adventure Golf",
+      "imgsrc": "",
+      "description": "Miniature golf course with themed holes and family-friendly atmosphere.",
+      "address": "234 Putt Lane, Golfburg",
+      "hotline": "0678901234",
+      "openingtime": "08:00",
+      "closingtime": "21:30",
+      "status": "Open"
+    },
+    {
+      "id": 19,
+      "name": "Fashion House",
+      "imgsrc": "",
+      "description": "High-end fashion boutique featuring designer clothing and accessories.",
+      "address": "345 Runway Boulevard, Fashionville",
+      "hotline": "0789012345",
+      "openingtime": "09:30",
+      "closingtime": "18:30",
+      "status": "Open"
+    },
+    {
+      "id": 20,
+      "name": "Kid's World",
+      "imgsrc": "",
+      "description": "Indoor playground and activity center for children with play areas and birthday party services.",
+      "address": "456 Play Street, Kidstown",
+      "hotline": "0890123456",
+      "openingtime": "10:30",
+      "closingtime": "17:30",
+      "status": "Open"
+    },
+    {
+      "id": 21,
+      "name": "Coffee Corner",
+      "imgsrc": "",
+      "description": "Quaint coffee shop serving specialty coffees and homemade desserts.",
+      "address": "567 Bean Avenue, Coffeetown",
+      "hotline": "0901234567",
+      "openingtime": "07:00",
+      "closingtime": "20:00",
+      "status": "Open"
+    },
+    {
+      "id": 22,
+      "name": "Bookworm Haven",
+      "imgsrc": "",
+      "description": "Cozy bookstore with a wide selection of books, comfy reading nooks, and book club events.",
+      "address": "678 Read Lane, Booktown",
+      "hotline": "0912345678",
+      "openingtime": "09:00",
+      "closingtime": "19:30",
+      "status": "Open"
+    },
+    {
+      "id": 23,
+      "name": "Organic Oasis",
+      "imgsrc": "",
+      "description": "Organic café and grocery store offering fresh produce, health foods, and vegan options.",
+      "address": "789 Leaf Boulevard, Organictown",
+      "hotline": "0923456789",
+      "openingtime": "08:30",
+      "closingtime": "21:30",
+      "status": "Open"
+    },
+    {
+      "id": 24,
+      "name": "Tech Emporium",
+      "imgsrc": "",
+      "description": "Tech store with a wide range of electronics, gadgets, and tech accessories.",
+      "address": "890 Circuit Street, Techville",
+      "hotline": "0934567890",
+      "openingtime": "10:00",
+      "closingtime": "20:30",
+      "status": "Open"
+    },
+    {
+      "id": 25,
+      "name": "Nature's Nook",
+      "imgsrc": "",
+      "description": "Nature-inspired gift shop with eco-friendly products and outdoor adventure gear.",
+      "address": "901 Green Lane, Natureville",
+      "hotline": "0945678901",
+      "openingtime": "09:30",
+      "closingtime": "18:30",
+      "status": "Open"
+    }
+  ]
+}
