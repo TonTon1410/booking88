@@ -1,0 +1,105 @@
+*{
+    padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+    transition: .3s ease;
+}
+:root{
+    --PrimaryColor: hsl(199,100%,33%);
+    --SecondaryColor: hsl(187,85%,43%);
+    --gradientColor: linear-gradient(to right, hsl(187,85%,43%),hsl(199,100%,33%));
+    --blackColor: hsl(201, 33%, 16%);
+    --whiteColor: hsl(0, 6%, 100%);
+    --whiteColorDeam: hsl(0, 0%, 93%);
+    --textColor: hsl(240, 4%, 36%);
+    --greyText: rgb(190, 190, 190);
+    --inputColor: rgb(239, 239, 239);
+    --bodyColor: rgb(240, 240, 246);
+    --cardBG: rgb(225, 225, 235);
+    --cardHover: rgb(255, 255, 255);
+    --HoverColor:hsl(94,59%,35);
+    --palaGreen:hsl(96,75%,89);
+
+
+    --biggestFontSize: 2.5rem;
+    --h1FontSize: 1.5rem;
+    --h2FontSize: 1.25rem;
+    --h3FontSize: 1rem;
+    --normalFontSize: .938rem;
+    --smallFontSize: .813rem;
+    --smallestFontSize: .75rem;
+}
+
+html{
+    font-size: 90%;
+}
+
+a{
+    text-decoration: none;
+}
+li{
+    list-style: none;
+}
+
+.icon{
+    font-size: var(--h2FontSize);
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+}
+img{
+    width: 100%;
+    height: auto;
+}
+.flex{
+    display: flex;
+    align-items: center;
+}
+
+.grid{
+    display: grid;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    padding: 1rem;
+}
+.btn{
+    padding: .8rem 1rem;
+    background: var(--gradientColor);
+    border-radius: 3rem;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    box-shadow: 0 2px 4px var(--inputColor);
+    color: var(--textColor);
+}
+.btn .icon{
+    margin-left: .5rem;
+}
+.btn:hover{
+    background: var(--palaGreen);
+    color: var(--PrimaryColor);
+}
+
+.container{
+    position: relative;
+    width: 95vw;
+    height: 95vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bodyColor);
+    overflow: hidden;
+    border-radius: 1rem;
+    box-shadow: 2px 2px 8px var(--greyText);
+}
+
+::-webkit-scrollbar{
+    display: none;
+}
