@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import '../../App.css';
 import video from '../../assets/videologin.mp4';
 import logo from '../../assets/logologin.png';
@@ -8,6 +8,38 @@ import { BsFillShieldLockFill } from "react-icons/bs";
 import { AiOutlineSwapRight } from "react-icons/ai";
 
 const Login = () => {
+    const [user, setUser] = useState(initialUser);
+    const navigate = useNavigate();
+
+    const handleChange = ({ target }) => {
+        const { name, value } = target;
+        setUser((currentUser) => ({
+          ...currentUser,
+          [name]: value,
+        }));
+      };
+
+      const handleLogin = async () => {
+        const url = `http://localhost:1337/api/auth/local`;
+        try {
+          if (user.identifier && user.password) {
+            const { data } = await axios.post(url, user);
+            if (data.jwt) {
+              storeUser(data);
+              toast.success("Logged in successfully!", {
+                hideProgressBar: true,
+              });
+              setUser(initialUser);
+              navigate("/");
+              window.location.reload();
+            }
+          }
+        } catch (error) {
+          toast.error(error.message, {
+            hideProgressBar: true,
+          });
+        }
+      };
   return (
     <div className="loginPage flex">
     <div className="container flex">
@@ -63,7 +95,6 @@ const Login = () => {
 
         </form>
     </div>
-
     </div>
     </div>
   )
