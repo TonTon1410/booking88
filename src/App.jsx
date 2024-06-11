@@ -5,16 +5,19 @@ import Conten from "./components/main/Main.jsx";
 import Footer from "./components/footer/Footer.jsx";
 import Dashboard from "./components/Dashboard.jsx";
 import Login from "./components/Login/Login.jsx"
-import Register from "./components/Register/Register.jsx"
-import Profile from "./components/profile/Profile.jsx";
-import {
-    createBrowserRouter,
-    Link,
-    RouterProvider
-  } from 'react-router-dom';
-import { Profiler } from 'react';
-  
-  const router = createBrowserRouter([
+import Register from "./components/Register/Register.jsx";
+// import Profile from "./components/profile/Profile.jsx";
+//import UserFile from "./components/UserFile/userFile.jsx"; // Đảm bảo nhập đúng
+import UserFile from './components/UserFile/userFile.jsx';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+// import {
+//     createBrowserRouter,
+//     Link,
+//     RouterProvider
+// } from 'react-router-dom';
+// import { Profiler } from 'react';
+
+const router = createBrowserRouter([
     // {
     //   path: '/',
     //   element: (
@@ -49,25 +52,22 @@ import { Profiler } from 'react';
       path: '/register',
       element: <div><Register /></div>
     },
-
     {
-      path: '/profile',
-      element: <div>< Profile /></div>
+      path: '/userFile',
+      element: <div> <UserFile/> </div>
     },
-        {
+    {
       path: '*',
       element: <div>404 Not Found</div>
     },
+])
 
-
-  ])
-  
-  const App=()=> {
-  
+const App = () => {
     return (
       <div>
         <RouterProvider router={router} />
       </div>
     );
-  }
-export default App
+}
+
+export default App;

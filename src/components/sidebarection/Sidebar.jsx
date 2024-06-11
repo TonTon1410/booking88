@@ -26,10 +26,10 @@ const Sidebar = () => {
                 <ul className={`${style.menuLists} ${style.grid}`}>
 
                     <li className={`${style.listItem}`}>
-                        <a href="" className={`${style.menuLink} ${style.flex}`}>
+                        <a href="userFile" className={`${style.menuLink} ${style.flex}`}>
                             <AiFillDashboard className={`${style.icon}`} />
                             <span className={`${style.smallText}`}>
-                                Dashboard
+                                Hồ Sơ
                             </span>
                         </a>
                     </li>
@@ -38,7 +38,7 @@ const Sidebar = () => {
                         <a href="" className={`${style.menuLink} ${style.flex}`}>
                             <FaFirstOrderAlt className={`${style.icon}`} />
                             <span className={`${style.smallText}`}>
-                                My Order
+                                Quản Lý Club
                             </span>
                         </a>
                     </li>
@@ -47,7 +47,7 @@ const Sidebar = () => {
                         <a href="" className={`${style.menuLink} ${style.flex}`}>
                             <IoCompassOutline className={`${style.icon}`} />
                             <span className={`${style.smallText}`}>
-                                Exlore
+                            Quản Lý Accounts
                             </span>
                         </a>
                     </li>
@@ -56,7 +56,7 @@ const Sidebar = () => {
                         <a href="" className={`${style.menuLink} ${style.flex}`}>
                             <IoDiamondOutline className={`${style.icon}`} />
                             <span className={`${style.smallText}`}>
-                                Product
+                                Thống kê
                             </span>
                         </a>
                     </li>
@@ -64,7 +64,7 @@ const Sidebar = () => {
                 </ul>
             </div>
 
-
+{/* 
             <div className={`${style.menuDiv}`}>
                 <h3 className={`${style.divTitle}`}>
                     Settings
@@ -108,7 +108,7 @@ const Sidebar = () => {
                     </li>
 
                 </ul>
-            </div>
+            </div> */}
             <div className={`${style.sideBarCard}`}>
                 <FaQuestion className={`${style.icon}`} />
                 <div className={`${style.cardContent}`}>
