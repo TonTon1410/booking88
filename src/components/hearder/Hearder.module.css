@@ -1,7 +1,9 @@
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Poppins',sans-serif;
 }
 
 /* a {
@@ -26,7 +28,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 100;   
+    z-index: 100;
 }
 
 .logo {
@@ -35,13 +37,13 @@
     font-weight: 700;
 }
 
-/* .navbar a {
-    position: relative;
-    font-size: 18px;
-    color: aliceblue;
-    font-weight: 500;
-    margin-left: 40px;
-} */
+/* .navbar a {*/
+/*    position: relative;*/
+/*    font-size: 1.1em;*/
+/*    color: aliceblue;*/
+/*    font-weight: 500;*/
+/*    margin-left: 40px;*/
+/*}*/
 
 /* .navbar a ::before {
     content: '';
@@ -69,15 +71,19 @@
 .login:hover::before{
     width: 100%;
 }
-body{
-    background: url('../../assets/PG.jpg');
-    background-size: cover;
-    background-position: center;
-    min-height: 100vh;
-}
+/*body{*/
+/*    background: url('../../assets/PG.jpg');*/
+/*    background-size: cover;*/
+/*    background-position: center;*/
+/*    min-height: 100vh;*/
+/*}*/
 .header img{
     width: 70px;
     border-radius: 50%;
     object-fit: cover;
     transform: translate(0px,0px,0px,30px);
 }
+.nav {
+    color: black;
+}
+
