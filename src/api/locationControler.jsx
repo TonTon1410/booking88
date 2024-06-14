@@ -4,7 +4,7 @@ import axios from "axios"
 class LocationControler {
     async getAllLocation() {
         try {
-            const respo = await axios.get("http://localhost:5001/locations");
+            const respo = await axios.get("http://localhost:5002/locations");
             return respo.data;
         } catch (e) {
             console.error(e);
@@ -13,7 +13,7 @@ class LocationControler {
 
     async getOneLocation(id) {
         try {
-            const respo = await axios.get(`http://localhost:5001/locations/${id}`);
+            const respo = await axios.get(`http://localhost:5002/locations/${id}`);
             return respo.data;
         } catch (e) {
             console.error(e);
