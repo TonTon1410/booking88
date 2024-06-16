@@ -42,7 +42,7 @@
       height: 100%;
       display: grid;
       row-gap: 10px;
-      padding: 2rem;
+      // padding: 1rem;
       border-radius: 10px;
       align-items: center;
       background: var(--cardBG);
@@ -73,27 +73,19 @@
       }
 
       .cardInfor {
-        padding: 0.5rem;
+        padding: 1rem;
 
         .container {
-          padding: 0.5rem;
-          gap: 1rem;
-          margin-left: 2rem;
-          display: flex; /* Chuyển sang sử dụng flexbox */
-          align-items: center; /* Căn chỉnh các phần tử con theo chiều ngang */
+          gap: 0.5rem;
           .icon {
             color: var(--textColor);
             font-size: 18px;
           }
           .name {
-            white-space: nowrap;
             color: var(--textColor);
-            font-weight: 600;
-            
-            /* Thụt vào phía trên 0.5rem */
+            font-weight: 400;
+            font-size: 14px;
           }
-          margin-top: 0.5rem;
-          font-size: 12px;
         }
         .fees {
           width: 100%;
@@ -121,17 +113,8 @@
             }
           }
           .price {
-            color: var(--textColor);
-            max-width: 100px;
-            line-height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 0.5rem;
-            h5 {
-              font-size: 1.5rem;
-              color: var(--blackColor);
-            }
+            font-size: 2rem;
+            color: var(--blackColor);
           }
         }
 
@@ -139,10 +122,6 @@
           font-size: 13.5px;
           color: var(--textColor);
           font-weight: 500;
-          display: -webkit-box;
-          -webkit-line-clamp: 2; /* Giới hạn số dòng hiển thị */
-          -webkit-box-orient: vertical;
-          overflow: hidden;
         }
         .btn {
           margin-top: 1rem;
@@ -160,6 +139,7 @@
   }
 }
 
+
 @media screen and (min-width: 500px) {
   .secContent {
     grid-template-columns: repeat(2, 1fr);
@@ -169,6 +149,7 @@
   }
 }
 
+
 @media screen and (min-width: 840px) {
   .secContent {
     grid-template-columns: repeat(3, 1fr);
@@ -177,3 +158,4 @@
     }
   }
 }
+

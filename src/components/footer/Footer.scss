@@ -12,14 +12,6 @@
   --cardBG: rgb(225, 225, 235);
   --cardHover: rgb(255, 255, 255);
 }
-.flex{
-  display: flex;
-  align-items: center;
-}
-.grid{
-  display: grid;
-  align-items: center;
-}
 
 .footer {
   width: 100%;
@@ -246,49 +238,5 @@
         }
       }
     }
-  }
-}
-
-.btn{
-  padding: .6rem 1.5rem;
-  background: var(--gradientColor);
-  border-radius: 3rem;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  box-shadow: 0 2px 4px var(--inputColor);
-}
-.btn a{
-  color: var(--whiteColor);
-  font-weight: 500;
-}
-.btn:hover{
-  background: var(--SecondaryColor);
-}
-img, video{
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-}
-input{
-  font-size: 100%;
-}
-body{
-  background: var(--bodyColor);
-}
-
-@media screen and (min-width: 1240px){
-  .container{
-      width: 80% !important;
-      margin: auto !important;
-  }
-  .section{
-      padding: 6rem 0 4rem ;
-  }
-}
-
-@media screen and (min-width: 2560){
-  body{
-      zoom: 1.7;
   }
 }

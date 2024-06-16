@@ -1,4 +1,3 @@
-import React from "react";
 import './App.css'
 import Navbar from "./components/navbar/Navbar.jsx";
 import Home from "./components/home/Home.jsx";
@@ -6,11 +5,17 @@ import Conten from "./components/main/Main.jsx";
 import Footer from "./components/footer/Footer.jsx";
 import Dashboard from "./components/Dashboard.jsx";
 import Login from "./components/Login/Login.jsx"
-import {
-    createBrowserRouter,
-    Link,
-    RouterProvider
-  } from 'react-router-dom';
+import Register from "./components/Register/Register.jsx";
+// import Profile from "./components/profile/Profile.jsx";
+//import UserFile from "./components/UserFile/userFile.jsx"; // Đảm bảo nhập đúng
+import UserFile from './components/UserFile/userFile.jsx';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+// import {
+//     createBrowserRouter,
+//     Link,
+//     RouterProvider
+// } from 'react-router-dom';
+// import { Profiler } from 'react';
 
 const router = createBrowserRouter([
     // {
@@ -39,39 +44,31 @@ const router = createBrowserRouter([
       path: '/dashboard',
       element: <div><Dashboard /></div>
     },
+
     {
       path: '/login',
       element: <div><Login /></div>
     },
-    // {
-    //   path: '/register',
-    //   element: <div><Register /></div>
-    // },
-    // {
-    //   path: '/Booking',
-    //   element: <div><Booking /></div>
-    // },
-    // {
-    //   path: '/PersonalProfile',
-    //   element: <div><PersonalProfile /></div>
-    // },
-    // {
-    //   path: '/forgotPassword',
-    //   element: <div><ForgotPassword /></div>
-    // },
+    {
+      path: '/register',
+      element: <div><Register /></div>
+    },
+    {
+      path: '/userFile',
+      element: <div> <UserFile/> </div>
+    },
     {
       path: '*',
       element: <div>404 Not Found</div>
-    }
-  ])
-  
-  const App=()=> {
-  
+    },
+])
+
+const App = () => {
     return (
       <div>
         <RouterProvider router={router} />
       </div>
     );
-  }
+}
 
-export default App
+export default App;

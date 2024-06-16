@@ -1,4 +1,4 @@
-import React from "react";
+ import React from "react";
 import { CiSearch } from "react-icons/ci";
 import { LuMessagesSquare } from "react-icons/lu";
 import { IoIosNotificationsOutline } from "react-icons/io";
@@ -37,7 +37,7 @@ const Top = () => {
                         Create and sell extraordinary products
                     </h1>
                     <p>
-                        The world's fast growing industry today are natural made products!
+                        The world fast growing industry today are natural made products!
                     </p>
                     <div className={`${style.buttons} ${style.flex}`}>
                         <button className={`${style.btn}`}>Explore More</button>
@@ -52,17 +52,18 @@ const Top = () => {
                 <div className={`${style.leftCard} ${style.flex}`}>
                     <div className={`${style.main} ${style.flex}`}>
                         <div className={`${style.textDiv}`}>
-                            <h1>Create Responsive Admin Dashboard</h1>
+                            <h1>My Stat</h1>
                             <div className={`${style.flex}`}>
                                 <span>
                                     Today <br />
                                     <small>4 Oreder</small>
                                 </span>
                                 <span>
-                                    This Monthy <br />
+                                    This Month <br />
                                     <small>100 Oreder</small>
                                 </span>
                             </div>
+                               
                             <span className={`${style.flex} ${style.link}`}>
                                 Go to my order  <GrLinkNext className={`${style.icon}`}/>
                             </span>
@@ -70,6 +71,22 @@ const Top = () => {
                         <div className={`${style.imgDiv}`}>
                             <img src={img} alt="Image Name"/>
                         </div>
+                  
+
+
+                        {/* {xài sau} */}
+                        {/* <div className={`${style.sideBarCard}`}>
+                        <FaQuestion className={`${style.icon}`} />
+                        <div className={`${style.cardContent}`}>
+                            <div className={`${style.circle1}`}></div>
+                            <div className={`${style.circle2}`}></div>
+                            <h3>Help Conter</h3>
+                            <p>Having trouble in Booking88, pleatact contact us from for more question.</p>
+                            <button className={`${style.btn}`}>Go to help center</button>
+                        </div>
+
+            </div> */}
+
                     </div>
                 </div>
             </div>
