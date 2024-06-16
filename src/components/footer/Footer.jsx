@@ -20,18 +20,18 @@ const Footer = () => {
             </div>
 
             <div className="secContent container">
-                {/* <div className="contactDiv flex">
+                <div className="contactDiv flex">
                     <div data-aos="fade-up" className="text">
                         <small>Keep in touch</small>
                         <h2>Traval with us</h2>
                     </div>
                     <div className="inputDiv flex">
-                        <input data-aos="fade-up" type="text" placeholder="Gửi gớp ý của bạn" />
+                        <input data-aos="fade-up" type="text" placeholder="Enter Your Mail Address" />
                         <button data-aos="fade-up" className="btn flex" type="submit">
-                            Gửi <IoIosSend className="icon" />
+                            SEND <IoIosSend className="icon" />
                         </button>
                     </div>
-                </div> */}
+                </div>
                 <div data-aos="fade-up" className="footerCard flex">
                     <div className="footerIntro flex">
                         <div className="logoDiv">

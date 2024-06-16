@@ -5,10 +5,10 @@ import { IoCompassOutline, IoDiamondOutline } from "react-icons/io5";
 
 import style from '../sidebarection/Sidebar.module.scss';
 
-import img1 from '../../assets/anh.jpg'
-import img2 from '../../assets/anh2.jpg'
-import img3 from '../../assets/anh3.jpg'
-import img4 from '../../assets/anh4.jpg'
+// import img1 from '../../assets/anh.jpg'
+// import img2 from '../../assets/anh2.jpg'
+// import img3 from '../../assets/anh3.jpg'
+// import img4 from '../../assets/anh4.jpg'
 import logo from '../../assets/logo.jpg'
 
 const Sidebar = () => {
@@ -26,10 +26,10 @@ const Sidebar = () => {
                 <ul className={`${style.menuLists} ${style.grid}`}>
 
                     <li className={`${style.listItem}`}>
-                        <a href="" className={`${style.menuLink} ${style.flex}`}>
+                        <a href="userFile" className={`${style.menuLink} ${style.flex}`}>
                             <AiFillDashboard className={`${style.icon}`} />
                             <span className={`${style.smallText}`}>
-                                Dashboard
+                                Hồ Sơ
                             </span>
                         </a>
                     </li>
@@ -38,7 +38,7 @@ const Sidebar = () => {
                         <a href="" className={`${style.menuLink} ${style.flex}`}>
                             <FaFirstOrderAlt className={`${style.icon}`} />
                             <span className={`${style.smallText}`}>
-                                My Order
+                                Quản Lý Club
                             </span>
                         </a>
                     </li>
@@ -47,7 +47,7 @@ const Sidebar = () => {
                         <a href="" className={`${style.menuLink} ${style.flex}`}>
                             <IoCompassOutline className={`${style.icon}`} />
                             <span className={`${style.smallText}`}>
-                                Exlore
+                            Quản Lý Accounts
                             </span>
                         </a>
                     </li>
@@ -56,7 +56,7 @@ const Sidebar = () => {
                         <a href="" className={`${style.menuLink} ${style.flex}`}>
                             <IoDiamondOutline className={`${style.icon}`} />
                             <span className={`${style.smallText}`}>
-                                Product
+                                Thống kê
                             </span>
                         </a>
                     </li>

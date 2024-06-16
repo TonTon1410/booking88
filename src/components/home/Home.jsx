@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import pg from '../../assets/A.mp4';
 import { FaMapLocationDot } from "react-icons/fa6";
 import { FaFilter, FaFacebook, FaInstagramSquare, FaListUl } from "react-icons/fa";
@@ -9,11 +9,6 @@ import './Home.scss'
 import 'aos/dist/aos.css';
 
 const Home = () => {
-
-    const [price, setPrice] = useState(10000);
-    const handleRangeChange = (event) => {
-        setPrice(parseInt(event.target.value));
-    };
 
     useEffect(() => {
         Aos.init({ duration: 2000 })
@@ -30,8 +25,7 @@ const Home = () => {
                         OUR Package
                     </span>
                     <h1 data-aos="fade-up" className="homeTitle">
-                        {/* Search your Holiday */}
-                        Search for the badminton court you want
+                        Search your Holiday
                     </h1>
                 </div>
 
@@ -43,7 +37,7 @@ const Home = () => {
                         </label>
                         <div className="input flex">
                             <input type="text"
-                                placeholder=" Địa chỉ & Tên sân ..." />
+                                placeholder="Enter name here ..." />
                             <FaMapLocationDot className="icon" />
                         </div>
                     </div>
@@ -55,17 +49,17 @@ const Home = () => {
                         <div className="input flex">
                             <input type="date"
                                 placeholder="Enter name here ..." />
-                            {/* <FaMapLocationDot className="icon" /> */}
+                            <FaMapLocationDot className="icon" />
                         </div>
                     </div>
 
                     <div className="priceInput">
                         <div className="label_total flex">
-                            <lable htmlFor="price">Giá lớn nhất:</lable>
-                            <h3 className="total">{price.toLocaleString('en-US')} vnd</h3>
+                            <lable htmlFor="price">Max price:</lable>
+                            <h3 className="total">$5000</h3>
                         </div>
                         <div className="input flex">
-                            <input type="range" max="500000" min="10000" onChange={handleRangeChange}/>
+                            <input type="range" max="5000" min="1000" />
                         </div>
                     </div>
 
@@ -76,7 +70,7 @@ const Home = () => {
                 </div>
 
 
-                {/* <div className="homeFooterIcons flex">
+                <div className="homeFooterIcons flex">
                     <div data-aos="fade-up" className="rightIcons">
                         <FaFacebook className="icon" />
                         <FaInstagramSquare className="icon" />
@@ -85,7 +79,7 @@ const Home = () => {
                         <FaListUl className="icon" />
                         <TbApps className="icon" />
                     </div>
-                </div> */}
+                </div>
             </div>
         </section>
     )

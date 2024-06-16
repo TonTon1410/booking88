@@ -1,74 +1,101 @@
-import React from 'react'
-import '../../App.css';
-import video from '../../assets/videologin.mp4';
-import logo from '../../assets/logologin.png';
-import { Link } from 'react-router-dom'
-import { FaUserShield } from "react-icons/fa";
-import { BsFillShieldLockFill } from "react-icons/bs";
-import { AiOutlineSwapRight } from "react-icons/ai";
-import { FcGoogle } from "react-icons/fc";
+import React,{useEffect} from "react";
+import { FaLocationDot } from "react-icons/fa6";
+import { CiStickyNote } from "react-icons/ci";
+import Aos from "aos";
+import './Main.scss';
+import 'aos/dist/aos.css';
+import Img from "../../assets/img1.jpg";
 
-const Login = () => {
+const Data = [
+    {
+        id: 1,
+        imgsrc: Img,
+        destTitle: "San Cau long 1",
+        location: "Ho Chi Minh",
+        description: "Theo quy chuẩn quốc tế, sân cầu lông có kích thước chuẩn là 13,4m x 6,1m với độ dài đường chéo sân là 14,73m. Ngoài ra, với thiết kế sân đánh đơn, kích thước chuẩn của sân cầu lông sẽ là 13,4m x 5,18m với độ dài đường chéo sân là 14,38m",
+        grade: "grade",
+        fees: "100.000vnd",
+    },
+    {
+        id: 2,
+        imgsrc: Img,
+        destTitle: "San Cau long 2",
+        location: "Ho Chi Minh",
+        description: "Theo quy chuẩn quốc tế, sân cầu lông có kích thước chuẩn là 13,4m x 6,1m với độ dài đường chéo sân là 14,73m. Ngoài ra, với thiết kế sân đánh đơn, kích thước chuẩn của sân cầu lông sẽ là 13,4m x 5,18m với độ dài đường chéo sân là 14,38m",
+        grade: "grade",
+        fees: "100.000vnd",
+    },
+    {
+        id: 3,
+        imgsrc: Img,
+        destTitle: "San Cau long 3",
+        location: "Ho Chi Minh",
+        description: "Theo quy chuẩn quốc tế, sân cầu lông có kích thước chuẩn là 13,4m x 6,1m với độ dài đường chéo sân là 14,73m. Ngoài ra, với thiết kế sân đánh đơn, kích thước chuẩn của sân cầu lông sẽ là 13,4m x 5,18m với độ dài đường chéo sân là 14,38m",
+        grade: "grade",
+        fees: "100.000vnd",
+    },
+    {
+        id: 3,
+        imgsrc: Img,
+        destTitle: "San Cau long 3",
+        location: "Ho Chi Minh",
+        description: "Theo quy chuẩn quốc tế, sân cầu lông có kích thước chuẩn là 13,4m x 6,1m với độ dài đường chéo sân là 14,73m. Ngoài ra, với thiết kế sân đánh đơn, kích thước chuẩn của sân cầu lông sẽ là 13,4m x 5,18m với độ dài đường chéo sân là 14,38m",
+        grade: "grade",
+        fees: "100.000vnd",
+    }
+]
+const Main = () => {
+
+    useEffect(() => {
+        Aos.init({ duration: 2000 })
+    }, [])
+
     return (
-        <div className="loginPage flex">
-            <div className="container flex">
-                <div className="videoDiv">
-                    <video src={video} autoPlay muted loop></video>
-
-                    <div className="textDiv">
-                        <h2 className='title'>Create And Sell Extraordinary Products</h2>
-                        <p>We Plant</p>
-                    </div>
-
-                    <div className="footerDiv flex">
-                        <span className="text">Bạn chưa có tài khoản?</span>
-                        <Link to={'/register'}>
-                            <button className='btn'>Đăng kí</button>
-                        </Link>
-                    </div>
-                </div>
-
-                <div className="formDiv flex">
-                    <div className="headerDiv">
-                        <img src={logo} alt="Logo Image" />
-                        <h3>Đăng nhập</h3>
-                    </div>
-
-                    <form action="" className='form grid'>
-                        <div className="inputDiv">
-                            <div className="input flex">
-                                <FaUserShield className='icon' />
-                                <input type="text" id='username' placeholder='Email của bạn' />
-                            </div>
-                        </div>
-                        <div className="inputDiv">
-                            <div className="input flex">
-                                <BsFillShieldLockFill className='icon' />
-                                <input type="password" id='password' placeholder='Nhập mật khẩu' />
-                            </div>
-                        </div>
-                        <button type='submit' className='btn flex'>
-                            <span>Đăng nhập</span>
-                            <AiOutlineSwapRight className='icon' />
-                        </button>
-
-                        <Link to="/">Trở về trang chủ</Link>
-
-                        <span className='forgotPassword'>
-                            Quên mật khẩu? <Link to="/forgotPassword">Bấm đây</Link>
-                        </span>
-
-                        <div className="or">Hoặc</div>
-
-                        <button type='button' className='btn google-btn flex'>
-                            <FcGoogle className='icon' />
-                            <span>Đăng nhập với Google</span>
-                        </button>
-                    </form>
-                </div>
+        <section className="main container section">
+            <div className="secTitle">
+                <h3 data-aos="fade-right" className="title">
+                    Most visited destinations
+                </h3>
             </div>
-        </div>
-    )
-}
 
-export default Login
+            <div className="secContent grid">
+                {
+                    Data.map(({ id, imgsrc, destTitle, location, grade, fees, description }) => {
+                        return (
+                            <div key={id} data-aos="fade-up" className="singleDestination">
+                                <div className="imageDiv">
+                                    <img src={imgsrc} alt={destTitle} />
+                                </div>
+                                <div className="cardInfor">
+                                    <h4 className="destTitle">{destTitle}</h4>
+                                    <span className="container flex">
+                                        <FaLocationDot className="icon" />
+                                        <span className="name"> {location}</span>
+                                    </span>
+                                    <div className="fees flex">
+                                        <div className="grade">
+                                            <span>{grade}<small>+1</small></span>
+                                        </div>
+                                        <div className="price">
+                                            <h5>{fees}</h5>
+                                        </div>
+                                    </div>
+
+                                    <div className="desc">
+                                        <p>{description}</p>
+                                    </div>
+                                    <button className="btn flex">
+                                        Details 
+                                        <CiStickyNote  className="icon" />
+                                    </button>
+                                </div>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+        </section>
+    )
+
+}
+export default Main;
