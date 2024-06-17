@@ -17,22 +17,27 @@ const Login = () => {
 
   const LoginService = async () => {
     try {
-      const reposi = await CustomerControler.Login(email, password);
-      if (reposi) {
+      console.log('Attempting to log in with email:', email);
+      const response = await CustomerControler.Login(email, password);
+      if (response && response.token) {
+        console.log('Login successful. Token:', response.token);
         toast.success('Login successful! Redirecting to dashboard...');
         setTimeout(() => {
           navigate('/');
         }, 2000); // Delay for 2 seconds before navigating to dashboard
       } else {
+        console.log('Login failed:', response);
         toast.error('Login failed. Please check your credentials.');
       }
     } catch (error) {
+      console.error('An error occurred during login:', error);
       toast.error('An error occurred during login. Please try again.');
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Form submitted');
     await LoginService();
   };
 
@@ -90,7 +95,7 @@ const Login = () => {
             </button>
             <a href="/dashboard">DashBoard</a>
             <span className='forgotPassword'>
-              Forgot your password? <a href="">Click Here</a>
+              Forgot your password? <a href="/PasswordRecovery">Click Here</a>
             </span>
           </form>
         </div>
