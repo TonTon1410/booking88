@@ -1,74 +1,79 @@
-import './App.css'
+import React from 'react';
+import './App.css';
 import Navbar from "./components/navbar/Navbar.jsx";
 import Home from "./components/home/Home.jsx";
 import Conten from "./components/main/Main.jsx";
 import Footer from "./components/footer/Footer.jsx";
 import Dashboard from "./components/Dashboard.jsx";
-import Login from "./components/Login/Login.jsx"
+import Login from "./components/Login/Login.jsx";
 import Register from "./components/Register/Register.jsx";
-// import Profile from "./components/profile/Profile.jsx";
-//import UserFile from "./components/UserFile/userFile.jsx"; // Đảm bảo nhập đúng
+import UserProfile from './components/UserProfile/UserProfile.jsx';
 import UserFile from './components/UserFile/userFile.jsx';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-// import {
-//     createBrowserRouter,
-//     Link,
-//     RouterProvider
-// } from 'react-router-dom';
-// import { Profiler } from 'react';
+import { RouterProvider, createBrowserRouter, Outlet } from 'react-router-dom';
 
+const MainLayout = () => {
+  return (
+    <div>
+      <Navbar />
+      <div className="main-content">
+        <Outlet />
+      </div>
+      <Footer />
+    </div>
+  );
+};
+// element: <div>
+// <Navbar/>
+// <Home />
+// <Conten/>
+// <Footer/>
+// </div>
 const router = createBrowserRouter([
-    // {
-    //   path: '/',
-    //   element: (
-    //     <div>
-    //       <h1>Home Page</h1>
-    //       <nav>
-    //         <Link to="/login">To Login</Link> |{" "}
-    //         <Link to="/register">To Register</Link> |{" "}
-    //         <Link to="/dashboard">To Dashboard</Link>
-    //       </nav>
-    //     </div>
-    //   )
-    // },
-    {
-      path: '/',
-      element: <div>
-        <Navbar/>
+  {
+    path: '/',
+    element: <MainLayout />,
+    children: [
+      {
+        path: '/',
+        element: <div>
         <Home />
         <Conten/>
-        <Footer/>
         </div>
-    },
-    {
-      path: '/dashboard',
-      element: <div><Dashboard /></div>
-    },
-
-    {
-      path: '/login',
-      element: <div><Login /></div>
-    },
-    {
-      path: '/register',
-      element: <div><Register /></div>
-    },
-    {
-      path: '/userFile',
-      element: <div> <UserFile/> </div>
-    },
-    {
-      path: '*',
-      element: <div>404 Not Found</div>
-    },
-])
+      },
+      {
+        path: '/dashboard',
+        element: <Dashboard />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
+      },
+      {
+        path: '/register',
+        element: <Register />,
+      },
+      {
+        path: '/userFile',
+        element: <UserFile />,
+      },
+      {
+        path: '/UserProfile',
+        element: <UserProfile />,
+      },
+      {
+        path: '*',
+        element: <div>404 Not Found</div>,
+      },
+    ],
+  },
+]);
 
 const App = () => {
-    return (
-      <div>
-        <RouterProvider router={router} />
-      </div>
-    );
+  return (
+    <div>
+      <RouterProvider router={router} />
+    </div>
+  );
 }
 
 export default App;

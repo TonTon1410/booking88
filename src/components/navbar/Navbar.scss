@@ -15,11 +15,13 @@
 
 .header {
   position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: var(--whiteColorDeam);
-  width: 100%;
   padding: 1rem;
   z-index: 1000;
   box-shadow: 0 2px 4px rgba(32, 35, 35, 0.9);
@@ -60,10 +62,9 @@
         margin: auto;
         padding: 0.5rem 0;
 
-
         .navItem {
           padding: 0.5rem 0;
-          
+
           .navLink {
             color: var(--textColor);
             font-size: 0.9rem;
@@ -119,16 +120,19 @@
   .closeNavbar {
     display: none;
   }
+
   .header {
     padding: 1.5rem 2rem;
+
     .navBar {
       .navLists {
         display: flex;
         align-items: center;
         justify-content: center;
         flex-direction: row;
+
         .navItem {
-          .show-up{
+          .show-up {
             display: none;
           }
 
@@ -137,21 +141,24 @@
             padding: 0 0.45rem;
             font-size: 0.9rem;
             font-weight: 500;
+
             &:hover {
               color: var(--PrimaryColor);
             }
           }
         }
 
-        .navItem:hover{
+        .navItem:hover {
           position: relative;
-          .show-up{
+
+          .show-up {
             background-color: white;
             margin-top: 10px;
             padding: 20px;
             position: absolute;
             display: block;
-            li{
+
+            li {
               line-height: 30px;
             }
           }
@@ -160,13 +167,14 @@
         .show-up {
           display: none;
         }
-        
+
         .show-up.active {
           display: block;
         }
-        
+
         .btn {
           margin-left: 1rem;
+
           a {
             color: var(--whiteColor);
             font-weight: 500;
@@ -182,7 +190,7 @@
     .navBar {
       .navLists {
         .navItem {
-          padding:0 0.7rem;
+          padding: 0 0.7rem;
         }
       }
     }

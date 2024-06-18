@@ -30,7 +30,7 @@ const Navbar = () => {
         <div className={active}>
           <ul className="navLists flex">
             <li className="navItem">
-              <a href="#" className="navLink">
+              <a href="/" className="navLink">
                 Home
               </a>
             </li>
@@ -51,22 +51,16 @@ const Navbar = () => {
              */}
             
             <li className="navItem">
-              <a href="register" className="navLink">
-                Register
-              </a>
+              <a href="register" className="navLink">Register</a>
             </li>
             <li className="navItem">
-              <a href="Login" className="navLink">
-                Login
-              </a>
+              <a href="UserProfile" className="navLink">Dịch vụ</a>
             </li>
             <li className="navItem">
-              <a href="Dashboard" className="navLink">
-                Dashboard
-              </a>
+              <a href="Dashboard" className="navLink">Dashboard</a>
             </li>
             <button className="btn">
-              <a href="#">Book Now</a>
+              <a href="Login">Đăng nhập</a>
             </button>
           </ul>
           <div onClick={removeNavbar} className="closeNavbar">
