@@ -12,7 +12,15 @@ const CustomerControler = {
       console.error("Login error:", error);
       return null;
     }
-  }
-};
+  }, loginGoogle : async (token) => {
+    try {
+      const response = await axios.post(`${API_URL}/login`, { token }); // Ensure this endpoint is correct
+      return response.data;
+    } catch (error) {
+      console.error("Login error:", error.response ? error.response.data : error.message);
+      return null;
+    }
+  }};
+  
 
 export default CustomerControler;

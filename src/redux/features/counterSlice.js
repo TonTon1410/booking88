@@ -14,7 +14,7 @@ export const counterSlice = createSlice({
             return null;
         },
     },
-
+    
 });
 
 // Action creators are generated for each case reducer function

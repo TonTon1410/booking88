@@ -164,29 +164,48 @@ body {
   color: var(--blackColor);
   padding: 1rem 0;
 }
-.lisitingSection .sellers {
+.lisitingSection .booking {
   width: 100%;
   justify-content: space-between;
   gap: 1rem;
   align-items: flex-start;
 }
-.lisitingSection .sellers .topBooking .heading {
+.lisitingSection .booking .topBooking .heading, .lisitingSection .booking .featuredBooking .heading {
   padding: 1rem 0;
 }
-.lisitingSection .sellers .topBooking .heading .btn {
+.lisitingSection .booking .topBooking .heading .btn, .lisitingSection .booking .featuredBooking .heading .btn {
   padding: 0.5rem 1rem;
 }
-.lisitingSection .sellers .topBooking .card {
-  padding: 1rem;
+.lisitingSection .booking .topBooking .card, .lisitingSection .booking .featuredBooking .card {
+  padding: 1rem 1.5rem;
   border-radius: 1rem;
   background: var(--whiteColor);
   gap: 1rem;
   box-shadow: 0 2px 4px var(--inputColor);
 }
-.lisitingSection .sellers .topBooking .card .users {
+.lisitingSection .booking .topBooking .card .users, .lisitingSection .booking .featuredBooking .card .users {
   padding-right: 1rem;
   border-right: 2px solid var(--greyText);
 }
-.lisitingSection .sellers .topBooking .card .users img {
+.lisitingSection .booking .topBooking .card .users img, .lisitingSection .booking .featuredBooking .card .users img {
   width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border: 2px solid var(--inputColor);
+  transition: 0.5s ease;
+}
+.lisitingSection .booking .topBooking .card .users img:hover, .lisitingSection .booking .featuredBooking .card .users img:hover {
+  transform: translateY(-10px);
+}
+.lisitingSection .booking .topBooking .card .cardText, .lisitingSection .booking .featuredBooking .card .cardText {
+  color: var(--blackColor);
+  font-weight: 500;
+}
+.lisitingSection .booking .topBooking .card .cardText small, .lisitingSection .booking .featuredBooking .card .cardText small {
+  font-weight: 400;
+}
+.lisitingSection .booking .topBooking .card .cardText small .date, .lisitingSection .booking .featuredBooking .card .cardText small .date {
+  margin-left: 1rem;
 }/*# sourceMappingURL=Listing.module.css.map */
