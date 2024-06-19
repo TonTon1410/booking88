@@ -145,7 +145,7 @@
             &:hover {
               color: var(--PrimaryColor);
             }
-          }
+}
         }
 
         .navItem:hover {
@@ -196,6 +196,37 @@
     }
   }
 }
+
+
+.userDropdown {
+  position: relative;
+  cursor: pointer;
+
+  .dropdownMenu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 150px;
+
+    button {
+      width: 100%;
+      padding: 10px;
+      text-align: left;
+      background: none;
+      border: none;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f0f0f0;
+      }
+    }
+  }
+}
+
 
 @media screen and (min-width: 1240px) {
   .header {

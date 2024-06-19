@@ -112,6 +112,9 @@
     justify-content: center;
     flex-direction: row;
   }
+  .header .navBar .navLists .navItem .show-up {
+    display: none;
+  }
   .header .navBar .navLists .navItem .navLink {
     color: var(--textColor);
     padding: 0 0.45rem;
@@ -120,6 +123,25 @@
   }
   .header .navBar .navLists .navItem .navLink:hover {
     color: var(--PrimaryColor);
+  }
+  .header .navBar .navLists .navItem:hover {
+    position: relative;
+  }
+  .header .navBar .navLists .navItem:hover .show-up {
+    background-color: white;
+    margin-top: 10px;
+    padding: 20px;
+    position: absolute;
+    display: block;
+  }
+  .header .navBar .navLists .navItem:hover .show-up li {
+    line-height: 30px;
+  }
+  .header .navBar .navLists .show-up {
+    display: none;
+  }
+  .header .navBar .navLists .show-up.active {
+    display: block;
   }
   .header .navBar .navLists .btn {
     margin-left: 1rem;
