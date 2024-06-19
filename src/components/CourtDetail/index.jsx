@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Modal from "react-modal";
-
-Modal.setAppElement("#root");
+import { Row, Col, Button, Select, Input, DatePicker, Modal, Divider } from 'antd';
+import "../CourtDetail/Index.css";
+// import 'antd/dist/antd.css';
+const { Option } = Select;
 
 const CourtDetails = () => {
   const location = useLocation();
@@ -91,19 +92,17 @@ const CourtDetails = () => {
 
   return (
     <div className="container mx-auto my-8">
-      <div className="flex flex-wrap">
-        <div className="w-full md:w-1/2">
+      <Row gutter={[16, 16]}>
+        <Col xs={24} md={12}>
           <img
             className="w-full h-[70vh] object-cover rounded-lg"
             src={court.image}
             alt="Court"
           />
-        </div>
-        <div className="w-full md:w-1/2 px-8">
+        </Col>
+        <Col xs={24} md={12}>
           <h1 className="text-4xl font-bold mb-4">{court.name}</h1>
-          <p className="text-gray-700 text-base mb-2">
-            Khu vực: {court.location}
-          </p>
+          <p className="text-gray-700 text-base mb-2">Khu vực: {court.location}</p>
           <p className="text-gray-700 text-base mb-2">Số sân: {court.courts}</p>
           <div className="text-yellow-500 mb-2">
             {"★".repeat(court.rating)}
@@ -138,59 +137,55 @@ const CourtDetails = () => {
             <h2 className="text-2xl font-bold mb-4">Chọn loại lịch đặt sân</h2>
             <div className="mb-4">
               <label className="block mb-2">Loại lịch:</label>
-              <select
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              <Select
+                className="w-full"
                 value={bookingType}
-                onChange={(e) => setBookingType(e.target.value)}
+                onChange={(value) => setBookingType(value)}
               >
-                <option value="fixed">Lịch cố định</option>
-                <option value="flexible">Lịch linh hoạt</option>
-              </select>
+                <Option value="fixed">Lịch cố định</Option>
+                <Option value="flexible">Lịch linh hoạt</Option>
+              </Select>
             </div>
             {bookingType === "fixed" && (
               <>
                 <div className="mb-4">
                   <label className="block mb-2">Chọn thứ</label>
-                  <select
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  <Select
+                    className="w-full"
                     value={dayOfWeek}
-                    onChange={(e) => setDayOfWeek(e.target.value)}
+                    onChange={(value) => setDayOfWeek(value)}
                     required
                   >
-                    <option value="">Chọn thứ</option>
-                    <option value="Monday">Thứ Hai</option>
-                    <option value="Tuesday">Thứ Ba</option>
-                    <option value="Wednesday">Thứ Tư</option>
-                    <option value="Thursday">Thứ Năm</option>
-                    <option value="Friday">Thứ Sáu</option>
-                    <option value="Saturday">Thứ Bảy</option>
-                    <option value="Sunday">Chủ Nhật</option>
-                  </select>
+                    <Option value="">Chọn thứ</Option>
+                    <Option value="Monday">Thứ Hai</Option>
+                    <Option value="Tuesday">Thứ Ba</Option>
+                    <Option value="Wednesday">Thứ Tư</Option>
+                    <Option value="Thursday">Thứ Năm</Option>
+                    <Option value="Friday">Thứ Sáu</Option>
+                    <Option value="Saturday">Thứ Bảy</Option>
+                    <Option value="Sunday">Chủ Nhật</Option>
+                  </Select>
                 </div>
                 <div className="mb-4">
                   <label className="block mb-2">Chọn giờ chơi cố định</label>
                   <div className="flex flex-wrap">
                     {fixedTimes.map((time, index) => (
-                      <button
+                      <Button
                         key={index}
-                        type="button"
-                        className={`m-2 px-4 py-2 rounded-full ${
-                          selectedTime === time
-                            ? "bg-blue-500 text-white"
-                            : "bg-gray-200 text-gray-700"
-                        }`}
+                        type={selectedTime === time ? "primary" : "default"}
+                        className="m-2"
                         onClick={() => setSelectedTime(time)}
                       >
                         {time}
-                      </button>
+                      </Button>
                     ))}
                   </div>
                 </div>
                 <div className="mb-4">
                   <label className="block mb-2">Đăng ký bao nhiêu tháng</label>
-                  <input
+                  <Input
                     type="number"
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    className="w-full"
                     value={months}
                     onChange={(e) => setMonths(e.target.value)}
                     required
@@ -198,11 +193,10 @@ const CourtDetails = () => {
                 </div>
                 <div className="mb-4">
                   <label className="block mb-2">Bắt đầu từ ngày</label>
-                  <input
-                    type="date"
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  <DatePicker
+                    className="w-full"
                     value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
+                    onChange={(date, dateString) => setStartDate(dateString)}
                     required
                   />
                 </div>
@@ -213,28 +207,27 @@ const CourtDetails = () => {
                 <div className="mb-4">
                   <label className="block mb-2">Chọn ngày và giờ</label>
                   <div className="flex mb-2">
-                    <input
-                      type="date"
-                      className="w-1/2 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    <DatePicker
+                      className="w-1/2"
                       value={selectedDate}
-                      onChange={(e) => setSelectedDate(e.target.value)}
+                      onChange={(date, dateString) => setSelectedDate(dateString)}
                     />
-                    <select
-                      className="w-1/2 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    <Select
+                      className="w-1/2"
                       value={selectedTime}
-                      onChange={(e) => setSelectedTime(e.target.value)}
+                      onChange={(value) => setSelectedTime(value)}
                     >
-                      <option value="">Chọn giờ</option>
+                      <Option value="">Chọn giờ</Option>
                       {fixedTimes.map((time, index) => (
-                        <option key={index} value={time}>
+                        <Option key={index} value={time}>
                           {time}
-                        </option>
+                        </Option>
                       ))}
-                    </select>
+                    </Select>
                   </div>
-                  <button
-                    type="button"
-                    className="bg-green-500 text-white px-4 py-2 rounded-lg"
+                  <Button
+                    type="primary"
+                    className="w-full"
                     onClick={() => {
                       if (selectedDate && selectedTime) {
                         setFlexibleBookings([
@@ -249,21 +242,18 @@ const CourtDetails = () => {
                     }}
                   >
                     Thêm ngày
-                  </button>
+                  </Button>
                 </div>
                 {flexibleBookings.length > 0 && (
                   <div>
-                    <h4 className="text-lg font-bold mb-2">
-                      Lịch linh hoạt đã chọn
-                    </h4>
+                    <h4 className="text-lg font-bold mb-2">Lịch linh hoạt đã chọn</h4>
                     {flexibleBookings.map((booking, index) => (
                       <div key={index} className="flex items-center mb-2">
                         <p className="mr-2">
                           {booking.date} - {booking.time}
                         </p>
-                        <button
-                          type="button"
-                          className="bg-red-500 text-white px-2 py-1 rounded-lg"
+                        <Button
+                          type="danger"
                           onClick={() => {
                             const updatedBookings = flexibleBookings.filter(
                               (_, i) => i !== index
@@ -272,7 +262,7 @@ const CourtDetails = () => {
                           }}
                         >
                           Xóa
-                        </button>
+                        </Button>
                       </div>
                     ))}
                   </div>
@@ -281,9 +271,9 @@ const CourtDetails = () => {
             )}
             <div className="mb-4">
               <label className="block mb-2">Họ và tên:</label>
-              <input
+              <Input
                 type="text"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
@@ -291,83 +281,56 @@ const CourtDetails = () => {
             </div>
             <div className="mb-4">
               <label className="block mb-2">Email:</label>
-              <input
+              <Input
                 type="email"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
-            <button
-              onClick={handleBooking}
-              className="bg-blue-500 text-white rounded-full px-4 py-2 hover:bg-blue-600"
-            >
+            <Button type="primary" className="w-full" onClick={handleBooking}>
               Đặt Sân
-            </button>
+            </Button>
           </div>
-        </div>
-      </div>
+        </Col>
+      </Row>
 
       <div className="mt-8 bg-white p-4 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-4">
-          Đặt sân theo khung thời gian
-        </h2>
+        <h2 className="text-2xl font-bold mb-4">Đặt sân theo khung thời gian</h2>
         <div className="flex justify-between items-center mb-4">
-          <button
-            onClick={() => setCurrentWeek((prev) => prev - 1)}
-            className="bg-blue-500 text-white rounded-full px-4 py-2 hover:bg-blue-600"
-          >
+          <Button onClick={() => setCurrentWeek((prev) => prev - 1)} type="primary">
             Tuần trước
-          </button>
+          </Button>
           <h3 className="text-xl font-semibold">
             Từ ngày {weekDates[0].toLocaleDateString()} đến ngày{" "}
             {weekDates[6].toLocaleDateString()}
           </h3>
-          <button
-            onClick={() => setCurrentWeek((prev) => prev + 1)}
-            className="bg-blue-500 text-white rounded-full px-4 py-2 hover:bg-blue-600"
-          >
+          <Button onClick={() => setCurrentWeek((prev) => prev + 1)} type="primary">
             Tuần sau
-          </button>
+          </Button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
+        <Row gutter={[16, 16]}>
           {weekDates.map((date, index) => (
-            <div key={index} className="flex flex-col items-center">
+            <Col key={index} xs={24} md={12} lg={8} xl={4}>
               <h4 className="font-bold">{date.toLocaleDateString()}</h4>
               {renderTimeslots(date)}
-            </div>
+            </Col>
           ))}
-        </div>
+        </Row>
       </div>
 
       <Modal
-        isOpen={isModalOpen}
-        onRequestClose={() => setIsModalOpen(false)}
-        contentLabel="Confirm Booking"
-        className="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto mt-20"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+        title="Xác nhận đặt sân"
+        visible={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        onOk={handleBooking}
       >
         {selectedSlot !== null && (
           <>
-            <h2 className="text-2xl font-bold mb-4">Xác nhận đặt sân</h2>
             <p>Tên sân: {court.name}</p>
             <p>Thời gian: {court.availableTimes[selectedSlot].time}</p>
             <p>Giá: 120k</p>
-            <div className="flex justify-end mt-4">
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="bg-gray-300 text-gray-700 rounded-full px-4 py-2 mr-2 hover:bg-gray-400"
-              >
-                Hủy
-              </button>
-              <button
-                onClick={handleBooking}
-                className="bg-blue-500 text-white rounded-full px-4 py-2 hover:bg-blue-600"
-              >
-                Xác nhận
-              </button>
-            </div>
           </>
         )}
       </Modal>
