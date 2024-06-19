@@ -48,8 +48,6 @@ const Navbar = () => {
         <div className={active}>
           <ul className="navLists flex">
             <li className="navItem">
-              <a href="#" className="navLink">
-                Trang Chủ
               </a>
             </li>
             <li className="navItem">
@@ -86,6 +84,17 @@ const Navbar = () => {
                 <a href="Login">Book Now</a>
               </button>
             )}
+              <a href="register" className="navLink">Register</a>
+            </li>
+            <li className="navItem">
+              <a href="UserProfile" className="navLink">Dịch vụ</a>
+            </li>
+            <li className="navItem">
+              <a href="Dashboard" className="navLink">Dashboard</a>
+            </li>
+            <button className="btn">
+              <a href="Login">Đăng nhập</a>
+            </button>
           </ul>
           <div onClick={removeNavbar} className="closeNavbar">
             <AiFillCloseCircle className="icon" />
