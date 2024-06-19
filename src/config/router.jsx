@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Outlet, createBrowserRouter } from "react-router-dom";
 import Navbar from "../components/navbar/Navbar";
 import Home from "../components/home/Home";
 import Footer from "../components/footer/Footer";
@@ -18,12 +18,27 @@ const router = createBrowserRouter([
     element: (
       <div>
         <Navbar />
-        <Home />
-        <Main />
+        <Outlet />
         <Footer />
       </div>
     ),
+    children: [
+      {
+        path: "/",
+        element: (
+          <>
+            <Home />
+            <Main />
+          </>
+        ),
+      },
+      {
+        path: "/courtlist",
+        element: <CourtList />,
+      },
+    ],
   },
+
   {
     path: "/dashboard",
     element: (
@@ -57,24 +72,22 @@ const router = createBrowserRouter([
     path: "/PasswordRecovery",
     element: <PasswordRecovery />,
   },
-  {
-    path: "/courtlist",
-    element: <CourtList />,
-  },
+
   {
     path: "/court-details",
     element: <CourtDetails />,
-  }, {
+  },
+  {
     path: "/userprofile",
     element: <UserProfile />,
   },
   {
     path: "/booking",
     element: (
-      <div>
-        {" "}
-        <Booking11 />{" "}
-      </div>
+      
+       
+        <Booking11 />
+     
     ),
   },
 

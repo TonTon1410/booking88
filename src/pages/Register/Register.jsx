@@ -4,152 +4,140 @@ import '../../App.css';
 import video from '../../assets/videologin.mp4';
 import logo from '../../assets/logologin.png';
 import { Link, useNavigate } from 'react-router-dom';
+import { Form, Input, Button, message } from 'antd';
 import { FaPhoneAlt } from "react-icons/fa";
 import { MdMarkEmailRead } from "react-icons/md";
 import { AiOutlineSwapRight } from "react-icons/ai";
 import { BsFillShieldLockFill } from "react-icons/bs";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [form] = Form.useForm();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onFinish = async (values) => {
+    const { email, phone, password, confirmPassword, role } = values;
+
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      message.error('Mật khẩu không khớp');
       return;
     }
 
     try {
-      const response = await axios.post('http://157.230.43.225:8080/register', { // Thay bằng endpoint thực sự của bạn
+      const response = await axios.post('http://157.230.43.225:8080/register', { // Replace with your actual endpoint
         email,
         phone,
         password,
         role,
       });
-      console.log(response);
 
       if (response.status === 200) {
-        setSuccess('Registration successful!');
-        setError('');
-        toast.success('Registration successful! Redirecting to login...');
+        message.success('Đăng ký thành công! Đang chuyển đến trang đăng nhập...');
         setTimeout(() => {
           navigate('/login');
         }, 2000); // Delay for 2 seconds before navigating to login
       } else {
-        setError('Registration failed. Please try again.');
-        toast.error('Registration failed. Please try again.');
+        message.error('Đăng ký thất bại. Vui lòng thử lại.');
       }
     } catch (error) {
-      setError('An error occurred. Please try again.');
-      toast.error('An error occurred. Please try again.');
+      message.error('Đã xảy ra lỗi. Vui lòng thử lại.');
     }
   };
 
   return (
     <div className="registerPage flex">
-      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
       <div className="container flex">
         <div className="videoDiv">
           <video src={video} autoPlay muted loop></video>
 
           <div className="textDiv">
-            <h2 className='title'> Create And Sell Extraordinary Products</h2>
+            <h2 className='title'>Tạo và Bán Sản Phẩm Đặc Biệt</h2>
             <p>We Plant</p>
           </div>
 
           <div className="footerDiv flex">
-            <span className="text">Have an account?</span>
+            <span className="text">Đã có tài khoản?</span>
             <Link to={'/login'}>
-              <button className='btn'>Login</button>
+              <Button type="primary">Đăng nhập</Button>
             </Link>
           </div>
         </div>
 
         <div className="formDiv flex">
           <div className="headerDiv">
-            <img src={logo} alt="Logo Image" />
-            <h3>Let Us Know You!</h3>
+            <img src={logo} alt="Logo" />
+            <h3>Hãy cho chúng tôi biết bạn là ai!</h3>
           </div>
 
-          <form action="" className='form grid' onSubmit={handleSubmit}>
-            <div className="inputDiv">
-              <label htmlFor="email">Email</label>
-              <div className="input flex">
-                <MdMarkEmailRead className='icon'/>
-                <input
-                  required
-                  type="email"
-                  id='email'
-                  placeholder='Nhập Email'
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-            </div>
+          <Form
+            form={form}
+            name="register"
+            onFinish={onFinish}
+            className='form grid'
+          >
+            <Form.Item
+              name="email"
+              rules={[{ required: true, message: 'Vui lòng nhập email!' }]}
+            >
+              <Input
+                prefix={<MdMarkEmailRead />}
+                placeholder="Email"
+              />
+            </Form.Item>
 
-            <div className="inputDiv">
-              <label htmlFor="phone">Số Điện Thoại</label>
-              <div className="input flex">
-                <FaPhoneAlt className='icon'/>
-                <input
-                  required
-                  type="text"
-                  id='phone'
-                  placeholder='Điền Số Điện Thoại'
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                />
-              </div>
-            </div>
+            <Form.Item
+              name="phone"
+              rules={[
+                { required: true, message: 'Vui lòng nhập số điện thoại!' },
+                {
+                  pattern: /^0\d{9}$/,
+                  message: 'Số điện thoại phải đúng 10 chữ số và bắt đầu bằng số 0!',
+                },
+              ]}
+            >
+              <Input
+                prefix={<FaPhoneAlt />}
+                placeholder="Số Điện Thoại"
+              />
+            </Form.Item>
 
-            <div className="inputDiv">
-              <label htmlFor="password">Mật Khẩu</label>
-              <div className="input flex">
-                <BsFillShieldLockFill className='icon'/>
-                <input
-                  required
-                  type="password"
-                  id='password'
-                  placeholder='Nhập Mật Khẩu'
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-            </div>
+            <Form.Item
+              name="password"
+              rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
+            >
+              <Input.Password
+                prefix={<BsFillShieldLockFill />}
+                placeholder="Mật Khẩu"
+              />
+            </Form.Item>
 
-            <div className="inputDiv">
-              <label htmlFor="confirmPassword">Xác Nhận Mật Khẩu </label>
-              <div className="input flex">
-                <BsFillShieldLockFill className='icon'/>
-                <input
-                  required
-                  type="password"
-                  id='confirmPassword'
-                  placeholder='Nhập Lại Mật Khẩu'
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-              </div>
-            </div>
+            <Form.Item
+              name="confirmPassword"
+              dependencies={['password']}
+              rules={[
+                { required: true, message: 'Vui lòng xác nhận mật khẩu!' },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('password') === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error('Mật khẩu không khớp!'));
+                  },
+                }),
+              ]}
+            >
+              <Input.Password
+                prefix={<BsFillShieldLockFill />}
+                placeholder="Xác Nhận Mật Khẩu"
+              />
+            </Form.Item>
 
-            {error && <p className="error">{error}</p>}
-            {success && <p className="success">{success}</p>}
-
-            <button type='submit' className='btn flex'>
-              <span>Register</span>
-              <AiOutlineSwapRight className='icon'/>
-            </button>
-
-          </form>
+            <Form.Item>
+              <Button type="primary" htmlType="submit" className='btn flex'>
+                <span>Đăng ký</span>
+                <AiOutlineSwapRight />
+              </Button>
+            </Form.Item>
+          </Form>
         </div>
       </div>
     </div>
