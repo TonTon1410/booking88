@@ -1,21 +1,23 @@
-import React, { useState } from "react";
+import { useState } from "react"; 
 import "../../App.css";
-import video from "../../assets/videologin.mp4";
 import logo from "../../assets/logologin.png";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUserShield } from "react-icons/fa";
 import { BsFillShieldLockFill } from "react-icons/bs";
 import { AiOutlineSwapRight } from "react-icons/ai";
-import CustomerControler from "../../api/userapi";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import GGLogin from "../../api/GGlogin"; // Assuming GGLogin is the component for Google Login
+import GGLogin from "../../api/GGlogin"; 
 import api from "../../config/axios";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/features/counterSlice";
+import { Form, Input, Button, Typography } from "antd";
+import anh11 from '../../assets/imglogin.webp';
 
-const clientId = "YOUR_GOOGLE_CLIENT_ID"; // Replace with your actual client ID
+const clientId = "YOUR_GOOGLE_CLIENT_ID"; 
+
+const { Title, Text } = Typography;
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -23,50 +25,24 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const LoginService = async () => {
-    try {
-      console.log("Attempting to log in with email:", email);
-      const response = await CustomerControler.Login(email, password);
-      if (response && response.token) {
-        console.log("Login successful. Token:", response.token);
-        toast.success("Login successful! Redirecting to dashboard...");
-        setTimeout(() => {
-          navigate("/");
-        }, 2000); // Delay for 2 seconds before navigating to dashboard
-      } else {
-        console.log("Login failed:", response);
-        toast.error("Login failed. Please check your credentials.");
-      }
-    } catch (error) {
-      console.error("An error occurred during login:", error);
-      toast.error("An error occurred during login. Please try again.");
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Form submitted");
-    // await LoginService();
-
+  const handleSubmit = async (values) => {
+    const { email, password } = values;
     try {
       const res = await api.post("/login", { email, password });
-      console.log(res.data);
-      console.log(res.data.roles);
       dispatch(login(res.data));
-      toast.success("Login successful! Redirecting to dashboard...");
+      toast.success("Đăng nhập thành công! Đang chuyển đến trang chính...");
       setTimeout(() => {
         navigate("/");
-      }, 2000); // Delay for 2 seconds before navigating to dashboard
+      }, 2000);
     } catch (error) {
-      console.log(error);
-      toast.error("An error occurred during login. Please try again.");
+      toast.error("Đã có lỗi xảy ra trong quá trình đăng nhập. Vui lòng thử lại.");
     }
   };
 
   return (
     <div className="loginPage flex">
       <ToastContainer
-        position="top-right"
+        position="top-center"
         autoClose={3000}
         hideProgressBar={false}
         closeOnClick
@@ -75,57 +51,57 @@ const Login = () => {
       />
       <div className="container flex">
         <div className="videoDiv">
-          <video src={video} autoPlay muted loop></video>
-          <div className="textDiv">
-            <h2 className="title">Create And Sell Extraordinary Products</h2>
-            <p>We Plant</p>
-          </div>
+        <img src={anh11} alt="Customer Image" />
           <div className="footerDiv flex">
-            <span className="text">Don't have an account?</span>
+            <span className="text">Chưa có tài khoản?</span>
             <Link to={"/register"}>
-              <button className="btn">Sign Up</button>
+              <Button type="primary">Đăng ký</Button>
             </Link>
           </div>
         </div>
         <div className="formDiv flex">
           <div className="headerDiv">
             <img src={logo} alt="Logo" />
-            <h3>Welcome Back!</h3>
+            <Title level={3}>Chào mừng trở lại!</Title>
           </div>
-          <form className="form grid" onSubmit={handleSubmit}>
-            <div className="inputDiv">
-              <label htmlFor="username">Username</label>
-              <div className="input flex">
-                <FaUserShield className="icon" />
-                <input
-                  type="text"
-                  id="username"
-                  placeholder="Enter Username"
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="inputDiv">
-              <label htmlFor="password">Password</label>
-              <div className="input flex">
-                <BsFillShieldLockFill className="icon" />
-                <input
-                  type="password"
-                  id="password"
-                  placeholder="Enter Password"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-            </div>
-            <button type="submit" className="btn flex">
-              <span>Login</span>
-              <AiOutlineSwapRight className="icon" />
-            </button>
-            <span className="forgotPassword">
-              Forgot your password?{" "}
-              <Link to="/PasswordRecovery">Click Here</Link>
-            </span>
-          </form>
+          <Form
+            name="login"
+            className="form"
+            initialValues={{ remember: true }}
+            onFinish={handleSubmit}
+          >
+            <Form.Item
+              name="email"
+              rules={[{ required: true, message: "Vui lòng nhập email của bạn!" }]}
+            >
+              <Input
+                prefix={<FaUserShield />}
+                placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              rules={[{ required: true, message: "Vui lòng nhập mật khẩu của bạn!" }]}
+            >
+              <Input.Password
+                prefix={<BsFillShieldLockFill />}
+                placeholder="Mật khẩu"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit" className="btn flex">
+                <span>Đăng nhập</span>
+                <AiOutlineSwapRight className="icon" />
+              </Button>
+            </Form.Item>
+            <Form.Item>
+              <Text>
+                Quên mật khẩu? <Link to="/PasswordRecovery">Nhấn vào đây</Link>
+              </Text>
+            </Form.Item>
+          </Form>
           <div className="line"></div>
           <div className="field button-field">
             <GoogleOAuthProvider clientId={clientId}>
