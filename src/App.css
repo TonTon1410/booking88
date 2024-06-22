@@ -34,6 +34,13 @@
     --normalFontSize: .938rem;
     --smallFontSize: .813rem;
     --smallestFontSize: .75rem;
+    --whiteColor: #FFFFFF;
+    --blackColor: #333333;
+    --greyText: #777777;
+    --primaryColor: #4CAF50; /* Bright green for primary color */
+    --hoverColor: #45A049; /* Slightly darker green for hover effect */
+    --inputColor: #F0F0F0; /* Light grey for input background */
+    --backgroundColor: #F5F5F5; /* Brighter background color */
 }
 html{
     scroll-behavior: smooth;
@@ -112,27 +119,29 @@ body{
         zoom: 1.7;
     }
 }
-.loginPage, .registerPage{
+.loginPage, .registerPage {
     height: 100vh;
     width: 100%;
     margin: auto;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 7px 50px rgb(214, 223, 213);
-    
-    .container{
+    box-shadow: 0 7px 50px rgba(214, 223, 213, 0.5); /* Softer shadow */
+
+    .container {
         height: 90vh;
-        width: 60%;
+        width: 80%; /* Adjusted width to make it fit better */
         margin: auto;
         justify-content: space-between;
         border-radius: 10px;
-        background: hsl(0, 0%, 91%);
+        background: var(--backgroundColor);
+        display: flex; /* Ensure flexbox is enabled */
+        align-items: center; /* Center content vertically */
 
-        .videoDiv{
+        .videoDiv {
             position: relative;
             display: flex;
             flex-basis: 50%;
-            width: 70%;
+            width: 50%; /* Adjusted width */
             height: 100%;
             padding: 0 1.5rem;
             text-align: center;
@@ -141,11 +150,11 @@ body{
             border-radius: 10px;
             overflow: hidden;
 
-            video, .footerDiv{
+            video, .footerDiv {
                 position: absolute;
             }
-            
-            video{
+
+            video {
                 height: 100%;
                 width: 100%;
                 object-fit: cover;
@@ -154,93 +163,90 @@ body{
                 right: 0;
                 left: 0;
             }
-            
-            .textDiv{
-                position: relative;
 
-                .title{
-                    color: var(--whiteColor);
-                    font-size: 35px;
-                    font-weight: 800;
-                }
-
-                p{
-                    color: var(--whiteColor);
-                    padding: 1rem;
-                    font-weight: 400;
-                }
-            }
-
-            .footerDiv{
+            .footerDiv {
                 bottom: 10px;
                 padding: 0 1rem;
                 height: 60px;
-                background: rgba(255, 255, 255, 0.248);
-                left: 10;
-                right: 10;
+                background: rgba(255, 255, 255, 0.5); /* Lighter background for footer */
+                left: 10px; /* Adjusted to 10px from left */
+                right: 10px; /* Adjusted to 10px from right */
+                display: flex; /* Ensure flexbox is enabled */
                 justify-content: space-between;
-                backdrop-filter: blur(1px);
+                backdrop-filter: blur(5px);
                 border-radius: 10px;
 
-                .text{
-                    color: var(--whiteColor);
+                .text {
+                    color: var(--blackColor); /* Changed to black for better readability */
                 }
-                
-                .btn{
-                    background: var(--whiteColor);
-                    color: var(--primaryColor);
+
+                .btn {
+                    background: var(--primaryColor);
+                    color: var(--whiteColor);
                     padding: .8rem 1.5rem;
                     border-radius: 10px;
                     font-weight: 400;
                     transition: .3s ease;
 
-                    &:hover{
+                    &:hover {
                         background: var(--hoverColor);
-                        color: var(--blackColor);
+                        color: var(--whiteColor); /* Keeping white color on hover */
                     }
                 }
             }
         }
-        
-        .formDiv{
+
+        .formDiv {
             flex-basis: 50%;
             margin: auto;
             flex-direction: column;
             gap: 1.5rem;
             transform: translateY(-1rem);
+            display: flex;
+            align-items: center; /* Center form horizontally */
 
-            .headerDiv{
+            .headerDiv {
                 text-align: center;
                 padding: 1.5rem 0;
 
-                img{
+                img {
                     width: 60px;
                     padding-bottom: .5rem;
                 }
 
-                h3{
+                h3 {
                     font-size: 25px;
                     color: var(--blackColor);
                     font-weight: 600;
                 }
             }
 
-            .form{
+            .form {
                 gap: 1rem;
+                width: 80%; /* Adjusted width for smaller form */
+                max-width: 400px; /* Set a max-width for the form */
+                display: flex;
+                flex-direction: column;
 
-                .inputDiv{
-                    .icon{
+                .inputDiv {
+                    display: flex;
+                    flex-direction: column;
+                    gap: .5rem;
+
+                    .icon {
                         color: var(--greyText);
                     }
 
-                    input{
-                        background: none;
+                    input {
+                        background: var(--inputColor); /* Light grey background */
                         outline: none;
-                        border: none;
-                        width: 200px;
+                        border: 1px solid var(--greyText); /* Light border */
+                        padding: 10px; /* Padding for input */
+                        width: 100%; /* Adjust input width */
+                        border-radius: 5px; /* Rounded corners */
                     }
 
-                    label{
+                    label {
                         color: var(--blackColor);
                         font-weight: 400;
                         font-size: 14px;
@@ -248,18 +254,17 @@ body{
                         display: block;
                     }
 
-                    .input{
+                    .input {
                         gap: .5rem;
                         padding: 1rem;
                         background: var(--inputColor);
                         border-radius: 10px;
                     }
-
                 }
 
-                .btn{
+                .btn {
                     padding: .8rem;
-                    /* background: var(--primaryColor); */
+                    background: var(--primaryColor); /* Uncommented background color */
                     border-radius: 10px;
                     color: var(--whiteColor);
                     align-items: center;
@@ -270,29 +275,29 @@ body{
                     gap: .5rem;
                     transition: .3s ease;
 
-                    .icon{
+                    .icon {
                         font-size: 25px;
                         transition: .3s ease;
                     }
 
-                    &:hover{
+                    &:hover {
                         background: var(--hoverColor);
-                        color: var(--blackColor);
-                        
-                        .icon{
-                            color: var(--blackColor);
+                        color: var(--whiteColor);
+
+                        .icon {
+                            color: var(--whiteColor);
                             transform: translateX(5px);
                         }
                     }
                 }
 
-                .forgotPassword{
+                .forgotPassword {
                     font-size: 13px;
                     color: var(--blackColor);
                     opacity: .7;
                     text-align: center;
 
-                    a{
+                    a {
                         text-decoration: underline;
                         cursor: pointer;
                         opacity: 1;
@@ -302,6 +307,7 @@ body{
         }
     }
 }
+
 
 .dashboard{
     height: 100vh;
