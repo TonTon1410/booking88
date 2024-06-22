@@ -28,49 +28,51 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+    navigate("/login"); // Navigate to the login page after logout
   };
 
   const handleProfile = () => {
     navigate("/userprofile"); // Navigate to the profile page
   };
 
+  const handleHomeClick = () => {
+    navigate("/"); // Navigate to the home page
+  };
+
   return (
     <section className="navBarSection">
       <header className="header flex">
         <div className="logoDiv">
-          <a href="#" className="logo flex">
+          <a onClick={handleHomeClick} className="logo flex" style={{ cursor: "pointer" }}>
             <h1>
               <CiBitcoin className="icon" />
-              BOOKING88
+              Booking88
             </h1>
           </a>
         </div>
         <div className={active}>
           <ul className="navLists flex">
             <li className="navItem">
-              </a>
-            </li>
-            <li className="navItem">
-              <a href="courtlist" className="navLink">
+              <a href="/courtlist" className="navLink">
                 Danh Sách Sân
               </a>
             </li>
             <li className="navItem">
-              <a href="#" className="navLink">
+              <a onClick={handleHomeClick} className="navLink" style={{ cursor: "pointer" }}>
                 Bản Tin
               </a>
             </li>
             <li className="navItem">
-              <a href="Dashboard" className="navLink">
+              <a href="/dashboard" className="navLink">
                 Liên Hệ
               </a>
             </li>
             {user ? (
-              <div className="userDropdown">
+              <div className="userDropdown" onClick={toggleDropdown}>
                 <Avatar
                   size="large"
                   src={user.avatar}
-                  onClick={toggleDropdown}
+                  style={{ cursor: "pointer" }}
                 />
                 {dropdownActive && (
                   <div className="dropdownMenu">
@@ -81,20 +83,9 @@ const Navbar = () => {
               </div>
             ) : (
               <button className="btn">
-                <a href="Login">Book Now</a>
+                <a href="/login">Book Now</a>
               </button>
             )}
-              <a href="register" className="navLink">Register</a>
-            </li>
-            <li className="navItem">
-              <a href="UserProfile" className="navLink">Dịch vụ</a>
-            </li>
-            <li className="navItem">
-              <a href="Dashboard" className="navLink">Dashboard</a>
-            </li>
-            <button className="btn">
-              <a href="Login">Đăng nhập</a>
-            </button>
           </ul>
           <div onClick={removeNavbar} className="closeNavbar">
             <AiFillCloseCircle className="icon" />

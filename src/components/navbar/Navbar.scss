@@ -1,235 +1,140 @@
-:root {
-  --PrimaryColor: hsl(199, 100%, 33%);
-  --SecondaryColor: hsl(187, 85%, 43%);
-  --gradientColor: linear-gradient(to right, hsl(187, 85%, 43%), hsl(199, 100%, 33%));
-  --blackColor: hsl(201, 33%, 16%);
-  --whiteColor: hsl(0, 6%, 100%);
-  --whiteColorDeam: hsl(0, 0%, 93%);
-  --textColor: hsl(240, 4%, 36%);
-  --greyText: rgb(190, 190, 190);
-  --inputColor: rgb(239, 239, 239);
-  --bodyColor: rgb(240, 240, 246);
-  --cardBG: rgb(225, 225, 235);
-  --cardHover: rgb(255, 255, 255);
+.navBarSection {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000; // Đảm bảo navbar nằm trên các phần tử khác
+  background-color: white; // Màu nền để dễ nhìn thấy
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Thêm shadow để phân biệt với nội dung
 }
 
 .header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.logoDiv {
+  flex: 1;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background: var(--whiteColorDeam);
-  padding: 1rem;
-  z-index: 1000;
-  box-shadow: 0 2px 4px rgba(32, 35, 35, 0.9);
-
   .logo {
-    color: var(--blackColor);
-    font-weight: 600;
-    cursor: pointer;
+    display: flex;
     align-items: center;
-    justify-content: center;
-
+    cursor: pointer;
+    h1 {
+      margin-left: 10px;
+      font-size: 24px;
+      color: #ff6600; // Đổi màu thành màu cam
+      text-decoration: none;
+    }
     .icon {
-      font-size: 25px;
-      color: var(--PrimaryColor);
-      transform: translateY(5px);
-    }
-  }
-
-  @media screen and (max-width: 768px) {
-    .navBar {
-      position: absolute;
-      background: var(--whiteColorDeam);
-      height: max-content;
-      width: 80%;
-      border-radius: 1rem;
-      top: -500rem;
-      left: 50%;
-      transform: translate(-50%);
-      z-index: 2000;
-      box-shadow: 0 2px 4px rgba(2, 15, 29, 0.904);
-      transition: 0.5s ease-in-out;
-      padding: 1rem;
-
-      .navLists {
-        flex-direction: column;
-        justify-content: center;
-        width: 100%;
-        margin: auto;
-        padding: 0.5rem 0;
-
-        .navItem {
-          padding: 0.5rem 0;
-
-          .navLink {
-            color: var(--textColor);
-            font-size: 0.9rem;
-            font-weight: 600;
-
-            &:hover {
-              color: var(--PrimaryColor);
-            }
-          }
-        }
-
-        .btn {
-          margin-top: 1rem;
-
-          a {
-            font-weight: 600;
-            color: var(--whiteColor);
-          }
-        }
-      }
-
-      .closeNavbar {
-        position: absolute;
-        top: 1rem;
-        right: 1.5rem;
-        color: var(--PrimaryColor);
-
-        &:hover {
-          color: var(--SecondaryColor);
-        }
-      }
-    }
-
-    .activeNavbar {
-      top: 7rem;
-    }
-  }
-
-  .toggleNavbar {
-    .icon {
-      font-size: 25px;
-      color: var(--PrimaryColor);
-    }
-
-    &:hover.icon {
-      color: var(--SecondaryColor);
+      font-size: 24px;
+      color: #ff6600; // Đổi màu thành màu cam
     }
   }
 }
 
-@media screen and (min-width: 769px) {
-  .toggleNavbar,
-  .closeNavbar {
-    display: none;
-  }
-
-  .header {
-    padding: 1.5rem 2rem;
-
-    .navBar {
-      .navLists {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: row;
-
-        .navItem {
-          .show-up {
-            display: none;
-          }
-
-          .navLink {
-            color: var(--textColor);
-            padding: 0 0.45rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-
-            &:hover {
-              color: var(--PrimaryColor);
-            }
+.navLists {
+  display: flex;
+  list-style: none;
+  justify-content: center; // Căn giữa các mục
+  flex: 2;
 }
-        }
 
-        .navItem:hover {
-          position: relative;
+.navItem {
+  margin: 0 20px; // Thêm khoảng cách giữa các mục
+}
 
-          .show-up {
-            background-color: white;
-            margin-top: 10px;
-            padding: 20px;
-            position: absolute;
-            display: block;
-
-            li {
-              line-height: 30px;
-            }
-          }
-        }
-
-        .show-up {
-          display: none;
-        }
-
-        .show-up.active {
-          display: block;
-        }
-
-        .btn {
-          margin-left: 1rem;
-
-          a {
-            color: var(--whiteColor);
-            font-weight: 500;
-          }
-        }
-      }
-    }
+.navLink {
+  text-decoration: none;
+  color: black;
+  &:hover {
+    color: #007bff; // Màu khi hover
   }
 }
 
-@media screen and (min-width: 960px) {
-  .header {
-    .navBar {
-      .navLists {
-        .navItem {
-          padding: 0 0.7rem;
-        }
-      }
-    }
-  }
+.btn a {
+  text-decoration: none;
+  color: white;
 }
-
 
 .userDropdown {
   position: relative;
-  cursor: pointer;
+  flex: 1;
+  display: flex;
+  justify-content: flex-end; // Đẩy dropdown sang phải
+}
 
-  .dropdownMenu {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background-color: white;
-    border: 1px solid #ddd;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    width: 150px;
-
-    button {
-      width: 100%;
-      padding: 10px;
-      text-align: left;
-      background: none;
-      border: none;
-      cursor: pointer;
-
-      &:hover {
-        background-color: #f0f0f0;
-      }
+.dropdownMenu {
+  position: absolute;
+  top: 40px; // Điều chỉnh vị trí để menu hiển thị ngay bên dưới avatar
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  button {
+    padding: 10px 20px;
+    border: none;
+    background: none;
+    text-align: left;
+    width: 100%;
+    color: black;
+    &:hover {
+      background-color: #f0f0f0; // Màu nền khi hover
     }
   }
 }
 
+.toggleNavbar,
+.closeNavbar {
+  display: none;
+}
 
-@media screen and (min-width: 1240px) {
-  .header {
-    padding: 1rem 8.5rem;
+// Đảm bảo navbar không che mất nội dung
+.main-content {
+  padding-top: 60px; // Điều chỉnh để phù hợp với chiều cao của navbar
+}
+
+@media (max-width: 768px) {
+  .toggleNavbar,
+  .closeNavbar {
+    display: block;
+  }
+
+  .navBar.activeNavbar .toggleNavbar {
+    display: none;
+  }
+
+  .navBar.activeNavbar .closeNavbar {
+    display: block;
+  }
+
+  .navLists {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    position: fixed;
+    top: 60px; // Điều chỉnh để không bị navbar che khuất
+    left: 0;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .navItem {
+    margin: 20px 0;
+  }
+
+  .userDropdown .dropdownMenu {
+    position: static;
+    box-shadow: none;
+    border: none;
+    background-color: transparent;
+    display: flex; // Hiển thị menu dropdown trong chế độ di động
+    flex-direction: column;
   }
 }

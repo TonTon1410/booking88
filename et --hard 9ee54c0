@@ -1,0 +1,20 @@
+[33maf10b32[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mapiloginregis[m[33m, [m[1;31morigin/mainscreen[m[33m, [m[1;32mmainscreen[m[33m)[m HEAD@{0}: checkout: moving from mainscreen to apiloginregis
+[33maf10b32[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mapiloginregis[m[33m, [m[1;31morigin/mainscreen[m[33m, [m[1;32mmainscreen[m[33m)[m HEAD@{1}: pull: Fast-forward
+[33m09345c3[m[33m ([m[1;31morigin/UserProfile[m[33m)[m HEAD@{2}: checkout: moving from apiloginregis to mainscreen
+[33maf10b32[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mapiloginregis[m[33m, [m[1;31morigin/mainscreen[m[33m, [m[1;32mmainscreen[m[33m)[m HEAD@{3}: reset: moving to HEAD
+[33maf10b32[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mapiloginregis[m[33m, [m[1;31morigin/mainscreen[m[33m, [m[1;32mmainscreen[m[33m)[m HEAD@{4}: pull origin mainscreen: Fast-forward
+[33m9ee54c0[m[33m ([m[1;31morigin/apiloginregis[m[33m)[m HEAD@{5}: pull --tags origin apiloginregis: Merge made by the 'ort' strategy.
+[33m64141c2[m HEAD@{6}: commit: fix router
+[33m8e5a75a[m HEAD@{7}: commit: user_booking
+[33m7568969[m HEAD@{8}: checkout: moving from mainscreen to apiloginregis
+[33m09345c3[m[33m ([m[1;31morigin/UserProfile[m[33m)[m HEAD@{9}: checkout: moving from login-gg to mainscreen
+[33mfa98453[m[33m ([m[1;31morigin/login-gg[m[33m, [m[1;32mlogin-gg[m[33m)[m HEAD@{10}: checkout: moving from redux to login-gg
+[33m5ae973f[m[33m ([m[1;31morigin/redux[m[33m, [m[1;32mredux[m[33m)[m HEAD@{11}: checkout: moving from master to redux
+[33m7d608fb[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{12}: checkout: moving from mainscreen to master
+[33m09345c3[m[33m ([m[1;31morigin/UserProfile[m[33m)[m HEAD@{13}: checkout: moving from apiloginregis to mainscreen
+[33m7568969[m HEAD@{14}: commit: call-api
+[33m09345c3[m[33m ([m[1;31morigin/UserProfile[m[33m)[m HEAD@{15}: checkout: moving from mainscreen to apiloginregis
+[33m09345c3[m[33m ([m[1;31morigin/UserProfile[m[33m)[m HEAD@{16}: checkout: moving from mainscreen to mainscreen
+[33m09345c3[m[33m ([m[1;31morigin/UserProfile[m[33m)[m HEAD@{17}: commit: apiloginregis
+[33md9eeea2[m HEAD@{18}: checkout: moving from mainscreen to mainscreen
+[33md9eeea2[m HEAD@{19}: clone: from https://github.com/TonTon1410/booking88.git

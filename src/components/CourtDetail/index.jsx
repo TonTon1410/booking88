@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Row, Col, Button, Select, Input, DatePicker, Modal, Divider } from 'antd';
+import { Row, Col, Button, Select, Input, DatePicker, Modal } from 'antd';
 import "../CourtDetail/Index.css";
-// import 'antd/dist/antd.css';
 const { Option } = Select;
 
 const CourtDetails = () => {
@@ -16,12 +15,13 @@ const CourtDetails = () => {
   const [currentWeek, setCurrentWeek] = useState(0);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [bookingType, setBookingType] = useState("fixed");
+  const [bookingType, setBookingType] = useState("");
   const [dayOfWeek, setDayOfWeek] = useState("");
   const [months, setMonths] = useState("");
   const [startDate, setStartDate] = useState("");
   const [flexibleBookings, setFlexibleBookings] = useState([]);
   const [selectedTime, setSelectedTime] = useState("");
+  const [selectedDay, setSelectedDay] = useState(null);
 
   const fixedTimes = [
     "10:00 - 12:00",
@@ -53,8 +53,9 @@ const CourtDetails = () => {
     });
   };
 
-  const openModal = (index) => {
-    setSelectedSlot(index);
+  const openModal = (date) => {
+    setSelectedDay(date);
+    setSelectedSlot(null); // Reset selected slot when a new date is selected
     setIsModalOpen(true);
   };
 
@@ -72,16 +73,16 @@ const CourtDetails = () => {
 
   const weekDates = getWeekDates(currentWeek);
 
-  const renderTimeslots = (date) => {
+  const renderTimeslots = () => {
     return court.availableTimes.map((slot, index) => {
-      const isPast = date < new Date() || !slot.status;
+      const isPast = selectedDay && (selectedDay < new Date() || !slot.status);
       return (
         <div
           key={index}
-          className={`m-2 p-2 border rounded-lg shadow-lg cursor-pointer ${
+          className={`m-2 p-2 border rounded-lg shadow-lg ${
             selectedSlot === index ? "bg-blue-300" : "bg-blue-100"
           } ${isPast ? "bg-gray-300 cursor-not-allowed" : "cursor-pointer"}`}
-          onClick={() => !isPast && openModal(index)}
+          onClick={() => !isPast && setSelectedSlot(index)}
         >
           <p className="text-center">{slot.time}</p>
           <p className="text-center">120k</p>
@@ -115,23 +116,6 @@ const CourtDetails = () => {
               {court.operatingHours.start} - {court.operatingHours.end}
             </p>
           </div>
-          <div className="flex space-x-2 mb-4">
-            {court.amenities.includes("Wifi") && (
-              <span className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
-                Wifi
-              </span>
-            )}
-            {court.amenities.includes("Canteen") && (
-              <span className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
-                Canteen
-              </span>
-            )}
-            {court.amenities.includes("Parking") && (
-              <span className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
-                Parking
-              </span>
-            )}
-          </div>
 
           <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-4">
             <h2 className="text-2xl font-bold mb-4">Chọn loại lịch đặt sân</h2>
@@ -142,6 +126,7 @@ const CourtDetails = () => {
                 value={bookingType}
                 onChange={(value) => setBookingType(value)}
               >
+                <Option value="">Chọn loại lịch</Option>
                 <Option value="fixed">Lịch cố định</Option>
                 <Option value="flexible">Lịch linh hoạt</Option>
               </Select>
@@ -269,30 +254,11 @@ const CourtDetails = () => {
                 )}
               </div>
             )}
-            <div className="mb-4">
-              <label className="block mb-2">Họ và tên:</label>
-              <Input
-                type="text"
-                className="w-full"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block mb-2">Email:</label>
-              <Input
-                type="email"
-                className="w-full"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <Button type="primary" className="w-full" onClick={handleBooking}>
-              Đặt Sân
-            </Button>
           </div>
+
+          <Button type="primary" className="w-full" onClick={handleBooking}>
+            Đặt Sân
+          </Button>
         </Col>
       </Row>
 
@@ -313,26 +279,21 @@ const CourtDetails = () => {
         <Row gutter={[16, 16]}>
           {weekDates.map((date, index) => (
             <Col key={index} xs={24} md={12} lg={8} xl={4}>
-              <h4 className="font-bold">{date.toLocaleDateString()}</h4>
-              {renderTimeslots(date)}
+              <h4 className="font-bold cursor-pointer" onClick={() => openModal(date)}>
+                {date.toLocaleDateString()}
+              </h4>
             </Col>
           ))}
         </Row>
       </div>
 
       <Modal
-        title="Xác nhận đặt sân"
+        title={`Đặt sân vào ngày ${selectedDay ? selectedDay.toLocaleDateString() : ''}`}
         visible={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         onOk={handleBooking}
       >
-        {selectedSlot !== null && (
-          <>
-            <p>Tên sân: {court.name}</p>
-            <p>Thời gian: {court.availableTimes[selectedSlot].time}</p>
-            <p>Giá: 120k</p>
-          </>
-        )}
+        {selectedDay && renderTimeslots()}
       </Modal>
     </div>
   );
