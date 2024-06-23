@@ -7,7 +7,7 @@ const MainLayout = () => {
   const hideNavbarAndFooter = location.pathname === '/login' || location.pathname === '/register';
 
   return (
-    <div>
+    <div className="main-layout">
       {!hideNavbarAndFooter && <Navbar />}
       <div className="main-content">
         <Outlet />

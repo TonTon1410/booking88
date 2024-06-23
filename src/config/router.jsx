@@ -10,7 +10,8 @@ import CourtDetails from "../components/CourtDetail";
 import Booking11 from "../components/booking/Booking11";
 import Login from "../pages/Login/Login";
 import Payment from "../components/Payment/index";
-import ProtectedRoute from "../config/ProtectedRoute"; // Adjust the path as needed
+import ProtectedRoute from "./ProtectedRoute";
+
 
 const router = createBrowserRouter([
   {
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: (
-          <ProtectedRoute requiredRole="admin">
+          <ProtectedRoute requiredRole="ADMIN">
             <Dashboard />
           </ProtectedRoute>
         ),
