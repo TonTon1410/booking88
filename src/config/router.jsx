@@ -10,6 +10,7 @@ import CourtDetails from "../components/CourtDetail";
 import Booking11 from "../components/booking/Booking11";
 import Login from "../pages/Login/Login";
 import Payment from "../components/Payment/index";
+import ProtectedRoute from "../config/ProtectedRoute "; // Adjust the path as needed
 
 const router = createBrowserRouter([
   {
@@ -31,7 +32,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard",
-        element: <Dashboard />,
+        element: (
+          <ProtectedRoute requiredRole="admin">
+            <Dashboard />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/login",
@@ -43,7 +48,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/userFile",
-        element: <Dashboard />,
+        element: (
+          <ProtectedRoute requiredRole="admin">
+            <Dashboard />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/PasswordRecovery",
@@ -56,11 +65,11 @@ const router = createBrowserRouter([
       {
         path: "/booking",
         element: <Booking11 />,
-      },  {
+      },
+      {
         path: "/payment",
         element: <Payment />,
       },
-
       {
         path: "*",
         element: <div>404 Not Found</div>,
