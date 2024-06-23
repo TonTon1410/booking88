@@ -8,19 +8,18 @@ import { login, logout, selectUser } from "../../redux/features/counterSlice";
 import "./Navbar.scss";
 
 const Navbar = () => {
-  const [active, setaActive] = useState("navBar");
+  const [active, setActive] = useState("navBar");
   const [dropdownActive, setDropdownActive] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const navigate = useNavigate(); // Hook to navigate to different routes
 
   const showNav = () => {
-    setaActive("navBar activeNavbar");
-    
+    setActive("navBar activeNavbar");
   };
 
   const removeNavbar = () => {
-    setaActive("navBar");
+    setActive("navBar");
   };
 
   const toggleDropdown = () => {
@@ -64,10 +63,17 @@ const Navbar = () => {
               </a>
             </li>
             <li className="navItem">
-              <a href="/dashboard" className="navLink">
+              <a href="/contact" className="navLink">
                 Liên Hệ
               </a>
             </li>
+            {user && user.role === 'ADMIN' && (
+              <li className="navItem">
+                <a href="/dashboard" className="navLink">
+                  Dashboard
+                </a>
+              </li>
+            )}
             {user ? (
               <div className="userDropdown" onClick={toggleDropdown}>
                 <Avatar
