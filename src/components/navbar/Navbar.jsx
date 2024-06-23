@@ -67,7 +67,7 @@ const Navbar = () => {
                 Liên Hệ
               </a>
             </li>
-            {user && user.role === 'ADMIN' && (
+            {user && user.roles === 'ADMIN' && (
               <li className="navItem">
                 <a href="/dashboard" className="navLink">
                   Dashboard
