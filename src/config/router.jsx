@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../layout/MainLayout"; // Đảm bảo đường dẫn chính xác đến MainLayout
 import Home from "../components/home/Home";
-import Dashboard from "../components/Dashboard";
+import Dashboard from "../Dashboard/Dashboard";
 import Register from "../pages/Register/Register";
 import PasswordRecovery from "../components/reset/PasswordRecovery";
 import Main from "../components/main/Main";
@@ -10,7 +10,7 @@ import CourtDetails from "../components/CourtDetail";
 import Booking11 from "../components/booking/Booking11";
 import Login from "../pages/Login/Login";
 import Payment from "../components/Payment/index";
-import ProtectedRoute from "../config/ProtectedRoute "; // Adjust the path as needed
+
 
 const router = createBrowserRouter([
   {

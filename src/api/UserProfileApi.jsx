@@ -5,7 +5,7 @@ const API_URL = 'http://157.230.43.225:8080/'; // URL API của bạn
 const userApi = {
   getUserInfo: async (userId) => {
     try {
-      const response = await axios.put(`${API_URL}/${userId}`);
+      const response = await axios.get(`${API_URL}/${userId}`);
       return response.data;
     } catch (error) {
       console.error('Error fetching user info:', error);
