@@ -10,7 +10,7 @@ import CourtDetails from "../components/CourtDetail";
 import Booking11 from "../components/booking/Booking11";
 import Login from "../pages/Login/Login";
 import Payment from "../components/Payment/index";
-import ProtectedRoute from "./ProtectedRoute";
+// import ProtectedRoute from "./ProtectedRoute";
 
 
 const router = createBrowserRouter([
@@ -34,9 +34,7 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: (
-          <ProtectedRoute requiredRole="ADMIN">
             <Dashboard />
-          </ProtectedRoute>
         ),
       },
       {
@@ -47,14 +45,7 @@ const router = createBrowserRouter([
         path: "/register",
         element: <Register />,
       },
-      {
-        path: "/userFile",
-        element: (
-          <ProtectedRoute requiredRole="admin">
-            <Dashboard />
-          </ProtectedRoute>
-        ),
-      },
+
       {
         path: "/PasswordRecovery",
         element: <PasswordRecovery />,
