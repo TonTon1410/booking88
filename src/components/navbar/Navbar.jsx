@@ -16,6 +16,7 @@ const Navbar = () => {
 
   const showNav = () => {
     setaActive("navBar activeNavbar");
+    
   };
 
   const removeNavbar = () => {
