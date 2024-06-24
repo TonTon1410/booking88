@@ -5,9 +5,46 @@
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>booking888</title>
+    <!-- Dialogflow Messenger Script -->
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <style>
+      /* Custom styles for Dialogflow Messenger */
+      df-messenger {
+        --df-messenger-bot-message: #e0e0e0;
+        --df-messenger-button-titlebar-color: #0084ff;
+        --df-messenger-chat-background-color: #fafafa;
+        --df-messenger-font-color: #000;
+        --df-messenger-send-icon: #0084ff;
+        --df-messenger-user-message: #0084ff;
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        z-index: 1000; /* Ensure it appears on top of other elements */
+        --df-messenger-width: 300px; /* Set the width of the chatbox */
+        --df-messenger-height: 400px; /* Set the height of the chatbox */
+      }
+
+      /* Adjust the width of the chat window */
+      df-messenger .df-chat-wrapper {
+        width: var(--df-messenger-width);
+        height: var(--df-messenger-height);
+      }
+
+      /* Adjust the width of the chat input */
+      df-messenger .df-input-wrapper {
+        max-width: calc(var(--df-messenger-width) - 20px); /* Adjust input width */
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <!-- Dialogflow Messenger Component -->
+    <df-messenger
+      intent="WELCOME"
+      chat-title="Booking88"
+      agent-id="e3023c90-a509-4cd4-9b36-0c1a5a10c47f"
+      language-code="en"
+    ></df-messenger>
   </body>
 </html>

@@ -377,3 +377,11 @@ body{
         }
     }
 }
+
+df-messenger {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 1000; /* Ensure it appears on top of other elements */
+  }
+  
