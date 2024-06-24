@@ -22,9 +22,10 @@ const CourtList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("/get-all-club")
+        const response = await api.get("http://157.230.43.225:8080/get-all-club")
         if (Array.isArray(response.data)) {
           setCourtData(response.data);
+          console.log(response.data);
         } else {
           console.error("API response is not an array:", response.data);
         }
@@ -76,6 +77,8 @@ const CourtList = () => {
 
   const totalPages = Math.ceil(filteredCourts.length / courtsPerPage);
 
+
+  console.log(currentCourts);
   return (
     <div className="contentWrapper container mx-auto mb-6">
       <h1 className="text-4xl font-bold text-center my-8">Danh sách sân</h1>

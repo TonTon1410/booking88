@@ -113,7 +113,7 @@ const CourtDetails = () => {
           <div className="mb-4">
             <span className="text-lg font-semibold">Giờ hoạt động:</span>
             <p className="text-gray-700 text-base">
-              {court.operatingHours.start} - {court.operatingHours.end}
+              {/* {court.operatingHours.start} - {court.operatingHours.end} */}
             </p>
           </div>
 
