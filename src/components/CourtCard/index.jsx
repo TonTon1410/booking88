@@ -34,11 +34,11 @@ const CourtCard = ({ court }) => {
             </div>
             <div className="mb-2">
               <span className="text-lg font-semibold">Giờ mở cửa:</span>
-              <p>{court.operatingHours.start}</p>
+              <p>{court.openTime || "empty"}</p>
             </div>
             <div className="mb-2">
               <span className="text-lg font-semibold">Giờ hoạt động:</span>
-              <p>{court.operatingHours.start} - {court.operatingHours.end}</p>
+              <p>{court.openTime || "empty"} - {court.closeTime || "empty"}</p>
             </div>
           </>
         }
