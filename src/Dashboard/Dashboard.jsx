@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-//import userApi from "../api/UserProfileApi";
 import {
   ProfileOutlined,
   HeartOutlined,
@@ -7,18 +6,19 @@ import {
   BarChartOutlined,
   CheckCircleOutlined,
   AppstoreAddOutlined,
+  PlusOutlined,
+  EditOutlined, // Import thêm EditOutlined
 } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Footer } from "antd/es/layout/layout";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { login, logout, selectUser } from "../../src/redux/features/counterSlice";
 import { useSelector } from "react-redux";
+import { selectUser } from "../../src/redux/features/counterSlice";
+
 const { Header, Content, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
-  return {
-    key, icon, children, label,
-  };
+  return { key, icon, children, label };
 }
 
 const Dashboard = () => {
@@ -31,24 +31,24 @@ const Dashboard = () => {
   const [openKeys, setOpenKeys] = useState([]);
   const location = useLocation();
   const currentURI = location.pathname.split("/")[location.pathname.split("/").length - 1];
-  //const role = "ADMIN"; // Thay đổi role thành 'admin' để thử nghiệm
-  //const role = userApi.getUserInfo()
   const user = useSelector(selectUser);
   const role = user?.role;
+
   useEffect(() => {
     // Định nghĩa các mục menu dựa trên vai trò của người dùng
     if (role === "ADMIN") {
       setItems([
         getItem("Danh mục", "category", <AppstoreAddOutlined />),
         getItem("Hồ sơ", "UserProfile", <ProfileOutlined />),
-        getItem("Quản lý Sân", "all-fields", <HeartOutlined />),
-        getItem("Quản lý Nhân Viên", "staffs", <UserOutlined />,),
+        getItem("Cập Nhật Sân", "update-field", <EditOutlined />),
+        getItem("Quản lý Nhân Viên", "staffs", <UserOutlined />),
         getItem("Thống kê Sân", "statistics", <BarChartOutlined />, [
           getItem("Sân 1", "stats-field-1"),
           getItem("Sân 2", "stats-field-2"),
           getItem("Sân 3", "stats-field-3"),
           getItem("Tất cả Sân", "all-fields"),
         ]),
+        getItem("Tạo Sân Mới", "create-new-field", <PlusOutlined />),
       ]);
     } else if (role === "staff") {
       setItems([

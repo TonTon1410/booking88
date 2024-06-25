@@ -1,22 +1,21 @@
-import axios from "axios";
+import axios from 'axios';
 
-const baseUrl = "http://157.230.43.225:8080";
+const api = axios.create({
+  baseURL: 'http://157.230.43.225:8080',
+  timeout: 10000,
+});
 
-const config = {
-  baseUrl,
-  timeout: 3000000,
-};
-const api = axios.create(config);
-api.defaults.baseURL = baseUrl;
-const handleBefore = (config) => {
-  const token = localStorage.getItem("token")?.replaceAll('"', "");
-  config.headers["Authorization"] = `Bearer ${token}`;
-  return config;
-};
-const handleError = (error) => {
-  console.log(error);
-  return;
-};
-api.interceptors.request.use(handleBefore, handleError);
+api.interceptors.request.use(
+  config => {
+    const token = localStorage.getItem('token')?.replaceAll('"', '');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
 
 export default api;

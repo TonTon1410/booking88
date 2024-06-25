@@ -67,32 +67,31 @@ const Navbar = () => {
                 Liên Hệ
               </a>
             </li>
-            {user && user.roles === 'ADMIN' && (
+            {user && user.role === 'ADMIN' && (
               <li className="navItem">
                 <a href="/dashboard" className="navLink">
                   Dashboard
                 </a>
               </li>
             )}
-            {user ? (
-              <div className="userDropdown" onClick={toggleDropdown}>
-                <Avatar
-                  size="large"
-                  src={user.avatar}
-                  style={{ cursor: "pointer" }}
-                />
-                {dropdownActive && (
-                  <div className="dropdownMenu">
-                    <button onClick={handleProfile}>Profile</button>
-                    <button onClick={handleLogout}>Logout</button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <button className="btn">
-                <a href="/login">Book Now</a>
-              </button>
-            )}
+            <div className="userDropdown" onClick={toggleDropdown}>
+              <Avatar
+                size="large"
+                src={user.avatar}
+                style={{ cursor: "pointer" }}
+              />
+              {dropdownActive && (
+                <div className="dropdownMenu">
+                  <button onClick={handleProfile}>Profile</button>
+                  <button onClick={handleLogout}>Logout</button>
+                </div>
+              )}
+            </div>
+
+            <button className="btn">
+              <a href="/login">Book Now</a>
+            </button>
+
           </ul>
           <div onClick={removeNavbar} className="closeNavbar">
             <AiFillCloseCircle className="icon" />

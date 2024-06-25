@@ -1,4 +1,4 @@
-import { useState } from "react"; 
+import { useState } from "react";
 import "../../App.css";
 import logo from "../../assets/logologin.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,14 +8,14 @@ import { AiOutlineSwapRight } from "react-icons/ai";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import GGLogin from "../../api/GGlogin"; 
+import GGLogin from "../../api/GGlogin";
 import api from "../../config/axios";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/features/counterSlice";
 import { Form, Input, Button, Typography } from "antd";
 import anh11 from '../../assets/imglogin.webp';
 
-const clientId = "YOUR_GOOGLE_CLIENT_ID"; 
+const clientId = "YOUR_GOOGLE_CLIENT_ID";
 
 const { Title, Text } = Typography;
 
@@ -30,6 +30,7 @@ const Login = () => {
     try {
       const res = await api.post("/login", { email, password });
       dispatch(login(res.data));
+      localStorage.setItem("token", res.data.token)
       toast.success("Đăng nhập thành công! Đang chuyển đến trang chính...");
       setTimeout(() => {
         navigate("/");
@@ -51,7 +52,7 @@ const Login = () => {
       />
       <div className="container flex">
         <div className="videoDiv">
-        <img src={anh11} alt="Customer Image" />
+          <img src={anh11} alt="Customer Image" />
           <div className="footerDiv flex">
             <span className="text">Chưa có tài khoản?</span>
             <Link to={"/register"}>
