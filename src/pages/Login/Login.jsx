@@ -13,7 +13,7 @@ import api from "../../config/axios";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/features/counterSlice";
 import { Form, Input, Button, Typography } from "antd";
-import anh11 from '../../assets/imglogin.webp';
+// import anh11 from '../../assets/imglogin.webp';
 
 const clientId = "YOUR_GOOGLE_CLIENT_ID"; 
 
@@ -51,7 +51,7 @@ const Login = () => {
       />
       <div className="container flex">
         <div className="videoDiv">
-        <img src={anh11} alt="Customer Image" />
+        {/* <img src={anh11} alt="Customer Image" /> */}
           <div className="footerDiv flex">
             <span className="text">Chưa có tài khoản?</span>
             <Link to={"/register"}>
