@@ -10,12 +10,10 @@ const OrderForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await api.post("/payment-controller/submidOrder", {
-        amount,
-        orderInfo,
-      });
+      const response = await api.post(`/submitOrder?amount=${amount}&orderInfo=${orderInfo}`);
       setResponseData(response.data);
       console.log("Form submitted successfully:", responseData);
+      window.location.href = response.data
       // Handle successful response
     } catch (error) {
       console.error("There was an error submitting the form:", error);
@@ -29,11 +27,6 @@ const OrderForm = () => {
         <div className="col-md-6">
           <div className="card">
             <div className="card-body">
-              <img
-                src="/vnpay-logo.png"
-                alt="VNPAY Logo"
-                style={{ width: "200px" }}
-              />
               <h2 className="card-title">Tạo Đơn Hàng</h2>
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
