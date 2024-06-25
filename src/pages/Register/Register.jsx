@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../../App.css';
-import video from '../../assets/videologin.mp4';
+// import video from '../../assets/videologin.mp4';
 import logo from '../../assets/logologin.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Input, Button, message } from 'antd';
@@ -46,21 +46,7 @@ const Register = () => {
   return (
     <div className="registerPage flex">
       <div className="container flex">
-        <div className="videoDiv">
-          <video src={video} autoPlay muted loop></video>
 
-          <div className="textDiv">
-            <h2 className='title'>Tạo và Bán Sản Phẩm Đặc Biệt</h2>
-            <p>We Plant</p>
-          </div>
-
-          <div className="footerDiv flex">
-            <span className="text">Đã có tài khoản?</span>
-            <Link to={'/login'}>
-              <Button type="primary">Đăng nhập</Button>
-            </Link>
-          </div>
-        </div>
 
         <div className="formDiv flex">
           <div className="headerDiv">

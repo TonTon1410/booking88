@@ -121,7 +121,7 @@ body{
 }
 .loginPage, .registerPage {
     height: 100vh;
-    width: 100%;
+    width: 60%;
     margin: auto;
     border-radius: 10px;
     overflow: hidden;
@@ -133,7 +133,8 @@ body{
         margin: auto;
         justify-content: space-between;
         border-radius: 10px;
-        background: var(--backgroundColor);
+        background-image: url('../../booking88/src/assets/imglogin.webp');
+        background-size: cover; /* Ensure the background covers the entire container */
         display: flex; /* Ensure flexbox is enabled */
         align-items: center; /* Center content vertically */
 
@@ -204,13 +205,16 @@ body{
             transform: translateY(-1rem);
             display: flex;
             align-items: center; /* Center form horizontally */
+            background: rgba(255, 255, 255, 0.8); /* Adding a semi-transparent background for better readability */
+            padding: 2rem;
+            border-radius: 10px;
 
             .headerDiv {
                 text-align: center;
                 padding: 1.5rem 0;
 
                 img {
-                    width: 60px;
+                    width: 100px;
                     padding-bottom: .5rem;
                 }
 
