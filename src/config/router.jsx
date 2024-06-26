@@ -11,11 +11,23 @@ import Login from "../pages/Login/Login";
 import Payment from "../components/Payment/index";
 import UserProfile from '../components/UserProfile/UserProfile.jsx';
 import Dashboard from "../Dashboard/Dashboard.jsx";
-import Category from '../Dashboard/Category.jsx';
-import ManageFields from '../Dashboard/ManageFields.jsx';
 import ManageStaff from '../Dashboard/ManageStaff.jsx';
 import CreateNewField from '../Dashboard/CreateNewField.jsx';
 import UpdateFieldList from '../Dashboard/UpdateFieldList.jsx';
+import ClubStaffManageFields from '../Dashboard/ClubStaffManageFields.jsx';
+import Statistics from '../Dashboard/Statistics.jsx'; // Thêm đường dẫn tới component Statistics
+import { useSelector } from "react-redux";
+import { selectUser } from "../redux/features/counterSlice";
+import AccountList from '../Dashboard/AccountList.jsx';
+
+const ProtectedRoute = ({ children }) => {
+  const user = useSelector(selectUser);
+  if (user && ['ADMIN', 'CLUB_STAFF'].includes(user.role)) {
+    return children;
+  } else {
+    return <div>Access Denied</div>;
+  }
+};
 
 const router = createBrowserRouter([
   {
@@ -37,16 +49,13 @@ const router = createBrowserRouter([
       },
       {
         path: 'dashboard',
-        element: <Dashboard />,
+        element: (
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
         children: [
-          {
-            path: 'category',
-            element: <Category />,
-          },
-          {
-            path: 'all-fields',
-            element: <ManageFields />,
-          },
+
           {
             path: 'staffs',
             element: <ManageStaff />,
@@ -62,6 +71,18 @@ const router = createBrowserRouter([
           {
             path: 'update-field',
             element: <UpdateFieldList />,
+          },
+          {
+            path: 'statistics',
+            element: <Statistics />, // Thêm đường dẫn cho Statistics
+          },
+          {
+            path: 'manage-fields',
+            element: <ClubStaffManageFields />, // Thêm đường dẫn cho ClubStaffManageFields
+          },
+          {
+            path: 'account-list',
+            element: <AccountList />, // Thêm mục này
           },
         ],
       },

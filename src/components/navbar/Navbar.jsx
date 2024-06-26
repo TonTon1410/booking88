@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "antd";
@@ -67,7 +67,7 @@ const Navbar = () => {
                 Liên Hệ
               </a>
             </li>
-            {user && user.role === 'ADMIN' && (
+            {user && ['ADMIN', 'CLUB_STAFF'].includes(user.role) && (
               <li className="navItem">
                 <a href="/dashboard" className="navLink">
                   Dashboard
@@ -77,7 +77,7 @@ const Navbar = () => {
             <div className="userDropdown" onClick={toggleDropdown}>
               <Avatar
                 size="large"
-                src={user.avatar}
+                src={user?.avatar || ""}
                 style={{ cursor: "pointer" }}
               />
               {dropdownActive && (

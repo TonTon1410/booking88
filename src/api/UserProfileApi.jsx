@@ -3,7 +3,7 @@ import api from '../config/axios';
 const userApi = {
   getAccountById: async (userId) => {
     try {
-      const response = await api.get(`/Get-account-by-id/${userId}`);
+      const response = await api.get(`/get-account-by-id/${userId}`);
       console.log('API Response:', response.data);
       return response.data;
     } catch (error) {
@@ -13,7 +13,7 @@ const userApi = {
   },
   updateAccount: async (userId, userInfo) => {
     try {
-      const response = await api.put(`/Update-account/${userId}`, {
+      const response = await api.put(`/update-account/${userId}`, {
         username: userInfo.name,
         phone: userInfo.phone,
         email: userInfo.email

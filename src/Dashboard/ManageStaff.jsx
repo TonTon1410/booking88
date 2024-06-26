@@ -57,8 +57,8 @@ const QuanLyNhanVien = () => {
 
     const handleEdit = (staff) => {
         setCurrentStaff(staff);
-        form.setFieldsValue({ 
-            name: staff.name, 
+        form.setFieldsValue({
+            name: staff.name,
             fieldIds: staff.fieldIds,
             username: staff.username,
             password: staff.password
@@ -90,11 +90,12 @@ const QuanLyNhanVien = () => {
     }, []);
 
     const columns = [
-        {title: 'ID',dataIndex: 'id',key: 'id',},
-        {title: 'Tên nhân viên',dataIndex: 'name',key: 'name',},
-        {title: 'Tên đăng nhập',dataIndex: 'username',key: 'username',},
-        {title: 'Mật khẩu',dataIndex: 'password',key: 'password',},
-        {title: 'Sân quản lý', dataIndex: 'fieldIds',key: 'fieldIds',
+        { title: 'ID', dataIndex: 'id', key: 'id', },
+        { title: 'Tên nhân viên', dataIndex: 'name', key: 'name', },
+        { title: 'Tên đăng nhập', dataIndex: 'username', key: 'username', },
+        { title: 'Mật khẩu', dataIndex: 'password', key: 'password', },
+        {
+            title: 'Sân quản lý', dataIndex: 'fieldIds', key: 'fieldIds',
             render: (fieldIds) => Array.isArray(fieldIds) ? fieldIds.map(id => {
                 const field = fields.find(f => f.id === id);
                 return field ? field.courtName : 'Không rõ';
@@ -131,8 +132,8 @@ const QuanLyNhanVien = () => {
                     name="basic"
                     labelCol={{ span: 8 }}
                     wrapperCol={{ span: 16 }}
-                    initialValues={currentStaff ? { 
-                        name: currentStaff.name, 
+                    initialValues={currentStaff ? {
+                        name: currentStaff.name,
                         fieldIds: currentStaff.fieldIds,
                         username: currentStaff.username,
                         password: currentStaff.password
