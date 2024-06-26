@@ -62,7 +62,7 @@ const Main = () => {
         <section className="main container section">
             <div className="secTitle">
                 <h3 data-aos="fade-right" className="title">
-                    Most visited destinations
+                    Tin Tức
                 </h3>
             </div>
 
@@ -91,10 +91,6 @@ const Main = () => {
                                 <div className="desc">
                                     <p>{description}</p>
                                 </div>
-                                <button className="btn flex" onClick={() => handleBooking(id)}>
-                                    Booking 
-                                    <CiStickyNote className="icon" />
-                                </button>
                             </div>
                         </div>
                     );
