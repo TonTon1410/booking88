@@ -28,10 +28,10 @@ const CourtCard = ({ court }) => {
           <>
             <p>Khu vực: {court.location}</p>
             <p>Số sân: {court.courts}</p>
-            <div className="flex items-center mb-2">
+            {/* <div className="flex items-center mb-2">
               <Rate disabled defaultValue={court.rating} />
               <span className="ml-2 text-gray-600">({court.rating} sao)</span>
-            </div>
+            </div> */}
             <div className="mb-2">
               <span className="text-lg font-semibold">Giờ mở cửa:</span>
               <p>{court.openTime || "empty"}</p>

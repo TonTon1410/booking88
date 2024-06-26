@@ -22,7 +22,7 @@ const CourtList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("http://157.230.43.225:8080/get-all-club")
+        const response = await api.get("http://157.230.43.225:8080/getAllClub")
         if (Array.isArray(response.data)) {
           setCourtData(response.data);
           console.log(response.data);
@@ -52,7 +52,7 @@ const CourtList = () => {
     ? courtData
         .filter(
           (court) =>
-            court.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            court?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             court.location.toLowerCase().includes(searchTerm.toLowerCase())
         )
         .filter((court) => {
