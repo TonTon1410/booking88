@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import { Card, Rate, Button, Tag } from 'antd';
+import { Card,  Button } from 'antd';
 import "../../components/CourtCard/Card.css";
 
 const { Meta } = Card;
@@ -17,7 +17,7 @@ const CourtCard = ({ court }) => {
     <Card
       hoverable
       className="m-4 transition-transform transform hover:scale-105 hover:shadow-xl bg-white"
-      cover={<img alt={`Hình ảnh ${court.name}`} src={court.image} className="w-full h-48 object-cover" />}
+      cover={<img alt={`Hình ảnh ${court.name}`} src={court?.image} className="w-full h-48 object-cover" />}
       actions={[
         <Button type="primary" onClick={handleViewDetails}>Đặt sân</Button>,
       ]}
@@ -26,16 +26,10 @@ const CourtCard = ({ court }) => {
         title={<span className="font-bold text-xl text-blue-600">{court.name}</span>}
         description={
           <>
-            <p>Khu vực: {court.location}</p>
-            <p>Số sân: {court.courts}</p>
-            {/* <div className="flex items-center mb-2">
-              <Rate disabled defaultValue={court.rating} />
-              <span className="ml-2 text-gray-600">({court.rating} sao)</span>
-            </div> */}
-            <div className="mb-2">
-              <span className="text-lg font-semibold">Giờ mở cửa:</span>
-              <p>{court.openTime || "empty"}</p>
-            </div>
+            <p>Khu vực: {court.address}</p>
+            <p>Miêu Tả: {court.description}</p>
+            <p>hotline: {court.hotline}</p>
+            <p>giá tiền: {court.price}</p>
             <div className="mb-2">
               <span className="text-lg font-semibold">Giờ hoạt động:</span>
               <p>{court.openTime || "empty"} - {court.closeTime || "empty"}</p>
@@ -50,14 +44,14 @@ const CourtCard = ({ court }) => {
 CourtCard.propTypes = {
   court: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    location: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    hotline: PropTypes.string.isRequired,
+    address: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
     courts: PropTypes.number.isRequired,
-    rating: PropTypes.number.isRequired,
     image: PropTypes.string.isRequired,
-    operatingHours: PropTypes.shape({
-      start: PropTypes.string.isRequired,
-      end: PropTypes.string.isRequired,
-    }).isRequired,
+    closeTime: PropTypes.string.isRequired,
+    openTime: PropTypes.string.isRequired,
     availableTimes: PropTypes.arrayOf(PropTypes.shape({
       time: PropTypes.string.isRequired,
       status: PropTypes.bool.isRequired,
