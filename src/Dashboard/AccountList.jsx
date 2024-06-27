@@ -22,8 +22,8 @@ const AccountList = () => {
     const columns = [
         {
             title: 'Tên tài khoản',
-            dataIndex: 'username',
-            key: 'username',
+            dataIndex: 'name',
+            key: 'name',
         },
         {
             title: 'Email',

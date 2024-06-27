@@ -14,7 +14,7 @@ const userApi = {
   updateAccount: async (userId, userInfo) => {
     try {
       const response = await api.put(`/update-account/${userId}`, {
-        username: userInfo.name,
+        name: userInfo.name,
         phone: userInfo.phone,
         email: userInfo.email
       });
@@ -22,6 +22,16 @@ const userApi = {
       return response.data;
     } catch (error) {
       console.error('Error updating user info:', error);
+      throw error;
+    }
+  },
+  getBookingHistory: async (userId) => {
+    try {
+      const response = await api.get(`/get-booking-history/${userId}`);
+      console.log('Booking History Response:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching booking history:', error);
       throw error;
     }
   }

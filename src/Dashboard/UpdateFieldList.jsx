@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Input, Button, message, Form, TimePicker, Modal, Select } from 'antd';
+import { Table, Input, Button, message, Form, TimePicker, Modal, Select, Switch } from 'antd';
 import PropTypes from 'prop-types';
 import api from '../config/axios';
 import moment from 'moment';
@@ -33,7 +33,7 @@ const UpdateFieldList = () => {
     form.setFieldsValue({
       ...record,
       openTime: record.openTime ? moment(record.openTime, 'HH:mm:ss') : null,
-      closeTime: record.closeTime ? moment(record.closeTime, 'HH:mm:ss') : null
+      closeTime: record.closeTime ? moment(record.closeTime, 'HH:mm:ss') : null,
     });
     setCurrentRecord(record);
     setIsModalOpen(true);
@@ -92,6 +92,22 @@ const UpdateFieldList = () => {
     }
   };
 
+  const handleStatusChange = async (fieldId, currentStatus) => {
+    try {
+      const newStatus = currentStatus === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
+      await api.put(`/updateClub/${fieldId}`, { status: newStatus });
+      setFields(prevData =>
+        prevData.map(field =>
+          field.locationId === fieldId ? { ...field, status: newStatus } : field
+        )
+      );
+      message.success('Trạng thái sân đã được cập nhật');
+    } catch (error) {
+      console.error('Error updating status:', error);
+      message.error('Lỗi khi cập nhật trạng thái sân');
+    }
+  };
+
   const columns = [
     {
       title: 'Tên sân',
@@ -117,6 +133,12 @@ const UpdateFieldList = () => {
       key: 'hotline',
       editable: true,
     },
+    {
+      title: 'Giá',
+      dataIndex: 'price',
+      key: 'price',
+      editable: true,
+    },
     // {
     //   title: 'Giờ mở cửa',
     //   dataIndex: 'openTime',
@@ -136,22 +158,21 @@ const UpdateFieldList = () => {
       dataIndex: 'status',
       key: 'status',
       editable: true,
-      render: (text) => text || 'ACTIVE',
+      render: (status) => (status === 'ACTIVE' ? 'Đang hoạt động' : 'Trống'),
     },
-    
     {
       title: 'Hình ảnh',
       dataIndex: 'images',
       key: 'images',
       editable: true,
-      render: (text) => Array.isArray(text) ? text.map(img => img.image).join(', ') : '',
+      render: (text) => Array.isArray(text) ? text.join(', ') : '',
     },
     {
       title: 'Khuyến mãi',
       dataIndex: 'promotions',
       key: 'promotions',
       editable: true,
-      render: (text) => Array.isArray(text) ? text.map(promo => `${promo.discount}%`).join(', ') : '',
+      render: (text) => Array.isArray(text) ? text.join(', ') : '',
     },
     {
       title: 'Hành động',
@@ -196,7 +217,7 @@ const UpdateFieldList = () => {
       ...col,
       // onCell: (record) => ({
       //   record,
-      //   inputType: col.dataIndex === 'openTime' || col.dataIndex === 'closeTime' ? 'time' : 'text',
+      //   inputType: col.dataIndex === 'price' ? 'number' : 'text',
       //   dataIndex: col.dataIndex,
       //   title: col.title,
       //   editing: isEditing(record),
@@ -264,6 +285,13 @@ const UpdateFieldList = () => {
           >
             <Input />
           </Form.Item>
+          <Form.Item
+            name="price"
+            label="Giá"
+            rules={[{ required: true, message: 'Vui lòng nhập giá!' }]}
+          >
+            <Input type="number" />
+          </Form.Item>
           {/* <Form.Item
             name="openTime"
             label="Giờ mở cửa"
@@ -285,9 +313,8 @@ const UpdateFieldList = () => {
           >
             <Select>
               <Option value="ACTIVE">Đang hoạt động</Option>
-              <Option value="INACTIVE">Đang trống</Option>
+              <Option value="INACTIVE">Trống</Option>
             </Select>
-          
           </Form.Item> */}
           <Form.Item
             name="images"
@@ -317,7 +344,7 @@ const EditableCell = ({
   children,
   ...restProps
 }) => {
-  const inputNode = inputType === 'time' ? <TimePicker format='HH:mm:ss' /> : <Input />;
+  const inputNode = inputType === 'number' ? <Input type="number" /> : <Input />;
   return (
     <td {...restProps}>
       {editing ? (

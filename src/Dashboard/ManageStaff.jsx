@@ -1,16 +1,13 @@
-import { Button, Form, Input, Modal, Table, message, Select } from 'antd';
-import axios from 'axios';
+import { Button, Form, Input, Modal, Table, message } from 'antd';
 import { useEffect, useState } from 'react';
-
-const STAFF_API_URL = 'https://6673cebf75872d0e0a93c0c0.mockapi.io/staffs';
-const FIELDS_API_URL = 'https://6673cebf75872d0e0a93c0c0.mockapi.io/courts';
+import api from '../config/axios';  // Adjust the import path as needed
+import { getToken } from 'firebase/app-check';
 
 const QuanLyNhanVien = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
     const [currentStaff, setCurrentStaff] = useState(null);
     const [data, setData] = useState([]);
-    const [fields, setFields] = useState([]);
     const [form] = Form.useForm();
 
     const showModal = () => {
@@ -25,23 +22,34 @@ const QuanLyNhanVien = () => {
         setCurrentStaff(null);
     };
 
-    const generateId = () => Math.floor(1000 + Math.random() * 9000); // Tạo ID ngẫu nhiên với ít nhất 4 chữ số
-
     const onFinish = async (values) => {
         const isDuplicate = data.some(staff => staff.username === values.username && staff.id !== (currentStaff?.id || null));
         if (isDuplicate) {
             message.error('Tên đăng nhập đã được sử dụng');
             return;
         }
+        console.log(getToken)
 
         try {
             if (isEditMode) {
-                const response = await axios.put(`${STAFF_API_URL}/${currentStaff.id}`, values);
+                const response = await api.put(`/update-account/${currentStaff.id}`, {
+                    name: values.name,
+                    phone: values.phone,
+                    email: values.email,
+                    username: values.username,
+                    password: values.password
+                });
                 setData(data.map(item => item.id === currentStaff.id ? response.data : item));
                 message.success('Cập nhật nhân viên thành công');
             } else {
-                const newStaff = { id: generateId(), ...values };
-                const response = await axios.post(STAFF_API_URL, newStaff);
+                const newStaff = {
+                    username: values.username,
+                    password: values.password,
+                    phone: values.phone,
+                    email: values.email,
+                    name: values.name
+                };
+                const response = await api.post('/add-staff', newStaff);
                 setData([...data, response.data]);
                 message.success('Thêm nhân viên thành công');
             }
@@ -59,7 +67,6 @@ const QuanLyNhanVien = () => {
         setCurrentStaff(staff);
         form.setFieldsValue({
             name: staff.name,
-            fieldIds: staff.fieldIds,
             username: staff.username,
             password: staff.password
         });
@@ -69,7 +76,7 @@ const QuanLyNhanVien = () => {
 
     const handleDelete = async (value) => {
         try {
-            await axios.delete(`${STAFF_API_URL}/${value.id}`);
+            await api.delete(`/delete-account/${value.id}`);
             setData(data.filter(item => item.id !== value.id));
             message.success('Xóa nhân viên thành công');
         } catch (error) {
@@ -79,10 +86,13 @@ const QuanLyNhanVien = () => {
     };
 
     const fetchData = async () => {
-        const staffResponse = await axios.get(STAFF_API_URL);
-        setData(staffResponse.data);
-        const fieldResponse = await axios.get(FIELDS_API_URL);
-        setFields(fieldResponse.data);
+        try {
+            const staffResponse = await api.get('/get-all-staff');
+            setData(staffResponse.data);
+        } catch (error) {
+            message.error('Lỗi khi lấy danh sách nhân viên');
+            console.error('Error fetching data:', error);
+        }
     };
 
     useEffect(() => {
@@ -90,17 +100,10 @@ const QuanLyNhanVien = () => {
     }, []);
 
     const columns = [
-        { title: 'ID', dataIndex: 'id', key: 'id', },
-        { title: 'Tên nhân viên', dataIndex: 'name', key: 'name', },
-        { title: 'Tên đăng nhập', dataIndex: 'username', key: 'username', },
-        { title: 'Mật khẩu', dataIndex: 'password', key: 'password', },
-        {
-            title: 'Sân quản lý', dataIndex: 'fieldIds', key: 'fieldIds',
-            render: (fieldIds) => Array.isArray(fieldIds) ? fieldIds.map(id => {
-                const field = fields.find(f => f.id === id);
-                return field ? field.courtName : 'Không rõ';
-            }).join(', ') : 'Không có sân nào được phân công',
-        },
+        { title: 'ID', dataIndex: 'id', key: 'id' },
+        { title: 'Tên nhân viên', dataIndex: 'name', key: 'name' },
+        { title: 'Tên đăng nhập', dataIndex: 'username', key: 'username' },
+        { title: 'Mật khẩu', dataIndex: 'password', key: 'password' },
         {
             title: 'Hành động',
             render: (value) => (
@@ -134,7 +137,6 @@ const QuanLyNhanVien = () => {
                     wrapperCol={{ span: 16 }}
                     initialValues={currentStaff ? {
                         name: currentStaff.name,
-                        fieldIds: currentStaff.fieldIds,
                         username: currentStaff.username,
                         password: currentStaff.password
                     } : {}}
@@ -161,19 +163,6 @@ const QuanLyNhanVien = () => {
                         rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
                     >
                         <Input.Password />
-                    </Form.Item>
-                    <Form.Item
-                        label="Sân quản lý"
-                        name="fieldIds"
-                        rules={[{ required: true, message: 'Vui lòng chọn sân!' }]}
-                    >
-                        <Select mode="multiple" placeholder="Chọn sân">
-                            {fields.map(field => (
-                                <Select.Option key={field.id} value={field.id}>
-                                    {field.courtName}
-                                </Select.Option>
-                            ))}
-                        </Select>
                     </Form.Item>
                     <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                         <Button type="primary" htmlType="submit">

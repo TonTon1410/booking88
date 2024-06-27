@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaInfoCircle, FaKey } from 'react-icons/fa';
+import { FaInfoCircle, FaKey, FaHistory } from 'react-icons/fa';
 import userApi from '../../api/UserProfileApi';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,11 +12,12 @@ const UserProfile = () => {
     const user = useSelector(selectUser);
 
     const [userInfo, setUserInfo] = useState({
-        name: user.username,
+        name: user.name,
         phone: user.phone,
         email: user.email
     });
 
+    const [bookingHistory, setBookingHistory] = useState([]);
     const dispatch = useDispatch();
     const userId = user?.id;
 
@@ -49,8 +50,18 @@ const UserProfile = () => {
             }
         };
 
+        const fetchBookingHistory = async () => {
+            try {
+                const data = await userApi.getBookingHistory(userId);
+                setBookingHistory(data);
+            } catch (error) {
+                console.error('Failed to fetch booking history:', error);
+            }
+        };
+
         if (userId) {
             fetchUserInfo();
+            fetchBookingHistory();
         }
     }, [userId, user, dispatch]);
 
@@ -112,6 +123,9 @@ const UserProfile = () => {
                 <button className={`nav-link ${activeTab === 'changePassword' ? 'active' : ''}`} onClick={() => handleTabChange('changePassword')}>
                     <FaKey /> Đổi mật khẩu
                 </button>
+                <button className={`nav-link ${activeTab === 'bookingHistory' ? 'active' : ''}`} onClick={() => handleTabChange('bookingHistory')}>
+                    <FaHistory /> Lịch sử đặt lịch
+                </button>
             </div>
 
             <div className="account-content">
@@ -154,6 +168,32 @@ const UserProfile = () => {
                             </div>
                             <button type="submit">Đổi mật khẩu</button>
                         </form>
+                    </div>
+                )}
+
+                {activeTab === 'bookingHistory' && (
+                    <div className="account-section active">
+                        <h2>Lịch sử đặt lịch</h2>
+                        <table className="booking-history-table">
+                            <thead>
+                                <tr>
+                                    <th>Ngày đặt lịch</th>
+                                    <th>Sân</th>
+                                    <th>Thời gian</th>
+                                    <th>Số tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {bookingHistory.map((booking, index) => (
+                                    <tr key={index}>
+                                        <td>{booking.date}</td>
+                                        <td>{booking.court}</td>
+                                        <td>{`${booking.startTime} - ${booking.endTime}`}</td>
+                                        <td>{booking.amount}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
                 )}
             </div>
