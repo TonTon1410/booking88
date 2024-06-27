@@ -7,10 +7,8 @@ import PasswordRecovery from "../components/reset/PasswordRecovery";
 import Main from "../components/main/Main";
 import CourtList from "../components/CourtList";
 import CourtDetails from "../components/CourtDetail";
-import Booking11 from "../components/booking/Booking11";
 import Login from "../pages/Login/Login";
 import Payment from "../components/Payment/index";
-// import ProtectedRoute from "./ProtectedRoute";
 
 
 const router = createBrowserRouter([
@@ -28,11 +26,11 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/courtlist",
+        path: "courtlist",
         element: <CourtList />,
       },
       {
-        path: "/dashboard",
+        path: "dashboard",
         element: (
             <Dashboard />
         ),
@@ -42,24 +40,21 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "/register",
+        path: "register",
         element: <Register />,
       },
 
       {
-        path: "/PasswordRecovery",
+        path: "PasswordRecovery",
         element: <PasswordRecovery />,
       },
       {
-        path: "/court-details",
+        path: "court-details",
         element: <CourtDetails />,
       },
+
       {
-        path: "/booking",
-        element: <Booking11 />,
-      },
-      {
-        path: "/payment",
+        path: "payment",
         element: <Payment />,
       },
       {

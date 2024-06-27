@@ -1,19 +1,22 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import axios from "axios";
+import { useLocation } from "react-router-dom";
 import api from "../../config/axios";
 
 const OrderForm = () => {
-  const [amount, setAmount] = useState(299999);
-  const [orderInfo, setOrderInfo] = useState("Thanh toan don hang 2923");
+  const location = useLocation();
+  const { court, selectedDate, selectedTime, amount } = location.state || {};
+
+  const [orderInfo, setOrderInfo] = useState(`Thanh toán đơn hàng cho sân ${court?.name} vào ngày ${selectedDate?.toLocaleDateString()} khung giờ ${selectedTime}`);
   const [responseData, setResponseData] = useState(null);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await api.post(`/submitOrder?amount=${amount}&orderInfo=${orderInfo}`);
       setResponseData(response.data);
       console.log("Form submitted successfully:", responseData);
-      window.location.href = response.data
+      window.location.href = response.data;
       // Handle successful response
     } catch (error) {
       console.error("There was an error submitting the form:", error);
@@ -38,7 +41,31 @@ const OrderForm = () => {
                     name="amount"
                     required
                     value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
+                    readOnly
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="courtName">Tên sân:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="courtName"
+                    name="courtName"
+                    required
+                    value={court?.name}
+                    readOnly
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="address">Địa chỉ:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="address"
+                    name="address"
+                    required
+                    value={court?.address}
+                    readOnly
                   />
                 </div>
                 <div className="form-group">
@@ -51,6 +78,18 @@ const OrderForm = () => {
                     required
                     value={orderInfo}
                     onChange={(e) => setOrderInfo(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="timeSlot">Khung giờ:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="timeSlot"
+                    name="timeSlot"
+                    required
+                    value={selectedTime}
+                    readOnly
                   />
                 </div>
                 <button type="submit" className="btn btn-primary">

@@ -8,13 +8,13 @@ const CustomerControler = {
     try {
       const response = await axios.post(`${API_URL}/login`, { email, password }); // Đảm bảo endpoint này là đúng
       return response.data;
-    } catch (error) {
+    } catch (error) { 
       console.error("Login error:", error);
       return null;
     }
   }, loginGoogle : async (token) => {
     try {
-      const response = await axios.post(`${API_URL}/login`, { token }); // Ensure this endpoint is correct
+      const response = await axios.post(`${API_URL}/login-google`, { token }); // Ensure this endpoint is correct
       return response.data;
     } catch (error) {
       console.error("Login error:", error.response ? error.response.data : error.message);
