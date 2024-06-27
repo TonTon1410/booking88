@@ -28,7 +28,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/courtlist",
+        path: "courtlist",
         element: <CourtList />,
       },
       {
@@ -62,10 +62,10 @@ const router = createBrowserRouter([
         path: "/payment",
         element: <Payment />,
       },
-      {
-        path: "*",
-        element: <div>404 Not Found</div>,
-      },
+      // {
+      //   path: "",
+      //   element: <div>404 Not Found</div>,
+      // },
     ],
   },
 ]);

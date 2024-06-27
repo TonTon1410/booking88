@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import "./App.css";
+import "../src/App.css";
 import router from "./config/router.jsx";
 import { persistor, store } from "./redux/store.js";
 import { RouterProvider } from "react-router-dom";
