@@ -96,11 +96,13 @@ const CourtDetails = () => {
     <div className="container mx-auto my-8">
       <Row gutter={[16, 16]}>
         <Col xs={24} md={12}>
-          <img
-            className="w-full h-[70vh] object-cover rounded-lg"
-            src={court.image}
-            alt="Court"
-          />
+        <div className="court-card">
+      {court.image ? (
+        <img src={`data:image/jpeg;base64,${court.image}`} alt={court.name} />
+      ) : (
+        <p>No image available</p>
+      )}
+    </div>
         </Col>
         <Col xs={24} md={12}>
           <h1 className="text-4xl font-bold mb-4">{court.name}</h1>

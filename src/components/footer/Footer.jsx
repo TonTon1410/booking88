@@ -7,7 +7,7 @@ import { MdNavigateNext } from "react-icons/md";
 import 'aos/dist/aos.css';
 
 import './Footer.scss';
-import pg from '../../assets/A.mp4';
+import logo from "../../assets/logologin.png";
 
 const Footer = () => {
   useEffect(() => {
@@ -17,7 +17,7 @@ const Footer = () => {
   return (
     <section className="footer">
       <div className="videoDiv">
-        <video src={pg} loop autoPlay muted type="video/mp4" />
+        <video src={logo} loop autoPlay muted type="video/mp4" />
       </div>
 
       <div className="secContent container">
