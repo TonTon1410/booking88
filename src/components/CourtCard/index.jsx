@@ -1,25 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import { Card,  Button } from 'antd';
+import { Card, Button } from 'antd';
 import "../../components/CourtCard/Card.css";
 
 const { Meta } = Card;
 
 const CourtCard = ({ court }) => {
+  const [imageSrc, setImageSrc] = useState(null);
   const navigate = useNavigate();
 
   const handleViewDetails = () => {
     navigate("/court-details", { state: { court } });
   };
 
+  useEffect(() => {
+    if (court.image) {
+      if (court.image.startsWith("data:image/jpeg;base64,") || court.image.startsWith("data:image/png;base64,")) {
+        setImageSrc(court.image); 
+      } else {
+        const imageUrl = `data:image/jpeg;base64,${court.image}`; 
+        setImageSrc(imageUrl);
+      }
+    }
+  }, [court.image]);
+
   return (
     <Card
       hoverable
       className="m-4 transition-transform transform hover:scale-105 hover:shadow-xl bg-white"
-      cover={<img alt={`Hình ảnh ${court.name}`} src={court?.image} className="w-full h-48 object-cover" />}
+      cover={<img alt={`Hình ảnh ${court.name}`} src={imageSrc} className="w-full h-48 object-cover" />}
       actions={[
-        <Button type="primary" onClick={handleViewDetails}>Đặt sân</Button>,
+        <Button key="book" type="primary" onClick={handleViewDetails}>Đặt sân</Button>,
       ]}
     >
       <Meta

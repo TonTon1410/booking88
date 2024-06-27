@@ -7,7 +7,6 @@ import PasswordRecovery from "../components/reset/PasswordRecovery";
 import Main from "../components/main/Main";
 import CourtList from "../components/CourtList";
 import CourtDetails from "../components/CourtDetail";
-import Booking11 from "../components/booking/Booking11";
 import Login from "../pages/Login/Login";
 import Payment from "../components/Payment/index";
 
@@ -53,10 +52,7 @@ const router = createBrowserRouter([
         path: "court-details",
         element: <CourtDetails />,
       },
-      {
-        path: "booking",
-        element: <Booking11 />,
-      },
+
       {
         path: "payment",
         element: <Payment />,
