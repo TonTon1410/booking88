@@ -39,12 +39,30 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    <!-- Dialogflow Messenger Component -->
-    <df-messenger
-      intent="WELCOME"
-      chat-title="Booking88"
-      agent-id="e3023c90-a509-4cd4-9b36-0c1a5a10c47f"
-      language-code="en"
-    ></df-messenger>
+    <!-- Add this script to control the chatbox visibility -->
+    <script>
+      // Giả sử bạn có một hàm để kiểm tra xem người dùng đã đăng nhập chưa
+      function checkUserLoggedIn() {
+        // Thực hiện kiểm tra đăng nhập của bạn ở đây (ví dụ: kiểm tra token)
+        // Return true nếu người dùng đã đăng nhập, ngược lại return false
+        return !!localStorage.getItem("userToken");
+      }
+
+      // Hàm để thêm chatbox vào DOM
+      function addChatbox() {
+        const dfMessenger = document.createElement('df-messenger');
+        dfMessenger.setAttribute('intent', 'WELCOME');
+        dfMessenger.setAttribute('chat-title', 'Booking88');
+        dfMessenger.setAttribute('agent-id', 'e3023c90-a509-4cd4-9b36-0c1a5a10c47f');
+        dfMessenger.setAttribute('language-code', 'en');
+        
+        document.body.appendChild(dfMessenger);
+      }
+
+      // Kiểm tra xem người dùng đã đăng nhập hay chưa và thêm chatbox nếu có
+      if (checkUserLoggedIn()) {
+        addChatbox();
+      }
+    </script>
   </body>
 </html>

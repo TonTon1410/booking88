@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Avatar } from "antd";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { CiMenuBurger, CiBitcoin } from "react-icons/ci";
-import { login, logout, selectUser } from "../../redux/features/counterSlice";
+import {  logout, selectUser } from "../../redux/features/counterSlice";
 import "./Navbar.scss";
 
 const Navbar = () => {
@@ -83,8 +83,8 @@ const Navbar = () => {
                 />
                 {dropdownActive && (
                   <div className="dropdownMenu">
-                    <button onClick={handleProfile}>Profile</button>
-                    <button onClick={handleLogout}>Logout</button>
+                    <button onClick={handleProfile}>Thông tin</button>
+                    <button onClick={handleLogout}>Đăng Xuất</button>
                   </div>
                 )}
               </div>

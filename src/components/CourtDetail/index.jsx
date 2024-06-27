@@ -9,27 +9,32 @@ const CourtDetails = () => {
   const navigate = useNavigate();
   const { court } = location.state || {};
 
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentWeek, setCurrentWeek] = useState(0);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [bookingType, setBookingType] = useState("");
   const [dayOfWeek, setDayOfWeek] = useState("");
   const [months, setMonths] = useState("");
-  const [startDate, setStartDate] = useState("");
+  const [startDate, setStartDate] = useState(null);
   const [flexibleBookings, setFlexibleBookings] = useState([]);
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedDay, setSelectedDay] = useState(null);
+  const [promoCode, setPromoCode] = useState("");
+  const [bookedSlots] = useState([]);
 
   const fixedTimes = [
-    "10:00 - 12:00",
-    "12:00 - 14:00",
-    "14:00 - 16:00",
-    "16:00 - 18:00",
-    "18:00 - 20:00",
-    "20:00 - 22:00",
+    "10:00 - 11:00",
+    "11:00 - 12:00",
+    "12:00 - 13:00",
+    "13:00 - 14:00",
+    "14:00 - 15:00",
+    "15:00 - 16:00",
+    "16:00 - 17:00",
+    "17:00 - 18:00",
+    "18:00 - 19:00",
+    "19:00 - 20:00",
+    "20:00 - 21:00",
   ];
 
   if (!court) {
@@ -37,20 +42,15 @@ const CourtDetails = () => {
   }
 
   const handleBooking = () => {
-    navigate("/payment", {
-      state: {
+    if (selectedDay && selectedSlot !== null) {
+      const bookingInfo = {
         court,
         selectedDate,
-        selectedTime,
-        name,
-        email,
-        bookingType,
-        dayOfWeek,
-        months,
-        startDate,
-        flexibleBookings,
-      },
-    });
+        selectedTime: fixedTimes[selectedSlot],
+        amount: 70000, // Fixed amount for the booking
+      };
+      navigate("/payment", { state: bookingInfo });
+    }
   };
 
   const openModal = (date) => {
@@ -74,18 +74,19 @@ const CourtDetails = () => {
   const weekDates = getWeekDates(currentWeek);
 
   const renderTimeslots = () => {
-    return court.availableTimes.map((slot, index) => {
-      const isPast = selectedDay && (selectedDay < new Date() || !slot.status);
+    return fixedTimes.map((time, index) => {
+      const isPast = selectedDay && (selectedDay < new Date());
+      const isBooked = bookedSlots.some(slot => slot.date.toDateString() === selectedDay.toDateString() && slot.time === time);
       return (
         <div
           key={index}
           className={`m-2 p-2 border rounded-lg shadow-lg ${
             selectedSlot === index ? "bg-blue-300" : "bg-blue-100"
-          } ${isPast ? "bg-gray-300 cursor-not-allowed" : "cursor-pointer"}`}
-          onClick={() => !isPast && setSelectedSlot(index)}
+          } ${isPast || isBooked ? "bg-gray-300 cursor-not-allowed" : "cursor-pointer"}`}
+          onClick={() => !isPast && !isBooked && setSelectedSlot(index)}
         >
-          <p className="text-center">{slot.time}</p>
-          <p className="text-center">120k</p>
+          <p className="text-center">{time} - 70k</p>
+          {isBooked && <p className="text-red-600 text-center">Đã đặt</p>}
         </div>
       );
     });
@@ -103,17 +104,14 @@ const CourtDetails = () => {
         </Col>
         <Col xs={24} md={12}>
           <h1 className="text-4xl font-bold mb-4">{court.name}</h1>
-          <p className="text-gray-700 text-base mb-2">Khu vực: {court.location}</p>
-          <p className="text-gray-700 text-base mb-2">Số sân: {court.courts}</p>
-          <div className="text-yellow-500 mb-2">
-            {"★".repeat(court.rating)}
-            {"☆".repeat(5 - court.rating)}
-          </div>
+          <p className="text-gray-700 text-base mb-2">Khu vực: {court.address}</p>
+          <p className="text-gray-700 text-base mb-2">Miêu Tả: {court.description}</p>
+          <p className="text-gray-700 text-base mb-2">hotline: {court.hotline}</p>
           <p className="text-gray-700 text-base mb-2">Giá: {court.price} VNĐ</p>
           <div className="mb-4">
             <span className="text-lg font-semibold">Giờ hoạt động:</span>
             <p className="text-gray-700 text-base">
-              {/* {court.operatingHours.start} - {court.operatingHours.end} */}
+              {court.openTime} - {court.closeTime}
             </p>
           </div>
 
@@ -181,7 +179,7 @@ const CourtDetails = () => {
                   <DatePicker
                     className="w-full"
                     value={startDate}
-                    onChange={(date, dateString) => setStartDate(dateString)}
+                    onChange={(date) => setStartDate(date)}
                     required
                   />
                 </div>
@@ -195,7 +193,7 @@ const CourtDetails = () => {
                     <DatePicker
                       className="w-1/2"
                       value={selectedDate}
-                      onChange={(date, dateString) => setSelectedDate(dateString)}
+                      onChange={(date) => setSelectedDate(date)}
                     />
                     <Select
                       className="w-1/2"
@@ -219,7 +217,7 @@ const CourtDetails = () => {
                           ...flexibleBookings,
                           { date: selectedDate, time: selectedTime },
                         ]);
-                        setSelectedDate("");
+                        setSelectedDate(null);
                         setSelectedTime("");
                       } else {
                         alert("Vui lòng chọn ngày và thời gian trước khi thêm");
@@ -235,7 +233,7 @@ const CourtDetails = () => {
                     {flexibleBookings.map((booking, index) => (
                       <div key={index} className="flex items-center mb-2">
                         <p className="mr-2">
-                          {booking.date} - {booking.time}
+                          {booking.date.toLocaleDateString()} - {booking.time}
                         </p>
                         <Button
                           type="danger"
@@ -254,6 +252,16 @@ const CourtDetails = () => {
                 )}
               </div>
             )}
+            <div className="mb-4">
+              <label className="block mb-2">Mã khuyến mãi</label>
+              <Input
+                type="text"
+                className="w-full"
+                value={promoCode}
+                onChange={(e) => setPromoCode(e.target.value)}
+                placeholder="Nhập mã khuyến mãi"
+              />
+            </div>
           </div>
 
           <Button type="primary" className="w-full" onClick={handleBooking}>
