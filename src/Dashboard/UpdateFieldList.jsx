@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Input, Button, message, Form, TimePicker, Modal, Select, Switch } from 'antd';
+import { Table, Input, Button, message, Form, Modal, Upload } from 'antd';
 import PropTypes from 'prop-types';
 import api from '../config/axios';
-import moment from 'moment';
-
-const { Option } = Select;
+import { UploadOutlined } from '@ant-design/icons';
+import { getBase64 } from '../Dashboard/utils.jsx';
 
 const UpdateFieldList = () => {
   const [fields, setFields] = useState([]);
@@ -12,6 +11,7 @@ const UpdateFieldList = () => {
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
+  const [imageFileList, setImageFileList] = useState([]);
 
   useEffect(() => {
     const fetchFields = async () => {
@@ -32,18 +32,27 @@ const UpdateFieldList = () => {
   const edit = (record) => {
     form.setFieldsValue({
       ...record,
-      openTime: record.openTime ? moment(record.openTime, 'HH:mm:ss') : null,
-      closeTime: record.closeTime ? moment(record.closeTime, 'HH:mm:ss') : null,
     });
     setCurrentRecord(record);
     setIsModalOpen(true);
     setEditingKey(record.locationId);
+
+    setImageFileList(
+      record.images ? record.images.map((img, index) => ({
+        uid: index,
+        name: `image${index}`,
+        status: 'done',
+        url: img.startsWith("data:image/") ? img : `data:image/jpeg;base64,${img}`,
+        thumbUrl: img.startsWith("data:image/") ? img : `data:image/jpeg;base64,${img}`,
+      })) : []
+    );
   };
 
   const cancel = () => {
     setEditingKey('');
     setIsModalOpen(false);
     setCurrentRecord(null);
+    setImageFileList([]);
   };
 
   const save = async (locationId) => {
@@ -51,30 +60,45 @@ const UpdateFieldList = () => {
       const row = await form.validateFields();
       const newData = [...fields];
       const index = newData.findIndex((item) => locationId === item.locationId);
+
+      const imagesBase64 = await Promise.all(
+        imageFileList.map((file) => {
+          if (file.originFileObj) {
+            return getBase64(file.originFileObj);
+          } else {
+            return file.url;
+          }
+        })
+      );
+
       if (index > -1) {
         const item = newData[index];
-        newData.splice(index, 1, { ...item, ...row });
+        newData.splice(index, 1, { ...item, ...row, images: imagesBase64 });
         setFields(newData);
         setEditingKey('');
+
         await api.put(`/updateClub/${locationId}`, {
           ...row,
-          openTime: row.openTime ? row.openTime.format('HH:mm:ss') : null,
-          closeTime: row.closeTime ? row.closeTime.format('HH:mm:ss') : null,
+          images: imagesBase64,
         });
+
         message.success('Cập nhật sân thành công');
       } else {
-        newData.push(row);
+        newData.push({ ...row, images: imagesBase64 });
         setFields(newData);
         setEditingKey('');
+
         await api.put(`/updateClub/${locationId}`, {
           ...row,
-          openTime: row.openTime ? row.openTime.format('HH:mm:ss') : null,
-          closeTime: row.closeTime ? row.closeTime.format('HH:mm:ss') : null,
+          images: imagesBase64,
         });
+
         message.success('Cập nhật sân thành công');
       }
+
       setIsModalOpen(false);
       setCurrentRecord(null);
+      setImageFileList([]);
     } catch (err) {
       console.error('Error saving field:', err);
       message.error('Lỗi khi cập nhật sân');
@@ -83,8 +107,8 @@ const UpdateFieldList = () => {
 
   const deleteField = async (locationId) => {
     try {
-      await api.delete(`/deleta-club/${locationId}`);
-      setFields(fields.filter(item => item.locationId !== locationId));
+      await api.delete(`/delete-club/${locationId}`);
+      setFields(fields.filter((item) => item.locationId !== locationId));
       message.success('Xóa sân thành công');
     } catch (err) {
       console.error('Error deleting field:', err);
@@ -92,20 +116,8 @@ const UpdateFieldList = () => {
     }
   };
 
-  const handleStatusChange = async (fieldId, currentStatus) => {
-    try {
-      const newStatus = currentStatus === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
-      await api.put(`/updateClub/${fieldId}`, { status: newStatus });
-      setFields(prevData =>
-        prevData.map(field =>
-          field.locationId === fieldId ? { ...field, status: newStatus } : field
-        )
-      );
-      message.success('Trạng thái sân đã được cập nhật');
-    } catch (error) {
-      console.error('Error updating status:', error);
-      message.error('Lỗi khi cập nhật trạng thái sân');
-    }
+  const handleImageChange = ({ fileList }) => {
+    setImageFileList(fileList);
   };
 
   const columns = [
@@ -139,20 +151,6 @@ const UpdateFieldList = () => {
       key: 'price',
       editable: true,
     },
-    // {
-    //   title: 'Giờ mở cửa',
-    //   dataIndex: 'openTime',
-    //   key: 'openTime',
-    //   editable: true,
-    //   render: (text) => text ? moment(text, 'HH:mm:ss').format('HH:mm:ss') : '',
-    // },
-    // {
-    //   title: 'Giờ đóng cửa',
-    //   dataIndex: 'closeTime',
-    //   key: 'closeTime',
-    //   editable: true,
-    //   render: (text) => text ? moment(text, 'HH:mm:ss').format('HH:mm:ss') : '',
-    // },
     {
       title: 'Trạng thái',
       dataIndex: 'status',
@@ -165,14 +163,19 @@ const UpdateFieldList = () => {
       dataIndex: 'images',
       key: 'images',
       editable: true,
-      render: (text) => Array.isArray(text) ? text.join(', ') : '',
+      render: (images) => (
+        <div>
+          {images && images.map((img, index) => (
+            <img key={index} src={img} alt={`field-img-${index}`} style={{ width: '50px', height: '50px', marginRight: '5px' }} />
+          ))}
+        </div>
+      ),
     },
     {
       title: 'Khuyến mãi',
       dataIndex: 'promotions',
       key: 'promotions',
       editable: true,
-      render: (text) => Array.isArray(text) ? text.join(', ') : '',
     },
     {
       title: 'Hành động',
@@ -215,13 +218,6 @@ const UpdateFieldList = () => {
     }
     return {
       ...col,
-      // onCell: (record) => ({
-      //   record,
-      //   inputType: col.dataIndex === 'price' ? 'number' : 'text',
-      //   dataIndex: col.dataIndex,
-      //   title: col.title,
-      //   editing: isEditing(record),
-      // }),
     };
   });
 
@@ -292,35 +288,19 @@ const UpdateFieldList = () => {
           >
             <Input type="number" />
           </Form.Item>
-          {/* <Form.Item
-            name="openTime"
-            label="Giờ mở cửa"
-            rules={[{ required: true, message: 'Vui lòng chọn giờ mở cửa!' }]}
-          >
-            <TimePicker format="HH:mm:ss" />
-          </Form.Item>
-          <Form.Item
-            name="closeTime"
-            label="Giờ đóng cửa"
-            rules={[{ required: true, message: 'Vui lòng chọn giờ đóng cửa!' }]}
-          >
-            <TimePicker format="HH:mm:ss" />
-          </Form.Item> */}
-          {/* <Form.Item
-            name="status"
-            label="Trạng thái"
-            rules={[{ required: true, message: 'Vui lòng chọn trạng thái!' }]}
-          >
-            <Select>
-              <Option value="ACTIVE">Đang hoạt động</Option>
-              <Option value="INACTIVE">Trống</Option>
-            </Select>
-          </Form.Item> */}
           <Form.Item
             name="images"
             label="Hình ảnh"
           >
-            <Input />
+            <Upload
+              listType="picture"
+              fileList={imageFileList}
+              onChange={handleImageChange}
+              beforeUpload={() => false}
+              accept="image/*"
+            >
+              <Button icon={<UploadOutlined />}>Tải ảnh lên</Button>
+            </Upload>
           </Form.Item>
           <Form.Item
             name="promotions"

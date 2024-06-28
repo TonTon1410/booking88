@@ -10,12 +10,15 @@ const PasswordRecovery = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://157.230.43.225:8080/swagger-ui/index.html#/authentication-api/forgotpasswordz', { email });
+      const response = await axios.post('http://157.230.43.225:8080/forgot-password', { email });
       console.log('Email submitted:', response.data);
-      // Navigate to the reset password page
+      // Assuming API response includes relevant info for user feedback or error handling
+
+      // Navigate to the reset password page upon successful submission
       navigate('/reset-password');
     } catch (error) {
       console.error('Error submitting email:', error);
+      // Handle error (e.g., show error message to user)
     }
   };
 
