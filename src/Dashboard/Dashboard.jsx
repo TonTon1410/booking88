@@ -1,24 +1,16 @@
-import { useEffect, useState } from "react";
-//import userApi from "../api/UserProfileApi";
-import {
-  ProfileOutlined,
-  HeartOutlined,
-  UserOutlined,
-  BarChartOutlined,
-  CheckCircleOutlined,
-  AppstoreAddOutlined,
-} from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+import { ProfileOutlined, HeartOutlined, UserOutlined, BarChartOutlined, PlusOutlined, EditOutlined, TeamOutlined } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Footer } from "antd/es/layout/layout";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { login, logout, selectUser } from "../../src/redux/features/counterSlice";
 import { useSelector } from "react-redux";
+import { selectUser } from "../redux/features/counterSlice";
+import './Dashboard.scss';
+
 const { Header, Content, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
-  return {
-    key, icon, children, label,
-  };
+  return { key, icon, children, label };
 }
 
 const Dashboard = () => {
@@ -31,37 +23,23 @@ const Dashboard = () => {
   const [openKeys, setOpenKeys] = useState([]);
   const location = useLocation();
   const currentURI = location.pathname.split("/")[location.pathname.split("/").length - 1];
-  //const role = "ADMIN"; // Thay đổi role thành 'admin' để thử nghiệm
-  //const role = userApi.getUserInfo()
   const user = useSelector(selectUser);
   const role = user?.role;
+
   useEffect(() => {
     // Định nghĩa các mục menu dựa trên vai trò của người dùng
     if (role === "ADMIN") {
       setItems([
-        getItem("Danh mục", "category", <AppstoreAddOutlined />),
         getItem("Hồ sơ", "UserProfile", <ProfileOutlined />),
-        getItem("Quản lý Sân", "all-fields", <HeartOutlined />),
-        getItem("Quản lý Nhân Viên", "staffs", <UserOutlined />,),
-        getItem("Thống kê Sân", "statistics", <BarChartOutlined />, [
-          getItem("Sân 1", "stats-field-1"),
-          getItem("Sân 2", "stats-field-2"),
-          getItem("Sân 3", "stats-field-3"),
-          getItem("Tất cả Sân", "all-fields"),
-        ]),
+        getItem("Cập Nhật Sân", "update-field", <EditOutlined />),
+        getItem("Quản lý Nhân Viên", "staffs", <UserOutlined />),
+        getItem("Thống kê", "statistics", <BarChartOutlined />),
+        getItem("Tạo Sân Mới", "create-new-field", <PlusOutlined />),
+        getItem("Quản lý Tài khoản", "account-list", <TeamOutlined />), // Thêm mục này
       ]);
-    } else if (role === "staff") {
+    } else if (role === "CLUB_STAFF") {
       setItems([
-        getItem("Danh mục", "category", <AppstoreAddOutlined />),
-        getItem("Hồ sơ", "UserProfile", <ProfileOutlined />),
-        getItem("Club", "clubs", <HeartOutlined />, [
-          getItem("Khung giờ", "time-slot"),
-          getItem("Khuyến mãi", "promotion"),
-        ]),
-        getItem("Đặt sân", "booking", <CheckCircleOutlined />, [
-          getItem("Sân ID 1", "court-1"),
-          getItem("Sân ID 2", "court-2"),
-        ]),
+        getItem("Quản lý Sân", "manage-fields", <HeartOutlined />),
       ]);
     }
   }, [role]);
@@ -95,7 +73,7 @@ const Dashboard = () => {
               <Menu.SubMenu key={item.key} icon={item.icon} title={item.label}>
                 {item.children.map((subItem) => (
                   <Menu.Item key={subItem.key}>
-                    <Link to={`/dashboard/${subItem.key}`}>
+                    <Link to={`/dashboard/${subItem.key}`} className="no-underline">
                       {subItem.label}
                     </Link>
                   </Menu.Item>
@@ -103,7 +81,9 @@ const Dashboard = () => {
               </Menu.SubMenu>
             ) : (
               <Menu.Item key={item.key} icon={item.icon}>
-                <Link to={`/dashboard/${item.key}`}>{item.label}</Link>
+                <Link to={`/dashboard/${item.key}`} className="no-underline">
+                  {item.label}
+                </Link>
               </Menu.Item>
             )
           )}
@@ -120,9 +100,9 @@ const Dashboard = () => {
             {location.pathname.split("/").map((path, index, array) => (
               <Breadcrumb.Item key={index}>
                 {index === 0 ? (
-                  <Link to="/dashboard">Bảng điều khiển</Link>
+                  <Link to="/dashboard" className="no-underline">Bảng điều khiển</Link>
                 ) : (
-                  <Link to={`/${array.slice(0, index + 1).join("/")}`}>
+                  <Link to={`/${array.slice(0, index + 1).join("/")}`} className="no-underline">
                     {path}
                   </Link>
                 )}
