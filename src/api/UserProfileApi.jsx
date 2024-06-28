@@ -1,23 +1,37 @@
-import axios from 'axios';
-
-const API_URL = 'http://157.230.43.225:8080/'; // URL API của bạn
+import api from '../config/axios';
 
 const userApi = {
-  getUserInfo: async (userId) => {
+  getAccountById: async (userId) => {
     try {
-      const response = await axios.get(`${API_URL}/${userId}`);
+      const response = await api.get(`/get-account-by-id/${userId}`);
+      console.log('API Response:', response.data);
       return response.data;
     } catch (error) {
       console.error('Error fetching user info:', error);
       throw error;
     }
   },
-  updateUserInfo: async (userId, userInfo) => {
+  updateAccount: async (userId, userInfo) => {
     try {
-      const response = await axios.put(`${API_URL}/admin-api/updateAccount/${userId}`, userInfo);
+      const response = await api.put(`/update-account/${userId}`, {
+        name: userInfo.name,
+        phone: userInfo.phone,
+        email: userInfo.email
+      });
+      console.log('Update Response:', response.data);
       return response.data;
     } catch (error) {
       console.error('Error updating user info:', error);
+      throw error;
+    }
+  },
+  getBookingHistory: async (userId) => {
+    try {
+      const response = await api.get(`/get-booking-history/${userId}`);
+      console.log('Booking History Response:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching booking history:', error);
       throw error;
     }
   }

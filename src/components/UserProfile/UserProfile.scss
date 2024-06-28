@@ -1,0 +1,228 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+:root {
+  --PrimaryColor: hsl(199, 100%, 33%);
+  --SecondaryColor: hsl(187, 85%, 43%);
+  --gradientColor: linear-gradient(to right, hsl(187, 85%, 43%), hsl(199, 100%, 33%));
+  --blackColor: hsl(201, 33%, 16%);
+  --whiteColor: hsl(0, 6%, 100%);
+  --whiteColorDeam: hsl(0, 0%, 93%);
+  --textColor: hsl(240, 4%, 36%);
+  --greyText: rgb(190, 190, 190);
+  --inputColor: rgb(239, 239, 239);
+  --bodyColor: rgb(240, 240, 246);
+  --cardBG: rgb(225, 225, 235);
+  --cardHover: rgb(255, 255, 255);
+  --HoverColor: hsl(94, 59%, 35);
+  --palaGreen: hsl(96, 75%, 89);
+  --biggestFontSize: 2.5rem;
+  --h1FontSize: 1.5rem;
+  --h2FontSize: 1.25rem;
+  --h3FontSize: 1rem;
+  --normalFontSize: .938rem;
+  --smallFontSize: .813rem;
+  --smallestFontSize: .75rem;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+.account-page {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 2rem;
+  background: var(--bodyColor);
+  border-radius: 10px;
+  box-shadow: 0 7px 50px rgb(214, 223, 213);
+  overflow: hidden;
+}
+
+.account-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--whiteColor);
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(32, 35, 35, 0.2);
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    background: var(--whiteColorDeam);
+    color: var(--textColor);
+    font-size: var(--normalFontSize);
+    font-weight: 500;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &.active {
+      background: var(--PrimaryColor);
+      color: var(--whiteColor);
+    }
+
+    &:hover {
+      background: var(--PrimaryColor);
+      color: var(--whiteColor);
+    }
+
+    svg {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.account-content {
+  flex: 2;
+  background: var(--whiteColor);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(32, 35, 35, 0.2);
+
+  .account-section {
+    display: none;
+
+    &.active {
+      display: block;
+    }
+
+    h2 {
+      font-size: var(--h2FontSize);
+      margin-bottom: 1.5rem;
+      color: var(--blackColor);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+
+      label {
+        display: block;
+        font-size: var(--normalFontSize);
+        margin-bottom: 0.5rem;
+        color: var(--textColor);
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: var(--normalFontSize);
+        border: 1px solid var(--greyText);
+        border-radius: 5px;
+        background: var(--inputColor);
+        color: var(--blackColor);
+      }
+
+      input[type="file"] {
+        font-size: var(--normalFontSize);
+        color: var(--blackColor);
+      }
+
+      .avatar-preview {
+        display: block;
+        margin-top: 1rem;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--greyText);
+      }
+    }
+
+    button {
+      padding: 0.75rem 1.5rem;
+      font-size: var(--normalFontSize);
+      background: var(--PrimaryColor);
+      color: var(--whiteColor);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: var(--SecondaryColor);
+      }
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+
+      th, td {
+        padding: 1rem;
+        border: 1px solid var(--greyText);
+        text-align: left;
+        font-size: var(--normalFontSize);
+      }
+
+      th {
+        background: var(--PrimaryColor);
+        color: var(--whiteColor);
+      }
+    }
+  }
+
+  .notification {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--palaGreen);
+    border-radius: 5px;
+    color: var(--blackColor);
+    font-size: var(--normalFontSize);
+  }
+}
+
+.account-sidebar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--whiteColor);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(32, 35, 35, 0.2);
+
+  .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--greyText);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  h3 {
+    margin-top: 1rem;
+    font-size: var(--h1FontSize);
+    color: var(--blackColor);
+  }
+
+  p {
+    font-size: var(--normalFontSize);
+    color: var(--greyText);
+  }
+
+  .account-info {
+    margin-top: 2rem;
+    width: 100%;
+    list-style: none;
+
+    li {
+      font-size: var(--normalFontSize);
+      margin-bottom: 0.5rem;
+      color: var(--textColor);
+    }
+  }
+}
