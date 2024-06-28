@@ -12,9 +12,9 @@ const UserProfile = () => {
     const user = useSelector(selectUser);
 
     const [userInfo, setUserInfo] = useState({
-        name: user.name,
-        phone: user.phone,
-        email: user.email
+        name: user?.name || '',
+        phone: user?.phone || '',
+        email: user?.email || ''
     });
 
     const [bookingHistory, setBookingHistory] = useState([]);
@@ -25,9 +25,9 @@ const UserProfile = () => {
         const fetchUserInfo = async () => {
             if (!userId) {
                 setUserInfo({
-                    name: user.name,
-                    phone: user.phone,
-                    email: user.email
+                    name: user?.name || '',
+                    phone: user?.phone || '',
+                    email: user?.email || ''
                 });
                 return;
             }
@@ -183,16 +183,6 @@ const UserProfile = () => {
                                     <th>Số tiền</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                {bookingHistory.map((booking, index) => (
-                                    <tr key={index}>
-                                        <td>{booking.date}</td>
-                                        <td>{booking.court}</td>
-                                        <td>{`${booking.startTime} - ${booking.endTime}`}</td>
-                                        <td>{booking.amount}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
                         </table>
                     </div>
                 )}

@@ -10,6 +10,7 @@ const CreateNewField = () => {
 
   const onFinish = async (values) => {
     try {
+      // Convert image files to base64
       const imagesBase64 = await Promise.all(
         imageFileList.map((file) => getBase64(file.originFileObj))
       );
@@ -19,31 +20,21 @@ const CreateNewField = () => {
         description: values.description,
         address: values.address,
         hotline: values.hotline,
-        openingTime: {
-          hour: 0,
-          minute: 0,
-          second: 0,
-          nano: 0
-        },
-        closingTime: {
-          hour: 0,
-          minute: 0,
-          second: 0,
-          nano: 0
-        },
         status: "ACTIVE",
-        price: "0", // Assuming price is required and defaulting to "0"
+        price: values.price || "0", // Assuming price is required and defaulting to "0"
         images: imagesBase64,
       };
 
-      await api.post("/createNewClub", clubRequest);
+      console.log('Sending request:', clubRequest); // Log request for debugging
+
+      const response = await api.post("/createNewClub", clubRequest);
 
       message.success('Thêm sân thành công');
       form.resetFields();
       setImageFileList([]);
     } catch (error) {
       message.error('Lỗi khi thêm sân');
-      console.error('Error creating new field:', error);
+      console.error('Error creating new field:', error.response ? error.response.data : error.message);
     }
   };
 
@@ -93,6 +84,14 @@ const CreateNewField = () => {
         label="Hotline"
         name="hotline"
         rules={[{ required: true, message: 'Vui lòng nhập hotline!' }]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="Giá"
+        name="price"
+        rules={[{ required: true, message: 'Vui lòng nhập giá!' }]}
       >
         <Input />
       </Form.Item>

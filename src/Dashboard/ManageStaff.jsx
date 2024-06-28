@@ -27,7 +27,7 @@ const QuanLyNhanVien = () => {
             message.error('Tên đăng nhập đã được sử dụng');
             return;
         }
-
+    
         try {
             if (isEditMode) {
                 const response = await api.put(`/update-account/${currentStaff.id}`, {
@@ -46,6 +46,7 @@ const QuanLyNhanVien = () => {
                     email: values.email,
                 };
                 const response = await api.post('/add-staff', newStaff);
+                console.log('API response:', response);
                 setData([...data, response.data]);
                 message.success('Thêm nhân viên thành công');
             }
@@ -55,9 +56,11 @@ const QuanLyNhanVien = () => {
             setCurrentStaff(null);
         } catch (error) {
             message.error('Lỗi khi lưu thông tin nhân viên');
-            console.error('Error saving staff:', error);
+            console.error('Error saving staff:', error.response ? error.response.data : error.message);
         }
     };
+    
+    
 
     const handleEdit = (staff) => {
         setCurrentStaff(staff);
@@ -99,7 +102,6 @@ const QuanLyNhanVien = () => {
     const columns = [
         { title: 'ID', dataIndex: 'id', key: 'id' },
         { title: 'Tên nhân viên', dataIndex: 'name', key: 'name' },
-        { title: 'Mật khẩu', dataIndex: 'password', key: 'password' },
         { title: 'Số điện thoại', dataIndex: 'phone', key: 'phone' },
         { title: 'Email', dataIndex: 'email', key: 'email' },
         {
@@ -148,13 +150,6 @@ const QuanLyNhanVien = () => {
                         rules={[{ required: true, message: 'Vui lòng nhập tên nhân viên!' }]}
                     >
                         <Input />
-                    </Form.Item>
-                    <Form.Item
-                        label="Mật khẩu"
-                        name="password"
-                        rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
-                    >
-                        <Input.Password />
                     </Form.Item>
                     <Form.Item
                         label="Email"
