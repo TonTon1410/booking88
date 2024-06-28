@@ -3,6 +3,7 @@ import MainLayout from "../layout/MainLayout"; // Đảm bảo đường dẫn c
 import Home from "../components/home/Home";
 import Register from "../pages/Register/Register";
 import PasswordRecovery from "../components/reset/PasswordRecovery";
+import PasswordReset from "../components/reset/PasswordReset";
 import Main from "../components/main/Main";
 import CourtList from "../components/CourtList";
 import CourtDetails from "../components/CourtDetail";
@@ -16,7 +17,6 @@ import UpdateFieldList from '../Dashboard/UpdateFieldList.jsx';
 import ClubStaffManageFields from '../Dashboard/ClubStaffManageFields.jsx';
 import Statistics from '../Dashboard/Statistics.jsx'; // Thêm đường dẫn tới component Statistics
 import AccountList from '../Dashboard/AccountList.jsx';
-
 
 const router = createBrowserRouter([
   {
@@ -87,6 +87,10 @@ const router = createBrowserRouter([
       {
         path: "PasswordRecovery",
         element: <PasswordRecovery />,
+      },
+      {
+        path: "reset-password/:token",
+        element: <PasswordReset />,
       },
       {
         path: "court-details",

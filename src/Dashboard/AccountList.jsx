@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, message } from 'antd';
+import { Table, message, Button, Popconfirm } from 'antd';
 import api from '../config/axios';
 
 const AccountList = () => {
@@ -19,6 +19,17 @@ const AccountList = () => {
         fetchAccounts();
     }, []);
 
+    const handleDelete = async (id) => {
+        try {
+            await api.delete(`/delete-account/${id}`);
+            setAccounts(accounts.filter(account => account.id !== id));
+            message.success('Xóa tài khoản thành công');
+        } catch (error) {
+            message.error('Lỗi khi xóa tài khoản');
+            console.error('Error deleting account:', error);
+        }
+    };
+
     const columns = [
         {
             title: 'ID',
@@ -36,9 +47,30 @@ const AccountList = () => {
             key: 'email',
         },
         {
+            title: 'Số Điện Thoại',
+            dataIndex: 'phone',
+            key: 'phone',
+        },
+        {
             title: 'Vai trò',
             dataIndex: 'role',
             key: 'role',
+        },
+        {
+            title: 'Hành động',
+            key: 'action',
+            render: (text, record) => (
+                <Popconfirm
+                    title="Bạn có chắc chắn muốn xóa tài khoản này không?"
+                    onConfirm={() => handleDelete(record.id)}
+                    okText="Có"
+                    cancelText="Không"
+                >
+                    <Button type="primary" danger>
+                        Xóa
+                    </Button>
+                </Popconfirm>
+            ),
         },
     ];
 

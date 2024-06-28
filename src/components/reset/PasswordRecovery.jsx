@@ -12,13 +12,17 @@ const PasswordRecovery = () => {
     try {
       const response = await axios.post('http://157.230.43.225:8080/forgot-password', { email });
       console.log('Email submitted:', response.data);
-      // Assuming API response includes relevant info for user feedback or error handling
 
-      // Navigate to the reset password page upon successful submission
-      navigate('/reset-password');
+      // Kiểm tra phản hồi từ API để chắc chắn rằng token tồn tại
+      if (response.data && response.data.token) {
+        // Điều hướng đến trang đặt lại mật khẩu với token
+        navigate(`/reset-password/${response.data.token}`);
+      } else {
+        console.error('No token found in response');
+      }
     } catch (error) {
       console.error('Error submitting email:', error);
-      // Handle error (e.g., show error message to user)
+      // Hiển thị thông báo lỗi cho người dùng nếu cần thiết
     }
   };
 
