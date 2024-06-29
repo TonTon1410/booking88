@@ -27,26 +27,23 @@ const QuanLyNhanVien = () => {
             message.error('Tên đăng nhập đã được sử dụng');
             return;
         }
-    
+
         try {
             if (isEditMode) {
                 const response = await api.put(`/update-account/${currentStaff.id}`, {
                     phone: values.phone,
                     email: values.email,
                     name: values.name,
-                    password: values.password
                 });
                 setData(data.map(item => item.id === currentStaff.id ? response.data : item));
                 message.success('Cập nhật nhân viên thành công');
             } else {
                 const newStaff = {
                     name: values.name,
-                    password: values.password,
                     phone: values.phone,
                     email: values.email,
                 };
                 const response = await api.post('/add-staff', newStaff);
-                console.log('API response:', response);
                 setData([...data, response.data]);
                 message.success('Thêm nhân viên thành công');
             }
@@ -56,17 +53,14 @@ const QuanLyNhanVien = () => {
             setCurrentStaff(null);
         } catch (error) {
             message.error('Lỗi khi lưu thông tin nhân viên');
-            console.error('Error saving staff:', error.response ? error.response.data : error.message);
+            console.error('Error saving staff:', error);
         }
     };
-    
-    
 
     const handleEdit = (staff) => {
         setCurrentStaff(staff);
         form.setFieldsValue({
             name: staff.name,
-            password: staff.password,
             phone: staff.phone,
             email: staff.email
         });
@@ -137,7 +131,6 @@ const QuanLyNhanVien = () => {
                     wrapperCol={{ span: 16 }}
                     initialValues={currentStaff ? {
                         name: currentStaff.name,
-                        password: currentStaff.password,
                         phone: currentStaff.phone,
                         email: currentStaff.email
                     } : {}}
@@ -151,6 +144,15 @@ const QuanLyNhanVien = () => {
                     >
                         <Input />
                     </Form.Item>
+                    {!isEditMode && (
+                        <Form.Item
+                            label="Mật khẩu"
+                            name="password"
+                            rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
+                        >
+                            <Input.Password autoComplete="current-password" />
+                        </Form.Item>
+                    )}
                     <Form.Item
                         label="Email"
                         name="email"
