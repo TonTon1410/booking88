@@ -107,7 +107,7 @@ const UpdateFieldList = () => {
 
   const deleteField = async (locationId) => {
     try {
-      await api.delete(`/delete-club/${locationId}`);
+      await api.delete(`/deleta-club/${locationId}`);
       setFields(fields.filter((item) => item.locationId !== locationId));
       message.success('Xóa sân thành công');
     } catch (err) {
