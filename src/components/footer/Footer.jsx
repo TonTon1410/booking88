@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { IoIosSend } from "react-icons/io";
 import { SiGmail } from "react-icons/si";
+import { FaFacebookF, FaPhoneAlt } from "react-icons/fa";
 import Aos from "aos";
 import { CiBitcoin } from "react-icons/ci";
 import { MdNavigateNext } from "react-icons/md";
@@ -21,18 +22,6 @@ const Footer = () => {
       </div>
 
       <div className="secContent container">
-        <div className="contactDiv flex">
-          <div data-aos="fade-up" className="text">
-            <small>Keep in touch</small>
-            <h2>Travel with us</h2>
-          </div>
-          <div className="inputDiv flex">
-            <input data-aos="fade-up" type="text" placeholder="Enter Your Mail Address" />
-            <button data-aos="fade-up" className="btn flex" type="submit">
-              SEND <IoIosSend className="icon" />
-            </button>
-          </div>
-        </div>
         <div data-aos="fade-up" className="footerCard flex">
           <div className="footerIntro flex">
             <div className="logoDiv">
@@ -42,10 +31,19 @@ const Footer = () => {
             </div>
 
             <div className="footerParagraph flex">
-              information web?
+              Thông tin web?
             </div>
+            
             <div data-aos="fade-up" className="footerSocials flex">
-              <SiGmail className="icon" />
+              <a href="mailto:your-email@example.com" className="socialLink">
+                <SiGmail className="icon" />
+              </a>
+              <a href="https://www.facebook.com/yourpage" className="socialLink">
+                <FaFacebookF className="icon" />
+              </a>
+              <a href="tel:+1234567890" className="socialLink">
+                <FaPhoneAlt className="icon" />
+              </a>
             </div>
           </div>
           <div className="footerLinks grid">
@@ -73,57 +71,24 @@ const Footer = () => {
                 <MdNavigateNext className="icon" />
                 Payment
               </li>
-            </div>
-            {/* Repeat the link group for additional columns */}
-            <div data-aos="fade-up" className="linkGroup">
-              <span className="groupTitle">
-                Our agency
-              </span>
               <li className="footerList fees">
                 <MdNavigateNext className="icon" />
-                Services
-              </li>
-              <li className="footerList fees">
-                <MdNavigateNext className="icon" />
-                Insurance
-              </li>
-              <li className="footerList fees">
-                <MdNavigateNext className="icon" />
-                Agency
-              </li>
-              <li className="footerList fees">
-                <MdNavigateNext className="icon" />
-                Tourism
-              </li>
-              <li className="footerList fees">
-                <MdNavigateNext className="icon" />
-                Payment
+                <a href="https://www.google.com/maps/place/FPT+University" target="_blank" rel="noopener noreferrer">
+                  FPT University Map
+                </a>
               </li>
             </div>
-            <div data-aos="fade-up" className="linkGroup">
-              <span className="groupTitle">
-                Our agency
-              </span>
-              <li className="footerList fees">
-                <MdNavigateNext className="icon" />
-                Services
-              </li>
-              <li className="footerList fees">
-                <MdNavigateNext className="icon" />
-                Insurance
-              </li>
-              <li className="footerList fees">
-                <MdNavigateNext className="icon" />
-                Agency
-              </li>
-              <li className="footerList fees">
-                <MdNavigateNext className="icon" />
-                Tourism
-              </li>
-              <li className="footerList fees">
-                <MdNavigateNext className="icon" />
-                Payment
-              </li>
+            <div data-aos="fade-up" className="mapGroup">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.6358562389224!2d106.6799833153142!3d10.762912292327595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175292920df659f%3A0x58b4180a2b0a508e!2sFPT+University!5e0!3m2!1sen!2s!4v1595400140861!5m2!1sen!2s" 
+                width="600" 
+                height="450" 
+                frameBorder="0" 
+                style={{ border: 0 }} 
+                allowFullScreen="" 
+                aria-hidden="false" 
+                tabIndex="0"
+              ></iframe>
             </div>
           </div>
 
