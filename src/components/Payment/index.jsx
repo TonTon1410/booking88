@@ -1,19 +1,19 @@
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useLocation } from "react-router-dom";
+import { Form, Input, Button, Card, Row, Col } from "antd";
 import api from "../../config/axios";
+import "./Payment.css"; 
 
 const OrderForm = () => {
   const location = useLocation();
-  const { court, selectedDate, selectedTime, amount } = location.state || {};
+  const { court, selectedDate, selectedTimes, totalAmount } = location.state || {};
 
-  const [orderInfo, setOrderInfo] = useState(`Thanh toán đơn hàng cho sân ${court?.name} vào ngày ${selectedDate?.toLocaleDateString()} khung giờ ${selectedTime}`);
+  const [orderInfo, setOrderInfo] = useState(`Thanh toán đơn hàng cho sân ${court?.name}`);
   const [responseData, setResponseData] = useState(null);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     try {
-      const response = await api.post(`/submitOrder?amount=${amount}&orderInfo=${orderInfo}`);
+      const response = await api.post(`/submitOrder?amount=${totalAmount}&orderInfo=${orderInfo}`);
       setResponseData(response.data);
       console.log("Form submitted successfully:", responseData);
       window.location.href = response.data;
@@ -26,80 +26,56 @@ const OrderForm = () => {
 
   return (
     <div className="container">
-      <div className="row justify-content-center mt-5">
-        <div className="col-md-6">
-          <div className="card">
-            <div className="card-body">
-              <h2 className="card-title">Tạo Đơn Hàng</h2>
-              <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="amount">Số tiền:</label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="amount"
-                    name="amount"
-                    required
-                    value={amount}
-                    readOnly
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="courtName">Tên sân:</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="courtName"
-                    name="courtName"
-                    required
-                    value={court?.name}
-                    readOnly
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="address">Địa chỉ:</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="address"
-                    name="address"
-                    required
-                    value={court?.address}
-                    readOnly
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="orderInfo">Thông tin đơn hàng:</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="orderInfo"
-                    name="orderInfo"
-                    required
-                    value={orderInfo}
-                    onChange={(e) => setOrderInfo(e.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="timeSlot">Khung giờ:</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="timeSlot"
-                    name="timeSlot"
-                    required
-                    value={selectedTime}
-                    readOnly
-                  />
-                </div>
-                <button type="submit" className="btn btn-primary">
+      <Row justify="center" className="mt-5">
+        <Col xs={24} sm={18} md={12} lg={10}>
+          <Card title="Tạo Đơn Hàng" className="text-center">
+            <Form
+              layout="vertical"
+              onFinish={handleSubmit}
+              initialValues={{
+                amount: totalAmount,
+                courtName: court?.name,
+                address: court?.address,
+                orderInfo: orderInfo,
+                date: new Date(selectedDate).toLocaleDateString(),
+                timeSlots: selectedTimes.join(", "),
+                slotCount: selectedTimes.length,
+              }}
+            >
+              <Form.Item label="Số tiền:" name="amount">
+                <Input readOnly />
+              </Form.Item>
+              <Form.Item label="Tên sân:" name="courtName">
+                <Input readOnly />
+              </Form.Item>
+              <Form.Item label="Địa chỉ:" name="address">
+                <Input readOnly />
+              </Form.Item>
+              <Form.Item
+                label="Thông tin đơn hàng:"
+                name="orderInfo"
+                rules={[{ required: true, message: "Vui lòng nhập thông tin đơn hàng" }]}
+              >
+                <Input value={orderInfo} onChange={(e) => setOrderInfo(e.target.value)} />
+              </Form.Item>
+              <Form.Item label="Ngày đặt:" name="date">
+                <Input readOnly />
+              </Form.Item>
+              <Form.Item label="Khung giờ:" name="timeSlots">
+                <Input readOnly />
+              </Form.Item>
+              <Form.Item label="Số khung giờ đã đặt:" name="slotCount">
+                <Input readOnly />
+              </Form.Item>
+              <Form.Item>
+                <Button type="primary" htmlType="submit">
                   Thanh toán
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
+                </Button>
+              </Form.Item>
+            </Form>
+          </Card>
+        </Col>
+      </Row>
     </div>
   );
 };

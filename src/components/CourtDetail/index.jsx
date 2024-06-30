@@ -10,7 +10,7 @@ const CourtDetails = () => {
   const { court } = location.state || {};
 
   const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [selectedSlots, setSelectedSlots] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentWeek, setCurrentWeek] = useState(0);
   const [bookingType, setBookingType] = useState("");
@@ -37,17 +37,20 @@ const CourtDetails = () => {
     "20:00 - 21:00",
   ];
 
+  const slotPrice = 70000; // Fixed amount for each slot
+
   if (!court) {
     return <div>Không tìm thấy thông tin sân</div>;
   }
 
   const handleBooking = () => {
-    if (selectedDay && selectedSlot !== null) {
+    if (selectedDay && selectedSlots.length > 0) {
       const bookingInfo = {
         court,
-        selectedDate,
-        selectedTime: fixedTimes[selectedSlot],
-        amount: 70000, // Fixed amount for the booking
+        selectedDate: selectedDay,
+        selectedSlots,
+        totalAmount: selectedSlots.length * slotPrice,
+        selectedTimes: selectedSlots.map(slot => fixedTimes[slot]),
       };
       navigate("/payment", { state: bookingInfo });
     }
@@ -55,7 +58,7 @@ const CourtDetails = () => {
 
   const openModal = (date) => {
     setSelectedDay(date);
-    setSelectedSlot(null); // Reset selected slot when a new date is selected
+    setSelectedSlots([]); // Reset selected slots when a new date is selected
     setIsModalOpen(true);
   };
 
@@ -74,16 +77,36 @@ const CourtDetails = () => {
   const weekDates = getWeekDates(currentWeek);
 
   const renderTimeslots = () => {
+    const now = new Date();
+
     return fixedTimes.map((time, index) => {
-      const isPast = selectedDay && (selectedDay < new Date());
+      const [startHour] = time.split(' - ')[0].split(':').map(Number);
+      const slotTime = new Date(selectedDay);
+      slotTime.setHours(startHour);
+      slotTime.setMinutes(0);
+      slotTime.setSeconds(0);
+
+      const isPast = selectedDay && (selectedDay < new Date(now.setHours(0, 0, 0, 0)) || (selectedDay.toDateString() === now.toDateString() && slotTime <= now));
       const isBooked = bookedSlots.some(slot => slot.date.toDateString() === selectedDay.toDateString() && slot.time === time);
+      const isSelected = selectedSlots.includes(index);
+
+      const handleClick = () => {
+        if (!isPast && !isBooked) {
+          if (isSelected) {
+            setSelectedSlots(selectedSlots.filter(slot => slot !== index));
+          } else {
+            setSelectedSlots([...selectedSlots, index]);
+          }
+        }
+      };
+
       return (
         <div
           key={index}
           className={`m-2 p-2 border rounded-lg shadow-lg ${
-            selectedSlot === index ? "bg-blue-300" : "bg-blue-100"
+            isSelected ? "bg-blue-300" : "bg-blue-100"
           } ${isPast || isBooked ? "bg-gray-300 cursor-not-allowed" : "cursor-pointer"}`}
-          onClick={() => !isPast && !isBooked && setSelectedSlot(index)}
+          onClick={handleClick}
         >
           <p className="text-center">{time} - 70k</p>
           {isBooked && <p className="text-red-600 text-center">Đã đặt</p>}
@@ -96,19 +119,19 @@ const CourtDetails = () => {
     <div className="container mx-auto my-8">
       <Row gutter={[16, 16]}>
         <Col xs={24} md={12}>
-        <div className="court-card">
-      {court.image ? (
-        <img src={`data:image/jpeg;base64,${court.image}`} alt={court.name} />
-      ) : (
-        <p>No image available</p>
-      )}
-    </div>
+          <div className="court-card">
+            {court.image ? (
+              <img src={`data:image/jpeg;base64,${court.image}`} alt={court.name} />
+            ) : (
+              <p>No image available</p>
+            )}
+          </div>
         </Col>
         <Col xs={24} md={12}>
           <h1 className="text-4xl font-bold mb-4">{court.name}</h1>
           <p className="text-gray-700 text-base mb-2">Khu vực: {court.address}</p>
-          <p className="text-gray-700 text-base mb-2">Miêu Tả: {court.description}</p>
-          <p className="text-gray-700 text-base mb-2">hotline: {court.hotline}</p>
+          <p className="text-gray-700 text-base mb-2">Miêu tả: {court.description}</p>
+          <p className="text-gray-700 text-base mb-2">Hotline: {court.hotline}</p>
           <p className="text-gray-700 text-base mb-2">Giá: {court.price} VNĐ</p>
           <div className="mb-4">
             <span className="text-lg font-semibold">Giờ hoạt động:</span>
@@ -287,13 +310,20 @@ const CourtDetails = () => {
           </Button>
         </div>
         <Row gutter={[16, 16]}>
-          {weekDates.map((date, index) => (
-            <Col key={index} xs={24} md={12} lg={8} xl={4}>
-              <h4 className="font-bold cursor-pointer" onClick={() => openModal(date)}>
-                {date.toLocaleDateString()}
-              </h4>
-            </Col>
-          ))}
+          {weekDates.map((date, index) => {
+            const now = new Date();
+            const isPast = date < now.setHours(0, 0, 0, 0);
+            return (
+              <Col key={index} xs={24} md={12} lg={8} xl={4}>
+                <h4 
+                  className={`font-bold cursor-pointer ${isPast ? 'text-gray-500' : ''}`} 
+                  onClick={() => !isPast && openModal(date)}
+                >
+                  {date.toLocaleDateString()}
+                </h4>
+              </Col>
+            );
+          })}
         </Row>
       </div>
 
@@ -304,6 +334,9 @@ const CourtDetails = () => {
         onOk={handleBooking}
       >
         {selectedDay && renderTimeslots()}
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold">Tổng tiền: {selectedSlots.length * slotPrice} VNĐ</h3>
+        </div>
       </Modal>
     </div>
   );
