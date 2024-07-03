@@ -34,14 +34,12 @@ const QuanLyNhanVien = () => {
                     phone: values.phone,
                     email: values.email,
                     name: values.name,
-                    password: values.password
                 });
                 setData(data.map(item => item.id === currentStaff.id ? response.data : item));
                 message.success('Cập nhật nhân viên thành công');
             } else {
                 const newStaff = {
                     name: values.name,
-                    password: values.password,
                     phone: values.phone,
                     email: values.email,
                 };
@@ -63,7 +61,6 @@ const QuanLyNhanVien = () => {
         setCurrentStaff(staff);
         form.setFieldsValue({
             name: staff.name,
-            password: staff.password,
             phone: staff.phone,
             email: staff.email
         });
@@ -99,7 +96,6 @@ const QuanLyNhanVien = () => {
     const columns = [
         { title: 'ID', dataIndex: 'id', key: 'id' },
         { title: 'Tên nhân viên', dataIndex: 'name', key: 'name' },
-        { title: 'Mật khẩu', dataIndex: 'password', key: 'password' },
         { title: 'Số điện thoại', dataIndex: 'phone', key: 'phone' },
         { title: 'Email', dataIndex: 'email', key: 'email' },
         {
@@ -135,7 +131,6 @@ const QuanLyNhanVien = () => {
                     wrapperCol={{ span: 16 }}
                     initialValues={currentStaff ? {
                         name: currentStaff.name,
-                        password: currentStaff.password,
                         phone: currentStaff.phone,
                         email: currentStaff.email
                     } : {}}
@@ -149,13 +144,15 @@ const QuanLyNhanVien = () => {
                     >
                         <Input />
                     </Form.Item>
-                    <Form.Item
-                        label="Mật khẩu"
-                        name="password"
-                        rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
-                    >
-                        <Input.Password />
-                    </Form.Item>
+                    {!isEditMode && (
+                        <Form.Item
+                            label="Mật khẩu"
+                            name="password"
+                            rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
+                        >
+                            <Input.Password autoComplete="current-password" />
+                        </Form.Item>
+                    )}
                     <Form.Item
                         label="Email"
                         name="email"

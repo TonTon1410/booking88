@@ -10,12 +10,19 @@ const PasswordRecovery = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://157.230.43.225:8080/swagger-ui/index.html#/authentication-api/forgotpasswordz', { email });
+      const response = await axios.post('http://157.230.43.225:8080/forgot-password', { email });
       console.log('Email submitted:', response.data);
-      // Navigate to the reset password page
-      navigate('/reset-password');
+
+      // Kiểm tra phản hồi từ API để chắc chắn rằng token tồn tại
+      if (response.data && response.data.token) {
+        // Điều hướng đến trang đặt lại mật khẩu với token
+        navigate(`/reset-password/${response.data.token}`);
+      } else {
+        console.error('No token found in response');
+      }
     } catch (error) {
       console.error('Error submitting email:', error);
+      // Hiển thị thông báo lỗi cho người dùng nếu cần thiết
     }
   };
 
