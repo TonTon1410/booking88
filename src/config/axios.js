@@ -4,8 +4,7 @@ const baseUrl = "http://157.230.43.225:8080";
 
 const config = {
   baseUrl,
-  timeout: 3000000,
-  withCredentials: true // Added this line
+  timeout: 3000000
 };
 
 const api = axios.create(config);
