@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaInfoCircle, FaKey, FaHistory } from 'react-icons/fa';
+import { FaInfoCircle, FaEnvelope, FaHistory } from 'react-icons/fa';
 import userApi from '../../api/UserProfileApi';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,11 +10,12 @@ import { selectUser, login } from "../../redux/features/counterSlice";
 const UserProfile = () => {
     const [activeTab, setActiveTab] = useState('personalDetails');
     const user = useSelector(selectUser);
+    const [isDataFetched, setIsDataFetched] = useState(false);
 
     const [userInfo, setUserInfo] = useState({
-        name: user.name,
-        phone: user.phone,
-        email: user.email
+        name: user?.name || '',
+        phone: user?.phone || '',
+        email: user?.email || ''
     });
 
     const [bookingHistory, setBookingHistory] = useState([]);
@@ -25,9 +26,9 @@ const UserProfile = () => {
         const fetchUserInfo = async () => {
             if (!userId) {
                 setUserInfo({
-                    name: user.name,
-                    phone: user.phone,
-                    email: user.email
+                    name: user?.name || '',
+                    phone: user?.phone || '',
+                    email: user?.email || ''
                 });
                 return;
             }
@@ -59,11 +60,12 @@ const UserProfile = () => {
             }
         };
 
-        if (userId) {
+        if (userId && !isDataFetched) {
             fetchUserInfo();
             fetchBookingHistory();
+            setIsDataFetched(true);
         }
-    }, [userId, user, dispatch]);
+    }, [userId, user, dispatch, isDataFetched]);
 
     const handleTabChange = (tab) => setActiveTab(tab);
 
@@ -85,31 +87,22 @@ const UserProfile = () => {
             toast.success('Thông tin cá nhân đã được cập nhật thành công!');
         } catch (error) {
             console.error('Failed to update user info:', error);
-            toast.error('Cập nhật thông tin thất bại. Vui lòng thử lại.');
+            toast.error('Cập nhật thông tin thất bại. Vui lòng thử nhập Email hoặc Số điện thoại khác.');
         }
     };
 
-    const handlePasswordChange = async (e) => {
+    const handleForgotPasswordSubmit = async (e) => {
         e.preventDefault();
-        if (!userId) {
-            toast.error('User ID is not available');
+        if (!userInfo.email) {
+            toast.error('Email is not available');
             return;
         }
-        const oldPassword = e.target.oldPassword.value;
-        const newPassword = e.target.newPassword.value;
-        const confirmPassword = e.target.confirmPassword.value;
-
-        if (newPassword !== confirmPassword) {
-            toast.error('Mật khẩu mới và xác nhận mật khẩu không khớp.');
-            return;
-        }
-
         try {
-            await userApi.changePassword(userId, { oldPassword, newPassword });
-            toast.success('Mật khẩu đã được thay đổi thành công!');
+            await userApi.forgotPassword(userInfo.email);
+            toast.success('Yêu cầu đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra email của bạn.');
         } catch (error) {
-            console.error('Failed to change password:', error);
-            toast.error('Đổi mật khẩu thất bại. Vui lòng thử lại.');
+            console.error('Failed to request password reset:', error);
+            toast.error('Yêu cầu đặt lại mật khẩu thất bại. Vui lòng thử lại.');
         }
     };
 
@@ -120,8 +113,8 @@ const UserProfile = () => {
                 <button className={`nav-link ${activeTab === 'personalDetails' ? 'active' : ''}`} onClick={() => handleTabChange('personalDetails')}>
                     <FaInfoCircle /> Thông tin tài khoản
                 </button>
-                <button className={`nav-link ${activeTab === 'changePassword' ? 'active' : ''}`} onClick={() => handleTabChange('changePassword')}>
-                    <FaKey /> Đổi mật khẩu
+                <button className={`nav-link ${activeTab === 'forgotPassword' ? 'active' : ''}`} onClick={() => handleTabChange('forgotPassword')}>
+                    <FaEnvelope /> Đặt lại mật khẩu
                 </button>
                 <button className={`nav-link ${activeTab === 'bookingHistory' ? 'active' : ''}`} onClick={() => handleTabChange('bookingHistory')}>
                     <FaHistory /> Lịch sử đặt lịch
@@ -150,23 +143,19 @@ const UserProfile = () => {
                     </div>
                 )}
 
-                {activeTab === 'changePassword' && (
+                {activeTab === 'forgotPassword' && (
                     <div className="account-section active">
-                        <h2>Đổi mật khẩu</h2>
-                        <form onSubmit={handlePasswordChange}>
+                        <h2>Đặt lại mật khẩu</h2>
+                        <form onSubmit={handleForgotPasswordSubmit}>
                             <div className="form-group">
-                                <label>Mật khẩu cũ</label>
-                                <input type="password" name="oldPassword" />
+                                <label>Email của bạn</label>
+                                <input
+                                    type="email"
+                                    value={userInfo.email}
+                                    disabled
+                                />
                             </div>
-                            <div className="form-group">
-                                <label>Mật khẩu mới</label>
-                                <input type="password" name="newPassword" />
-                            </div>
-                            <div className="form-group">
-                                <label>Xác nhận mật khẩu mới</label>
-                                <input type="password" name="confirmPassword" />
-                            </div>
-                            <button type="submit">Đổi mật khẩu</button>
+                            <button type="submit">Gửi yêu cầu</button>
                         </form>
                     </div>
                 )}
@@ -183,16 +172,6 @@ const UserProfile = () => {
                                     <th>Số tiền</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                {bookingHistory.map((booking, index) => (
-                                    <tr key={index}>
-                                        <td>{booking.date}</td>
-                                        <td>{booking.court}</td>
-                                        <td>{`${booking.startTime} - ${booking.endTime}`}</td>
-                                        <td>{booking.amount}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
                         </table>
                     </div>
                 )}
