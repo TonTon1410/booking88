@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ProfileOutlined, HeartOutlined, UserOutlined, BarChartOutlined, PlusOutlined, EditOutlined, TeamOutlined } from "@ant-design/icons";
+import { HeartOutlined, UserOutlined, BarChartOutlined, PlusOutlined, EditOutlined, TeamOutlined } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Footer } from "antd/es/layout/layout";
 import { Link, Outlet, useLocation } from "react-router-dom";
@@ -30,7 +30,6 @@ const Dashboard = () => {
     // Định nghĩa các mục menu dựa trên vai trò của người dùng
     if (role === "ADMIN") {
       setItems([
-        getItem("Hồ sơ", "UserProfile", <ProfileOutlined />),
         getItem("Cập Nhật Sân", "update-field", <EditOutlined />),
         getItem("Quản lý Nhân Viên", "staffs", <UserOutlined />),
         getItem("Thống kê", "statistics", <BarChartOutlined />),
