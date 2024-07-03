@@ -58,7 +58,7 @@ const Navbar = () => {
               </a>
             </li>
             <li className="navItem">
-              <a onClick={handleHomeClick} className="navLink" style={{ cursor: "pointer" }}>
+              <a href="/News" className="navLink" style={{ cursor: "pointer" }}>
                 Bản Tin
               </a>
             </li>

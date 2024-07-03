@@ -42,6 +42,7 @@ const QuanLyNhanVien = () => {
                     name: values.name,
                     phone: values.phone,
                     email: values.email,
+                    password: values.password,
                 };
                 const response = await api.post('/add-staff', newStaff);
                 setData([...data, response.data]);
@@ -81,7 +82,7 @@ const QuanLyNhanVien = () => {
 
     const fetchData = async () => {
         try {
-            const staffResponse = await api.get('/get-all-staff');
+            const staffResponse = await api.get('/getAllStaff');
             setData(staffResponse.data);
         } catch (error) {
             message.error('Lỗi khi lấy danh sách nhân viên');
