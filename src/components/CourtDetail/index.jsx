@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Row, Col, Button, Select, Input, DatePicker, Modal } from 'antd';
+import api from '../../config/axios';
 import "../CourtDetail/Index.css";
 const { Option } = Select;
 
@@ -21,23 +22,32 @@ const CourtDetails = () => {
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedDay, setSelectedDay] = useState(null);
   const [promoCode, setPromoCode] = useState("");
-  const [bookedSlots] = useState([]);
+  const [bookedSlots, setBookedSlots] = useState([]);
+  const [slotTimes, setSlotTimes] = useState([]);
+  const [slotPrices, setSlotPrices] = useState([]);
+  const [slotPrice, setSlotPrice] = useState([]); // Default price if not fetched
 
-  const fixedTimes = [
-    "10:00 - 11:00",
-    "11:00 - 12:00",
-    "12:00 - 13:00",
-    "13:00 - 14:00",
-    "14:00 - 15:00",
-    "15:00 - 16:00",
-    "16:00 - 17:00",
-    "17:00 - 18:00",
-    "18:00 - 19:00",
-    "19:00 - 20:00",
-    "20:00 - 21:00",
-  ];
+  useEffect(() => {
+    // Fetch slot times and prices from API
+    const fetchSlotData = async () => {
+      try {
+        const response = await api.get("/location-api/getAllClub"); // Replace with your API endpoint
+        const slotsData = response.data.flatMap(item => item.courtSlots.flatMap(cs => cs.slots));
+        const times = slotsData.map(slot => slot.time);
+        const prices = slotsData.map(slot => slot.price);
 
-  const slotPrice = 70000; // Fixed amount for each slot
+        setSlotTimes(times);
+        setSlotPrices(prices);
+
+        if (prices.length > 0) {
+          setSlotPrice(prices[0]); // Assuming price is the same for all slots, otherwise handle accordingly
+        }
+      } catch (error) {
+        console.error('Error fetching slot data:', error);
+      }
+    };
+    fetchSlotData();
+  }, []);
 
   if (!court) {
     return <div>Không tìm thấy thông tin sân</div>;
@@ -50,7 +60,7 @@ const CourtDetails = () => {
         selectedDate: selectedDay,
         selectedSlots,
         totalAmount: selectedSlots.length * slotPrice,
-        selectedTimes: selectedSlots.map(slot => fixedTimes[slot]),
+        selectedTimes: selectedSlots.map(slot => slotTimes[slot]),
       };
       navigate("/payment", { state: bookingInfo });
     }
@@ -79,10 +89,9 @@ const CourtDetails = () => {
   const renderTimeslots = () => {
     const now = new Date();
 
-    return fixedTimes.map((time, index) => {
-      const [startHour] = time.split(' - ')[0].split(':').map(Number);
+    return slotTimes.map((time, index) => {
       const slotTime = new Date(selectedDay);
-      slotTime.setHours(startHour);
+      slotTime.setHours(time);
       slotTime.setMinutes(0);
       slotTime.setSeconds(0);
 
@@ -108,7 +117,7 @@ const CourtDetails = () => {
           } ${isPast || isBooked ? "bg-gray-300 cursor-not-allowed" : "cursor-pointer"}`}
           onClick={handleClick}
         >
-          <p className="text-center">{time} - 70k</p>
+          <p className="text-center">{time} - {slotPrices[index]} VNĐ</p>
           {isBooked && <p className="text-red-600 text-center">Đã đặt</p>}
         </div>
       );
@@ -177,7 +186,7 @@ const CourtDetails = () => {
                 <div className="mb-4">
                   <label className="block mb-2">Chọn giờ chơi cố định</label>
                   <div className="flex flex-wrap">
-                    {fixedTimes.map((time, index) => (
+                    {slotTimes.map((time, index) => (
                       <Button
                         key={index}
                         type={selectedTime === time ? "primary" : "default"}
@@ -226,7 +235,7 @@ const CourtDetails = () => {
                       onChange={(value) => setSelectedTime(value)}
                     >
                       <Option value="">Chọn giờ</Option>
-                      {fixedTimes.map((time, index) => (
+                      {slotTimes.map((time, index) => (
                         <Option key={index} value={time}>
                           {time}
                         </Option>

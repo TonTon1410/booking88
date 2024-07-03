@@ -1,25 +1,40 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
+import api from "../../config/axios";
 import './PasswordRecovery.scss';
 
 const PasswordReset = () => {
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const { token } = useParams(); // Lấy token từ URL params
+  const navigate = useNavigate(); // Use navigate to redirect
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      setError('* Mật khẩu không khớp.');
+
+    if (!token) {
+      setError('Token is missing.');
       return;
     }
 
     try {
-      const response = await axios.post('http://157.230.43.225:8080/reset-password', { password, token });
+      const response = await api.post(
+        '/reset-password',
+        { 
+          account: {
+            password: password,
+            token: token
+          }
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
       console.log('Password reset successful:', response.data);
       setError(''); // Xóa lỗi nếu đặt lại mật khẩu thành công
+      navigate('/login'); // Redirect to login page after successful password reset
     } catch (error) {
       console.error('Error resetting password:', error);
       setError('Có lỗi xảy ra khi đặt lại mật khẩu.');
@@ -38,16 +53,6 @@ const PasswordReset = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <div className="input-group">
-            <label htmlFor="confirmPassword">Xác nhận mật khẩu mới *</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
           </div>
