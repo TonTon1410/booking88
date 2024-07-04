@@ -17,6 +17,8 @@ import UpdateFieldList from '../Dashboard/UpdateFieldList.jsx';
 import ClubStaffManageFields from '../Dashboard/ClubStaffManageFields.jsx';
 import Statistics from '../Dashboard/Statistics.jsx'; // Thêm đường dẫn tới component Statistics
 import AccountList from '../Dashboard/AccountList.jsx';
+import News from '../components/News/News.jsx';
+import Contact from '../components/Contact/Contact.jsx';
 
 const router = createBrowserRouter([
   {
@@ -44,10 +46,6 @@ const router = createBrowserRouter([
           {
             path: 'staffs',
             element: <ManageStaff />,
-          },
-          {
-            path: 'UserProfile',
-            element: <UserProfile />,
           },
           {
             path: 'create-new-field',
@@ -96,10 +94,17 @@ const router = createBrowserRouter([
         path: "court-details",
         element: <CourtDetails />,
       },
-
       {
         path: "payment",
         element: <Payment />,
+      },
+      {
+        path: "News",
+        element: <News />,
+      },
+      {
+        path: "Contact",
+        element: <Contact />,
       },
       {
         path: "*",
