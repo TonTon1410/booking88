@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Form, Input, message, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import api from '../config/axios';
-import { getBase64 } from '../Dashboard/utils.jsx';
+import uploadFile from '../assets/hook/uploadFile.js';
 
 const CreateNewField = () => {
   const [form] = Form.useForm();
@@ -10,10 +10,8 @@ const CreateNewField = () => {
 
   const onFinish = async (values) => {
     try {
-      // Convert image files to base64
-      const imagesBase64 = await Promise.all(
-        imageFileList.map((file) => getBase64(file.originFileObj))
-      );
+      // Upload image files and get their URLs
+      const imagesURLs = imageFileList.map(file => file.url);
 
       const clubRequest = {
         name: values.name,
@@ -22,12 +20,12 @@ const CreateNewField = () => {
         hotline: values.hotline,
         status: "ACTIVE",
         price: values.price || "0", // Assuming price is required and defaulting to "0"
-        images: imagesBase64,
+        images: imagesURLs,
       };
 
       console.log('Sending request:', clubRequest); // Log request for debugging
 
-      const response = await api.post("/createNewClub", clubRequest);
+      await api.post("/createNewClub", clubRequest);
 
       message.success('Thêm sân thành công');
       form.resetFields();
@@ -42,8 +40,22 @@ const CreateNewField = () => {
     console.log('Failed:', errorInfo);
   };
 
-  const handleImageChange = ({ fileList }) => {
-    setImageFileList(fileList);
+  const handleImageChange = async ({ fileList }) => {
+    const updatedFileList = await Promise.all(
+      fileList.map(async (item) => {
+        if (item.url) {
+          return item;
+        }
+        const imageUrl = await uploadFile(item.originFileObj);
+        return {
+          ...item,
+          url: imageUrl,
+          thumbUrl: imageUrl,
+          status: 'done'
+        };
+      })
+    );
+    setImageFileList(updatedFileList);
   };
 
   return (

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import api from '../config/axios';
 import { UploadOutlined } from '@ant-design/icons';
 import { getBase64 } from '../Dashboard/utils.jsx';
+import uploadFile from '../assets/hook/uploadFile.js';
 
 const UpdateFieldList = () => {
   const [fields, setFields] = useState([]);
@@ -116,8 +117,12 @@ const UpdateFieldList = () => {
     }
   };
 
-  const handleImageChange = ({ fileList }) => {
-    setImageFileList(fileList);
+  const handleImageChange =  ({ fileList }) => {
+  
+    fileList.map(async (item)=>{
+      const image = await uploadFile(item.originFileObj)
+      setImageFileList([...imageFileList,image])
+    })
   };
 
   const columns = [
@@ -294,7 +299,7 @@ const UpdateFieldList = () => {
           >
             <Upload
               listType="picture"
-              fileList={imageFileList}
+              urlList={imageFileList}
               onChange={handleImageChange}
               beforeUpload={() => false}
               accept="image/*"
@@ -319,8 +324,6 @@ const EditableCell = ({
   dataIndex,
   title,
   inputType,
-  record,
-  index,
   children,
   ...restProps
 }) => {
