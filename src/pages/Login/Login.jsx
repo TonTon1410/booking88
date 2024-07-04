@@ -15,7 +15,6 @@ import { login } from "../../redux/features/counterSlice";
 import { Form, Input, Button, Typography } from "antd";
 
 const clientId = "YOUR_GOOGLE_CLIENT_ID"; 
-
 const { Title, Text } = Typography;
 
 const Login = () => {
@@ -28,6 +27,9 @@ const Login = () => {
     const { email, password } = values;
     try {
       const res = await api.post("/login", { email, password });
+      const token = res.data.token;
+      // Lưu token vào localStorage
+      localStorage.setItem("token", token);
       dispatch(login(res.data));
       toast.success("Đăng nhập thành công! Đang chuyển đến trang chính...");
       setTimeout(() => {
