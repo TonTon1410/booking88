@@ -11,7 +11,15 @@ const CreateNewField = () => {
   const onFinish = async (values) => {
     try {
       // Upload image files and get their URLs
-      const imagesURLs = imageFileList.map(file => file.url);
+      const imagesURLs = await Promise.all(
+        imageFileList.map(async (file) => {
+          if (!file.url) {
+            const imageUrl = await uploadFile(file.originFileObj);
+            return imageUrl;
+          }
+          return file.url;
+        })
+      );
 
       const clubRequest = {
         name: values.name,
@@ -20,7 +28,7 @@ const CreateNewField = () => {
         hotline: values.hotline,
         status: "ACTIVE",
         price: values.price || "0", // Assuming price is required and defaulting to "0"
-        images: imagesURLs,
+        photo: imagesURLs[0],
       };
 
       console.log('Sending request:', clubRequest); // Log request for debugging
@@ -43,16 +51,16 @@ const CreateNewField = () => {
   const handleImageChange = async ({ fileList }) => {
     const updatedFileList = await Promise.all(
       fileList.map(async (item) => {
-        if (item.url) {
-          return item;
+        if (item.originFileObj && !item.url) {
+          const imageUrl = await uploadFile(item.originFileObj);
+          return {
+            ...item,
+            url: imageUrl,
+            thumbUrl: imageUrl,
+            status: 'done'
+          };
         }
-        const imageUrl = await uploadFile(item.originFileObj);
-        return {
-          ...item,
-          url: imageUrl,
-          thumbUrl: imageUrl,
-          status: 'done'
-        };
+        return item;
       })
     );
     setImageFileList(updatedFileList);

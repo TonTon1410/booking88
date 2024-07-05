@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import api from "../../config/axios";
+import api from '../../config/axios';
 import './PasswordRecovery.scss';
 
 const PasswordReset = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { token } = useParams(); // Lấy token từ URL params
-  const navigate = useNavigate(); // Use navigate to redirect
+  const navigate = useNavigate(); // Dùng navigate để điều hướng
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,10 +21,8 @@ const PasswordReset = () => {
       const response = await api.post(
         '/reset-password',
         { 
-          account: {
-            password: password,
-            token: token
-          }
+          password: password,
+          token: token
         },
         {
           headers: {
@@ -34,7 +32,7 @@ const PasswordReset = () => {
       );
       console.log('Password reset successful:', response.data);
       setError(''); // Xóa lỗi nếu đặt lại mật khẩu thành công
-      navigate('/login'); // Redirect to login page after successful password reset
+      navigate('/login'); // Điều hướng đến trang đăng nhập sau khi đặt lại mật khẩu thành công
     } catch (error) {
       console.error('Error resetting password:', error);
       setError('Có lỗi xảy ra khi đặt lại mật khẩu.');

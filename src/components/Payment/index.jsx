@@ -12,7 +12,7 @@ const OrderForm = () => {
   const [responseData, setResponseData] = useState(null);
 
   const handleSubmit = async () => {
-    try {
+    try {   1 
       const response = await api.post(`/submitOrder?amount=${totalAmount}&orderInfo=${orderInfo}`);
       setResponseData(response.data);
       console.log("Form submitted successfully:", responseData);

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Row, Col, Button, Select, Input, DatePicker, Modal } from 'antd';
+import { getDownloadURL, ref } from "firebase/storage";
+import { storage } from "../../config/firebase";
 import api from '../../config/axios';
 import "../CourtDetail/Index.css";
 const { Option } = Select;
@@ -26,12 +28,13 @@ const CourtDetails = () => {
   const [slotTimes, setSlotTimes] = useState([]);
   const [slotPrices, setSlotPrices] = useState([]);
   const [slotPrice, setSlotPrice] = useState([]); // Default price if not fetched
+  const [imageSrc, setImageSrc] = useState(null);
 
   useEffect(() => {
     // Fetch slot times and prices from API
     const fetchSlotData = async () => {
       try {
-        const response = await api.get("/location-api/getAllClub"); // Replace with your API endpoint
+        const response = await api.get("/getAllClub"); // Replace with your API endpoint
         const slotsData = response.data.flatMap(item => item.courtSlots.flatMap(cs => cs.slots));
         const times = slotsData.map(slot => slot.time);
         const prices = slotsData.map(slot => slot.price);
@@ -46,8 +49,22 @@ const CourtDetails = () => {
         console.error('Error fetching slot data:', error);
       }
     };
+
+    const fetchImage = async () => {
+      try {
+        const imageRef = ref(storage, court.image); // court.image là tên file trên Firebase Storage
+        const imageUrl = await getDownloadURL(imageRef);
+        setImageSrc(imageUrl);
+      } catch (error) {
+        console.error("Error fetching image from Firebase Storage:", error);
+      }
+    };
+
     fetchSlotData();
-  }, []);
+    if (court.image) {
+      fetchImage();
+    }
+  }, [court.image]);
 
   if (!court) {
     return <div>Không tìm thấy thông tin sân</div>;
@@ -129,8 +146,8 @@ const CourtDetails = () => {
       <Row gutter={[16, 16]}>
         <Col xs={24} md={12}>
           <div className="court-card">
-            {court.image ? (
-              <img src={`data:image/jpeg;base64,${court.image}`} alt={court.name} />
+            {imageSrc ? (
+              <img src={imageSrc} alt={court.name} />
             ) : (
               <p>No image available</p>
             )}

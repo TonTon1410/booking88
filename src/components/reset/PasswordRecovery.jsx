@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../config/axios';
 import './PasswordRecovery.scss';
 
 const PasswordRecovery = () => {
@@ -10,16 +10,11 @@ const PasswordRecovery = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://157.230.43.225:8080/forgot-password', { email });
+      const response = await api.post('/forgot-password', { email });
       console.log('Email submitted:', response.data);
 
-      // Kiểm tra phản hồi từ API để chắc chắn rằng token tồn tại
-      if (response.data && response.data.token) {
-        // Điều hướng đến trang đặt lại mật khẩu với token
-        navigate(`/reset-password/${response.data.token}`);
-      } else {
-        console.error('No token found in response');
-      }
+      // Nếu thành công, điều hướng đến trang đăng nhập
+      navigate('/login');
     } catch (error) {
       console.error('Error submitting email:', error);
       // Hiển thị thông báo lỗi cho người dùng nếu cần thiết
