@@ -13,18 +13,13 @@ const CourtList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedAddress, setSelectedAddress] = useState("");
-
   const [addresses, setAddresses] = useState([]);
 
   const courtsPerPage = 6;
 
-  const fetchData = async (address = "") => {
+  const fetchData = async () => {
     try {
-      const response = await api.get("/getAllClub", {
-        params: {
-          address,
-        },
-      });
+      const response = await api.get("/getAllClub")
       if (Array.isArray(response.data)) {
         setCourtData(response.data);
         const uniqueAddresses = [
@@ -52,7 +47,7 @@ const CourtList = () => {
     ? courtData.filter(
         (court) =>
           (court?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-           court?.address?.toLowerCase().includes(searchTerm.toLowerCase())) &&
+            court?.address?.toLowerCase().includes(searchTerm.toLowerCase())) &&
           (selectedAddress ? court?.address === selectedAddress : true)
       )
     : [];
@@ -60,7 +55,6 @@ const CourtList = () => {
   const indexOfLastCourt = currentPage * courtsPerPage;
   const indexOfFirstCourt = indexOfLastCourt - courtsPerPage;
   const currentCourts = filteredCourts.slice(indexOfFirstCourt, indexOfLastCourt);
-
 
   return (
     <div className="contentWrapper container mx-auto mb-6">

@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Row, Col, Button, Select, Input, DatePicker, Modal } from 'antd';
+import { getDownloadURL, ref } from "firebase/storage";
+import { storage } from "../../config/firebase";
+import api from '../../config/axios';
 import "../CourtDetail/Index.css";
 const { Option } = Select;
 
@@ -10,7 +13,7 @@ const CourtDetails = () => {
   const { court } = location.state || {};
 
   const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [selectedSlots, setSelectedSlots] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentWeek, setCurrentWeek] = useState(0);
   const [bookingType, setBookingType] = useState("");
@@ -21,33 +24,60 @@ const CourtDetails = () => {
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedDay, setSelectedDay] = useState(null);
   const [promoCode, setPromoCode] = useState("");
-  const [bookedSlots] = useState([]);
+  const [bookedSlots, setBookedSlots] = useState([]);
+  const [slotTimes, setSlotTimes] = useState([]);
+  const [slotPrices, setSlotPrices] = useState([]);
+  const [slotPrice, setSlotPrice] = useState([]); // Default price if not fetched
+  const [imageSrc, setImageSrc] = useState(null);
 
-  const fixedTimes = [
-    "10:00 - 11:00",
-    "11:00 - 12:00",
-    "12:00 - 13:00",
-    "13:00 - 14:00",
-    "14:00 - 15:00",
-    "15:00 - 16:00",
-    "16:00 - 17:00",
-    "17:00 - 18:00",
-    "18:00 - 19:00",
-    "19:00 - 20:00",
-    "20:00 - 21:00",
-  ];
+  useEffect(() => {
+    // Fetch slot times and prices from API
+    const fetchSlotData = async () => {
+      try {
+        const response = await api.get("/getAllClub"); // Replace with your API endpoint
+        const slotsData = response.data.flatMap(item => item.courtSlots.flatMap(cs => cs.slots));
+        const times = slotsData.map(slot => slot.time);
+        const prices = slotsData.map(slot => slot.price);
+
+        setSlotTimes(times);
+        setSlotPrices(prices);
+
+        if (prices.length > 0) {
+          setSlotPrice(prices[0]); // Assuming price is the same for all slots, otherwise handle accordingly
+        }
+      } catch (error) {
+        console.error('Error fetching slot data:', error);
+      }
+    };
+
+    const fetchImage = async () => {
+      try {
+        const imageRef = ref(storage, court.image); // court.image là tên file trên Firebase Storage
+        const imageUrl = await getDownloadURL(imageRef);
+        setImageSrc(imageUrl);
+      } catch (error) {
+        console.error("Error fetching image from Firebase Storage:", error);
+      }
+    };
+
+    fetchSlotData();
+    if (court.image) {
+      fetchImage();
+    }
+  }, [court.image]);
 
   if (!court) {
     return <div>Không tìm thấy thông tin sân</div>;
   }
 
   const handleBooking = () => {
-    if (selectedDay && selectedSlot !== null) {
+    if (selectedDay && selectedSlots.length > 0) {
       const bookingInfo = {
         court,
-        selectedDate,
-        selectedTime: fixedTimes[selectedSlot],
-        amount: 70000, // Fixed amount for the booking
+        selectedDate: selectedDay,
+        selectedSlots,
+        totalAmount: selectedSlots.length * slotPrice,
+        selectedTimes: selectedSlots.map(slot => slotTimes[slot]),
       };
       navigate("/payment", { state: bookingInfo });
     }
@@ -55,7 +85,7 @@ const CourtDetails = () => {
 
   const openModal = (date) => {
     setSelectedDay(date);
-    setSelectedSlot(null); // Reset selected slot when a new date is selected
+    setSelectedSlots([]); // Reset selected slots when a new date is selected
     setIsModalOpen(true);
   };
 
@@ -74,18 +104,37 @@ const CourtDetails = () => {
   const weekDates = getWeekDates(currentWeek);
 
   const renderTimeslots = () => {
-    return fixedTimes.map((time, index) => {
-      const isPast = selectedDay && (selectedDay < new Date());
+    const now = new Date();
+
+    return slotTimes.map((time, index) => {
+      const slotTime = new Date(selectedDay);
+      slotTime.setHours(time);
+      slotTime.setMinutes(0);
+      slotTime.setSeconds(0);
+
+      const isPast = selectedDay && (selectedDay < new Date(now.setHours(0, 0, 0, 0)) || (selectedDay.toDateString() === now.toDateString() && slotTime <= now));
       const isBooked = bookedSlots.some(slot => slot.date.toDateString() === selectedDay.toDateString() && slot.time === time);
+      const isSelected = selectedSlots.includes(index);
+
+      const handleClick = () => {
+        if (!isPast && !isBooked) {
+          if (isSelected) {
+            setSelectedSlots(selectedSlots.filter(slot => slot !== index));
+          } else {
+            setSelectedSlots([...selectedSlots, index]);
+          }
+        }
+      };
+
       return (
         <div
           key={index}
           className={`m-2 p-2 border rounded-lg shadow-lg ${
-            selectedSlot === index ? "bg-blue-300" : "bg-blue-100"
+            isSelected ? "bg-blue-300" : "bg-blue-100"
           } ${isPast || isBooked ? "bg-gray-300 cursor-not-allowed" : "cursor-pointer"}`}
-          onClick={() => !isPast && !isBooked && setSelectedSlot(index)}
+          onClick={handleClick}
         >
-          <p className="text-center">{time} - 70k</p>
+          <p className="text-center">{time} - {slotPrices[index]} VNĐ</p>
           {isBooked && <p className="text-red-600 text-center">Đã đặt</p>}
         </div>
       );
@@ -96,19 +145,19 @@ const CourtDetails = () => {
     <div className="container mx-auto my-8">
       <Row gutter={[16, 16]}>
         <Col xs={24} md={12}>
-        <div className="court-card">
-      {court.image ? (
-        <img src={`data:image/jpeg;base64,${court.image}`} alt={court.name} />
-      ) : (
-        <p>No image available</p>
-      )}
-    </div>
+          <div className="court-card">
+            {imageSrc ? (
+              <img src={imageSrc} alt={court.name} />
+            ) : (
+              <p>No image available</p>
+            )}
+          </div>
         </Col>
         <Col xs={24} md={12}>
           <h1 className="text-4xl font-bold mb-4">{court.name}</h1>
           <p className="text-gray-700 text-base mb-2">Khu vực: {court.address}</p>
-          <p className="text-gray-700 text-base mb-2">Miêu Tả: {court.description}</p>
-          <p className="text-gray-700 text-base mb-2">hotline: {court.hotline}</p>
+          <p className="text-gray-700 text-base mb-2">Miêu tả: {court.description}</p>
+          <p className="text-gray-700 text-base mb-2">Hotline: {court.hotline}</p>
           <p className="text-gray-700 text-base mb-2">Giá: {court.price} VNĐ</p>
           <div className="mb-4">
             <span className="text-lg font-semibold">Giờ hoạt động:</span>
@@ -154,7 +203,7 @@ const CourtDetails = () => {
                 <div className="mb-4">
                   <label className="block mb-2">Chọn giờ chơi cố định</label>
                   <div className="flex flex-wrap">
-                    {fixedTimes.map((time, index) => (
+                    {slotTimes.map((time, index) => (
                       <Button
                         key={index}
                         type={selectedTime === time ? "primary" : "default"}
@@ -203,7 +252,7 @@ const CourtDetails = () => {
                       onChange={(value) => setSelectedTime(value)}
                     >
                       <Option value="">Chọn giờ</Option>
-                      {fixedTimes.map((time, index) => (
+                      {slotTimes.map((time, index) => (
                         <Option key={index} value={time}>
                           {time}
                         </Option>
@@ -287,13 +336,20 @@ const CourtDetails = () => {
           </Button>
         </div>
         <Row gutter={[16, 16]}>
-          {weekDates.map((date, index) => (
-            <Col key={index} xs={24} md={12} lg={8} xl={4}>
-              <h4 className="font-bold cursor-pointer" onClick={() => openModal(date)}>
-                {date.toLocaleDateString()}
-              </h4>
-            </Col>
-          ))}
+          {weekDates.map((date, index) => {
+            const now = new Date();
+            const isPast = date < now.setHours(0, 0, 0, 0);
+            return (
+              <Col key={index} xs={24} md={12} lg={8} xl={4}>
+                <h4 
+                  className={`font-bold cursor-pointer ${isPast ? 'text-gray-500' : ''}`} 
+                  onClick={() => !isPast && openModal(date)}
+                >
+                  {date.toLocaleDateString()}
+                </h4>
+              </Col>
+            );
+          })}
         </Row>
       </div>
 
@@ -304,6 +360,9 @@ const CourtDetails = () => {
         onOk={handleBooking}
       >
         {selectedDay && renderTimeslots()}
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold">Tổng tiền: {selectedSlots.length * slotPrice} VNĐ</h3>
+        </div>
       </Modal>
     </div>
   );
