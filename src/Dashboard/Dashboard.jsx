@@ -30,14 +30,23 @@ const Dashboard = () => {
     // Định nghĩa các mục menu dựa trên vai trò của người dùng
     if (role === "ADMIN") {
       setItems([
+        getItem("Tạo Sân Mới", "create-new-field", <PlusOutlined />),
         getItem("Cập Nhật Sân", "update-field", <EditOutlined />),
         getItem("Quản lý Nhân Viên", "staffs", <UserOutlined />),
+        getItem("Quản lý Tài khoản", "account-list", <TeamOutlined />),
         getItem("Thống kê", "statistics", <BarChartOutlined />),
         getItem("Quản lý Tài khoản", "account-list", <TeamOutlined />), // Thêm mục này
+
       ]);
     } else if (role === "CLUB_STAFF") {
       setItems([
         getItem("Quản lý Sân", "manage-fields", <HeartOutlined />),
+      ]);
+    }else if (role === "CLUB_MANAGER") {
+      setItems([
+        getItem("Tạo Sân Mới", "create-new-field", <PlusOutlined />),
+        getItem("Cập Nhật Sân", "update-field", <EditOutlined />),
+        getItem("Quản lý Nhân Viên", "staffs", <UserOutlined />),
       ]);
     }
   }, [role]);

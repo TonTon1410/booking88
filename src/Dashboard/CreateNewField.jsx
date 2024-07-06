@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Button, Form, Input, message, Upload } from 'antd';
+import { Button, Form, Input, message, Upload, TimePicker } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import api from '../config/axios';
-import uploadFile from '../assets/hook/uploadFile.js';
+import uploadFile from '../assets/hook/uploadFile';
 
 const CreateNewField = () => {
   const [form] = Form.useForm();
@@ -10,7 +10,6 @@ const CreateNewField = () => {
 
   const onFinish = async (values) => {
     try {
-      // Upload image files and get their URLs
       const imagesURLs = await Promise.all(
         imageFileList.map(async (file) => {
           if (!file.url) {
@@ -22,16 +21,13 @@ const CreateNewField = () => {
       );
 
       const clubRequest = {
-        name: values.name,
-        description: values.description,
-        address: values.address,
-        hotline: values.hotline,
+        ...values,
+        openTime: values.openTime.format('HH:mm'),
+        closeTime: values.closeTime.format('HH:mm'),
         status: "ACTIVE",
-        price: values.price || "0", // Assuming price is required and defaulting to "0"
+        price: values.price || "0",
         photo: imagesURLs[0],
       };
-
-      console.log('Sending request:', clubRequest); // Log request for debugging
 
       await api.post("/createNewClub", clubRequest);
 
@@ -42,10 +38,6 @@ const CreateNewField = () => {
       message.error('Lỗi khi thêm sân');
       console.error('Error creating new field:', error.response ? error.response.data : error.message);
     }
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
   };
 
   const handleImageChange = async ({ fileList }) => {
@@ -73,7 +65,6 @@ const CreateNewField = () => {
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
       <Form.Item
@@ -83,7 +74,6 @@ const CreateNewField = () => {
       >
         <Input />
       </Form.Item>
-
       <Form.Item
         label="Mô tả"
         name="description"
@@ -91,7 +81,6 @@ const CreateNewField = () => {
       >
         <Input />
       </Form.Item>
-
       <Form.Item
         label="Địa chỉ"
         name="address"
@@ -99,7 +88,6 @@ const CreateNewField = () => {
       >
         <Input />
       </Form.Item>
-
       <Form.Item
         label="Hotline"
         name="hotline"
@@ -107,7 +95,6 @@ const CreateNewField = () => {
       >
         <Input />
       </Form.Item>
-
       <Form.Item
         label="Giá"
         name="price"
@@ -115,7 +102,20 @@ const CreateNewField = () => {
       >
         <Input />
       </Form.Item>
-
+      <Form.Item
+        label="Giờ mở cửa"
+        name="openTime"
+        rules={[{ required: true, message: 'Vui lòng chọn giờ mở cửa!' }]}
+      >
+        <TimePicker format="HH:mm" />
+      </Form.Item>
+      <Form.Item
+        label="Giờ đóng cửa"
+        name="closeTime"
+        rules={[{ required: true, message: 'Vui lòng chọn giờ đóng cửa!' }]}
+      >
+        <TimePicker format="HH:mm" />
+      </Form.Item>
       <Form.Item
         label="Hình ảnh"
         name="images"
@@ -130,7 +130,6 @@ const CreateNewField = () => {
           <Button icon={<UploadOutlined />}>Tải ảnh lên</Button>
         </Upload>
       </Form.Item>
-
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
         <Button type="primary" htmlType="submit">
           Tạo Sân

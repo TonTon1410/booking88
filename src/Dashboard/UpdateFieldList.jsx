@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Input, Button, message, Form, Modal, Upload } from 'antd';
-import PropTypes from 'prop-types';
-import api from '../config/axios';
+import { Table, Input, Button, message, Form, Modal, Upload, TimePicker } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { getBase64 } from '../Dashboard/utils.jsx';
 import uploadFile from '../assets/hook/uploadFile.js';
 import CreateNewField from './CreateNewField.jsx';
+import api from '../config/axios';
+import uploadFile from '../assets/hook/uploadFile';
+import dayjs from 'dayjs';
 
 const UpdateFieldList = () => {
   const [fields, setFields] = useState([]);
@@ -26,7 +27,6 @@ const UpdateFieldList = () => {
         console.error('Error fetching fields:', error);
       }
     };
-
     fetchFields();
   }, []);
 
@@ -35,6 +35,8 @@ const UpdateFieldList = () => {
   const edit = (record) => {
     form.setFieldsValue({
       ...record,
+      openTime: record.openTime ? dayjs(record.openTime, 'HH:mm') : null,
+      closeTime: record.closeTime ? dayjs(record.closeTime, 'HH:mm') : null,
     });
     setCurrentRecord(record);
     setIsModalOpen(true);
@@ -45,8 +47,8 @@ const UpdateFieldList = () => {
         uid: index,
         name: `image${index}`,
         status: 'done',
-        url: img.startsWith("data:image/") ? img : `data:image/jpeg;base64,${img}`,
-        thumbUrl: img.startsWith("data:image/") ? img : `data:image/jpeg;base64,${img}`,
+        url: img,
+        thumbUrl: img,
       })) : []
     );
   };
@@ -64,36 +66,40 @@ const UpdateFieldList = () => {
       const newData = [...fields];
       const index = newData.findIndex((item) => locationId === item.locationId);
 
-      const imagesBase64 = await Promise.all(
-        imageFileList.map((file) => {
-          if (file.originFileObj) {
-            return getBase64(file.originFileObj);
-          } else {
-            return file.url;
+      const imagesURLs = await Promise.all(
+        imageFileList.map(async (file) => {
+          if (!file.url) {
+            const imageUrl = await uploadFile(file.originFileObj);
+            return imageUrl;
           }
+          return file.url;
         })
       );
 
       if (index > -1) {
         const item = newData[index];
-        newData.splice(index, 1, { ...item, ...row, images: imagesBase64 });
+        newData.splice(index, 1, { ...item, ...row, images: imagesURLs });
         setFields(newData);
         setEditingKey('');
 
         await api.put(`/updateClub/${locationId}`, {
           ...row,
-          images: imagesBase64,
+          images: imagesURLs,
+          openTime: row.openTime ? row.openTime.format('HH:mm') : null,
+          closeTime: row.closeTime ? row.closeTime.format('HH:mm') : null,
         });
 
         message.success('Cập nhật sân thành công');
       } else {
-        newData.push({ ...row, images: imagesBase64 });
+        newData.push({ ...row, images: imagesURLs });
         setFields(newData);
         setEditingKey('');
 
         await api.put(`/updateClub/${locationId}`, {
           ...row,
-          images: imagesBase64,
+          images: imagesURLs,
+          openTime: row.openTime ? row.openTime.format('HH:mm') : null,
+          closeTime: row.closeTime ? row.closeTime.format('HH:mm') : null,
         });
 
         message.success('Cập nhật sân thành công');
@@ -110,7 +116,7 @@ const UpdateFieldList = () => {
 
   const deleteField = async (locationId) => {
     try {
-      await api.delete(`/deleta-club/${locationId}`);
+      await api.delete(`/delete-club/${locationId}`);
       setFields(fields.filter((item) => item.locationId !== locationId));
       message.success('Xóa sân thành công');
     } catch (err) {
@@ -119,12 +125,22 @@ const UpdateFieldList = () => {
     }
   };
 
-  const handleImageChange =  ({ fileList }) => {
-  
-    fileList.map(async (item)=>{
-      const image = await uploadFile(item.originFileObj)
-      setImageFileList([...imageFileList,image])
-    })
+  const handleImageChange = async ({ fileList }) => {
+    const updatedFileList = await Promise.all(
+      fileList.map(async (item) => {
+        if (item.originFileObj && !item.url) {
+          const imageUrl = await uploadFile(item.originFileObj);
+          return {
+            ...item,
+            url: imageUrl,
+            thumbUrl: imageUrl,
+            status: 'done'
+          };
+        }
+        return item;
+      })
+    );
+    setImageFileList(updatedFileList);
   };
 
   const columns = [
@@ -132,44 +148,49 @@ const UpdateFieldList = () => {
       title: 'Tên sân',
       dataIndex: 'name',
       key: 'name',
-      editable: true,
     },
     {
       title: 'Mô tả',
       dataIndex: 'description',
       key: 'description',
-      editable: true,
     },
     {
       title: 'Địa chỉ',
       dataIndex: 'address',
       key: 'address',
-      editable: true,
     },
     {
       title: 'Hotline',
       dataIndex: 'hotline',
       key: 'hotline',
-      editable: true,
     },
     {
       title: 'Giá',
       dataIndex: 'price',
       key: 'price',
-      editable: true,
+    },
+    {
+      title: 'Giờ mở cửa',
+      dataIndex: 'openTime',
+      key: 'openTime',
+      render: (time) => time && dayjs(time, 'HH:mm').format('HH:mm'),
+    },
+    {
+      title: 'Giờ đóng cửa',
+      dataIndex: 'closeTime',
+      key: 'closeTime',
+      render: (time) => time && dayjs(time, 'HH:mm').format('HH:mm'),
     },
     {
       title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
-      editable: true,
       render: (status) => (status === 'ACTIVE' ? 'Đang hoạt động' : 'Trống'),
     },
     {
       title: 'Hình ảnh',
       dataIndex: 'images',
       key: 'images',
-      editable: true,
       render: (images) => (
         <div>
           {images && images.map((img, index) => (
@@ -179,14 +200,8 @@ const UpdateFieldList = () => {
       ),
     },
     {
-      title: 'Khuyến mãi',
-      dataIndex: 'promotions',
-      key: 'promotions',
-      editable: true,
-    },
-    {
       title: 'Hành động',
-      dataIndex: 'action',
+      key: 'action',
       render: (_, record) => {
         const editable = isEditing(record);
         return (
@@ -219,15 +234,6 @@ const UpdateFieldList = () => {
     },
   ];
 
-  const mergedColumns = columns.map((col) => {
-    if (!col.editable) {
-      return col;
-    }
-    return {
-      ...col,
-    };
-  });
-
   return (
     <>
 
@@ -246,14 +252,9 @@ const UpdateFieldList = () => {
       <Form form={form} component={false}>
         
         <Table
-          components={{
-            body: {
-              cell: EditableCell,
-            },
-          }}
           bordered
           dataSource={fields}
-          columns={mergedColumns}
+          columns={columns}
           rowClassName="editable-row"
           rowKey="locationId"
           pagination={{ onChange: cancel }}
@@ -310,12 +311,26 @@ const UpdateFieldList = () => {
             <Input type="number" />
           </Form.Item>
           <Form.Item
+            name="openTime"
+            label="Giờ mở cửa"
+            rules={[{ required: true, message: 'Vui lòng chọn giờ mở cửa!' }]}
+          >
+            <TimePicker format="HH:mm" />
+          </Form.Item>
+          <Form.Item
+            name="closeTime"
+            label="Giờ đóng cửa"
+            rules={[{ required: true, message: 'Vui lòng chọn giờ đóng cửa!' }]}
+          >
+            <TimePicker format="HH:mm" />
+          </Form.Item>
+          <Form.Item
             name="images"
             label="Hình ảnh"
           >
             <Upload
               listType="picture"
-              urlList={imageFileList}
+              fileList={imageFileList}
               onChange={handleImageChange}
               beforeUpload={() => false}
               accept="image/*"
@@ -323,52 +338,10 @@ const UpdateFieldList = () => {
               <Button icon={<UploadOutlined />}>Tải ảnh lên</Button>
             </Upload>
           </Form.Item>
-          <Form.Item
-            name="promotions"
-            label="Khuyến mãi"
-          >
-            <Input />
-          </Form.Item>
         </Form>
       </Modal>
     </>
   );
-};
-
-const EditableCell = ({
-  editing,
-  dataIndex,
-  title,
-  inputType,
-  children,
-  ...restProps
-}) => {
-  const inputNode = inputType === 'number' ? <Input type="number" /> : <Input />;
-  return (
-    <td {...restProps}>
-      {editing ? (
-        <Form.Item
-          name={dataIndex}
-          style={{ margin: 0 }}
-          rules={[{ required: true, message: `Vui lòng nhập ${title}!` }]}
-        >
-          {inputNode}
-        </Form.Item>
-      ) : (
-        children
-      )}
-    </td>
-  );
-};
-
-EditableCell.propTypes = {
-  editing: PropTypes.bool.isRequired,
-  dataIndex: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  inputType: PropTypes.string.isRequired,
-  record: PropTypes.object.isRequired,
-  index: PropTypes.number.isRequired,
-  children: PropTypes.node,
 };
 
 export default UpdateFieldList;
