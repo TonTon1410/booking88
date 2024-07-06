@@ -6,7 +6,7 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../redux/features/counterSlice";
 import './Dashboard.scss';
-
+import { FaRegMoneyBillAlt } from "react-icons/fa";
 const { Header, Content, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -24,16 +24,19 @@ const Dashboard = () => {
   const location = useLocation();
   const currentURI = location.pathname.split("/")[location.pathname.split("/").length - 1];
   const user = useSelector(selectUser);
-  const role = user?.role;
+  // const role = user?.role;
+  const role = "ADMIN";
 
   useEffect(() => {
     // Định nghĩa các mục menu dựa trên vai trò của người dùng
     if (role === "ADMIN") {
       setItems([
+        getItem("Doanh thu", "overview", <FaRegMoneyBillAlt />),
         getItem("Cập Nhật Sân", "update-field", <EditOutlined />),
         getItem("Quản lý Nhân Viên", "staffs", <UserOutlined />),
         getItem("Thống kê", "statistics", <BarChartOutlined />),
-        getItem("Quản lý Tài khoản", "account-list", <TeamOutlined />), // Thêm mục này
+        getItem("Quản lý Tài khoản", "account-list", <TeamOutlined />), 
+        getItem("Quản lý Mã Giảm Giá", "promotion", <TeamOutlined />), 
       ]);
     } else if (role === "CLUB_STAFF") {
       setItems([
