@@ -19,7 +19,7 @@ const CourtList = () => {
 
   const fetchData = async () => {
     try {
-      const response = await api.get("/getAllClub")
+      const response = await api.get("/api/location")
       if (Array.isArray(response.data)) {
         setCourtData(response.data);
         const uniqueAddresses = [
@@ -45,11 +45,11 @@ const CourtList = () => {
 
   const filteredCourts = Array.isArray(courtData)
     ? courtData.filter(
-        (court) =>
-          (court?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            court?.address?.toLowerCase().includes(searchTerm.toLowerCase())) &&
-          (selectedAddress ? court?.address === selectedAddress : true)
-      )
+      (court) =>
+        (court?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          court?.address?.toLowerCase().includes(searchTerm.toLowerCase())) &&
+        (selectedAddress ? court?.address === selectedAddress : true)
+    )
     : [];
 
   const indexOfLastCourt = currentPage * courtsPerPage;

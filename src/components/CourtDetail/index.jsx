@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Row, Col, Button, Select, Input, DatePicker, Modal, message } from 'antd';
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Row, Col, Button, Select, Input, DatePicker, Modal, Calendar, message } from 'antd';
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
 import api from '../../config/axios';
 import "../CourtDetail/Index.css";
+import moment from "moment";
+import MyCalendar from "../calendar";
 const { Option } = Select;
 
 const CourtDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { court } = location.state || {};
+  const { id } = useParams()
+  const [court, setCourt] = useState()
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedSlots, setSelectedSlots] = useState([]);
@@ -21,7 +24,7 @@ const CourtDetails = () => {
   const [months, setMonths] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [flexibleBookings, setFlexibleBookings] = useState([]);
-  const [totalHours, setTotalHours] = useState(0);
+  const [totalSlots, setTotalSlots] = useState(0);
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedDay, setSelectedDay] = useState(null);
   const [promoCode, setPromoCode] = useState("");
@@ -30,45 +33,123 @@ const CourtDetails = () => {
   const [slotPrices, setSlotPrices] = useState([]);
   const [slotPrice, setSlotPrice] = useState([]); // Default price if not fetched
   const [imageSrc, setImageSrc] = useState(null);
+  const [bookingDetails, setBookingDetails] = useState([])
+  const [selectedDays, setSelectedDays] = useState([]);
+  const [showConfirm, setShowConfirm] = useState(false)
+  const [slots, setSlots] = useState([])
+
+  const handleChange = (selectedValues) => {
+    setSelectedDays(selectedValues);
+  };
+
+  const handleDeselect = (removedValue) => {
+    setSelectedDays(selectedDays.filter(day => day !== removedValue));
+  };
 
   useEffect(() => {
     // Fetch slot times and prices from API
     const fetchSlotData = async () => {
       try {
-        const response = await api.get("/getAllClub"); // Replace with your API endpoint
-        const slotsData = response.data.flatMap(item => item.courtSlots.flatMap(cs => cs.slots));
-        const times = slotsData.map(slot => slot.time);
-        const prices = slotsData.map(slot => slot.price);
-
-        setSlotTimes(times);
-        setSlotPrices(prices);
-
-        if (prices.length > 0) {
-          setSlotPrice(prices[0]); // Assuming price is the same for all slots, otherwise handle accordingly
-        }
+        const response = await api.get(`/api/court/${id}`); // Replace with your API endpoint
+        setSlots(response.data.location.slots)
+        setCourt(response.data)
       } catch (error) {
         console.error('Error fetching slot data:', error);
       }
     };
 
-    const fetchImage = async () => {
-      try {
-        const imageRef = ref(storage, court.photo); // court.image là tên file trên Firebase Storage
-        const imageUrl = await getDownloadURL(imageRef);
-        setImageSrc(imageUrl);
-      } catch (error) {
-        console.error("Error fetching image from Firebase Storage:", error);
-      }
-    };
+    // const fetchImage = async () => {
+    //   try {
+    //     const imageRef = ref(storage, court.photo); // court.image là tên file trên Firebase Storage
+    //     const imageUrl = await getDownloadURL(imageRef);
+    //     setImageSrc(imageUrl);
+    //   } catch (error) {
+    //     console.error("Error fetching image from Firebase Storage:", error);
+    //   }
+    // };
 
     fetchSlotData();
-    if (court.photo) {
-      fetchImage();
-    }
-  }, [court.photo]);
+  }, [id]);
 
   if (!court) {
     return <div>Không tìm thấy thông tin sân</div>;
+  }
+
+  const getBookingDetailOfFixed = (days, duration, startFrom, slot) => {
+    // days = ['Monday', 'Tuesday'];
+
+    // duration = 60; // days
+
+    // startFrom = new Date('10/10/2024');
+
+    // slot = 'Test';
+
+    const bookingDetail = [];
+
+    // Function to check if a day is in the given days array
+    const isInDays = (date) => {
+      const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      return days.includes(dayNames[date.getDay()]);
+    }
+
+    for (let i = 0; i < duration; i++) {
+      const currentDate = new Date(startFrom);
+      currentDate.setDate(currentDate.getDate() + i);
+
+      if (isInDays(currentDate)) {
+        bookingDetail.push({
+          date: `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`,
+          time: getLableSlot(selectedTime),
+          slot: slot
+        });
+      }
+    }
+
+    return bookingDetail;
+  }
+
+  function getDaysDuration(startDate, durationInMonths) {
+    // Parse the start date
+    const start = new Date(startDate);
+
+    // Create a new date object for the end date
+    const end = new Date(start);
+
+    // Add the specified number of months to the end date
+    end.setMonth(end.getMonth() + durationInMonths);
+
+    // Calculate the difference in milliseconds
+    const diffInMilliseconds = end - start;
+
+    // Convert milliseconds to days
+    const millisecondsPerDay = 1000 * 60 * 60 * 24;
+    const diffInDays = Math.round(diffInMilliseconds / millisecondsPerDay);
+
+    return diffInDays;
+  }
+
+  const handleShowConfirm = () => {
+    console.log(selectedDate, selectedTime)
+
+    if (bookingType === 'now') {
+      console.log(moment(selectedDate.$d).format('MM/DD/YYYY'))
+      setBookingDetails([{
+        date: moment(selectedDate.$d).format('MM/DD/YYYY'),
+        time: getLableSlot(selectedTime)
+      }])
+    } else if (bookingType === 'flexible') {
+      setBookingDetails(flexibleBookings.map(item => ({
+        date: moment(item.date.$d).format('MM/DD/YYYY'),
+        time: getLableSlot(item.time)
+      })))
+    } else {
+      const month = getDaysDuration(startDate, Number(months))
+      setBookingDetails(getBookingDetailOfFixed(selectedDays, month, startDate, 'test'))
+    }
+
+    console.table(bookingDetails)
+
+    setShowConfirm(true);
   }
 
   const handleBooking = () => {
@@ -80,7 +161,7 @@ const CourtDetails = () => {
         totalAmount: selectedSlots.length * slotPrice,
         selectedTimes: selectedSlots.map(slot => slotTimes[slot]),
       };
-      if (bookingType === "flexible" && totalHours < 20) {
+      if (bookingType === "flexible" && totalSlots < 20) {
         message.error("Bạn phải đăng ký ít nhất 20 giờ chơi.");
         return;
       }
@@ -105,6 +186,15 @@ const CourtDetails = () => {
       return date;
     });
   };
+
+  function disabledDate(current) {
+    // Can not select days before today
+    return current && current < moment().startOf('day');
+  }
+
+  const getLableSlot = (id) => {
+    return slots.filter(item => item.id === id)[0].time
+  }
 
   const weekDates = getWeekDates(currentWeek);
 
@@ -134,9 +224,8 @@ const CourtDetails = () => {
       return (
         <div
           key={index}
-          className={`m-2 p-2 border rounded-lg shadow-lg ${
-            isSelected ? "bg-blue-300" : "bg-blue-100"
-          } ${isPast || isBooked ? "bg-gray-300 cursor-not-allowed" : "cursor-pointer"}`}
+          className={`m-2 p-2 border rounded-lg shadow-lg ${isSelected ? "bg-blue-300" : "bg-blue-100"
+            } ${isPast || isBooked ? "bg-gray-300 cursor-not-allowed" : "cursor-pointer"}`}
           onClick={handleClick}
         >
           <p className="text-center">{time} - {slotPrices[index]} VNĐ</p>
@@ -186,19 +275,23 @@ const CourtDetails = () => {
                 <Option value="">Chọn loại lịch</Option>
                 <Option value="fixed">Lịch cố định</Option>
                 <Option value="flexible">Lịch linh hoạt</Option>
+                <Option value="now">Lịch ngay</Option>
               </Select>
             </div>
+
             {bookingType === "fixed" && (
               <>
                 <div className="mb-4">
                   <label className="block mb-2">Chọn thứ</label>
                   <Select
                     className="w-full"
-                    value={dayOfWeek}
-                    onChange={(value) => setDayOfWeek(value)}
+                    mode="multiple"
+                    value={selectedDays}
+                    onChange={handleChange}
+                    onDeselect={handleDeselect}
+                    placeholder="Chọn thứ"
                     required
                   >
-                    <Option value="">Chọn thứ</Option>
                     <Option value="Monday">Thứ Hai</Option>
                     <Option value="Tuesday">Thứ Ba</Option>
                     <Option value="Wednesday">Thứ Tư</Option>
@@ -209,20 +302,21 @@ const CourtDetails = () => {
                   </Select>
                 </div>
                 <div className="mb-4">
-                  <label className="block mb-2">Chọn giờ chơi cố định</label>
-                  <div className="flex flex-wrap">
-                    {slotTimes.map((time, index) => (
-                      <Button
-                        key={index}
-                        type={selectedTime === time ? "primary" : "default"}
-                        className="m-2"
-                        onClick={() => setSelectedTime(time)}
-                      >
-                        {time}
-                      </Button>
-                    ))}
-                  </div>
+                  <label className="block mb-2">Chon slot</label>
+                  <Select
+                    className="w-100 d-block "
+                    defaultValue={"Select slot"}
+                    value={selectedTime}
+                    onChange={(value) => setSelectedTime(value)}
+                    options={slots.map(item => ({
+                      value: item.id,
+                      label: item.time,
+                      disabled: item.status === 'INACTIVE'
+                    }))}
+                  />
                 </div>
+
+
                 <div className="mb-4">
                   <label className="block mb-2">Đăng ký bao nhiêu tháng</label>
                   <Input
@@ -233,6 +327,7 @@ const CourtDetails = () => {
                     required
                   />
                 </div>
+
                 <div className="mb-4">
                   <label className="block mb-2">Bắt đầu từ ngày</label>
                   <DatePicker
@@ -244,40 +339,44 @@ const CourtDetails = () => {
                 </div>
               </>
             )}
-            {bookingType === "flexible" && (
+
+            {(bookingType === "flexible" || bookingType === 'now') && (
               <div>
-                <div className="mb-4">
-                  <label className="block mb-2">Số giờ đăng ký trong 1 tháng (ít nhất 20 giờ)</label>
-                  <Input
-                    type="number"
-                    className="w-full"
-                    value={totalHours}
-                    onChange={(e) => setTotalHours(e.target.value)}
-                    required
-                  />
-                </div>
+                {
+                  bookingType === 'flexible' && <div className="mb-4">
+                    <label className="block mb-2">Số giờ đăng ký trong 1 tháng (ít nhất 20 giờ)</label>
+
+                    <Input
+                      type="number"
+                      className="w-full"
+                      value={totalSlots}
+                      onChange={(e) => setTotalSlots(e.target.value)}
+                      required
+                    />
+                  </div>
+                }
                 <div className="mb-4">
                   <label className="block mb-2">Chọn ngày và giờ</label>
                   <div className="flex mb-2">
                     <DatePicker
+                      disabledDate={disabledDate}
                       className="w-1/2"
                       value={selectedDate}
                       onChange={(date) => setSelectedDate(date)}
                     />
                     <Select
                       className="w-1/2"
+                      defaultValue={"Select slot"}
                       value={selectedTime}
                       onChange={(value) => setSelectedTime(value)}
-                    >
-                      <Option value="">Chọn giờ</Option>
-                      {slotTimes.map((time, index) => (
-                        <Option key={index} value={time}>
-                          {time}
-                        </Option>
-                      ))}
-                    </Select>
+                      options={slots.map(item => ({
+                        value: item.id,
+                        label: item.time,
+                        disabled: item.status === 'INACTIVE'
+                      }))}
+                    />
                   </div>
-                  <Button
+                  {bookingType !== 'now' && <Button
                     type="primary"
                     className="w-full"
                     onClick={() => {
@@ -286,6 +385,10 @@ const CourtDetails = () => {
                           ...flexibleBookings,
                           { date: selectedDate, time: selectedTime },
                         ]);
+                        console.log([
+                          ...bookingDetails,
+                          { date: selectedDate, time: selectedTime },
+                        ])
                         setSelectedDate(null);
                         setSelectedTime("");
                       } else {
@@ -294,18 +397,19 @@ const CourtDetails = () => {
                     }}
                   >
                     Thêm ngày
-                  </Button>
+                  </Button>}
                 </div>
                 {flexibleBookings.length > 0 && (
                   <div>
                     <h4 className="text-lg font-bold mb-2">Lịch linh hoạt đã chọn</h4>
                     {flexibleBookings.map((booking, index) => (
                       <div key={index} className="flex items-center mb-2">
-                        <p className="mr-2">
-                          {booking.date.toLocaleDateString()} - {booking.time}
+                        <p className="me-2 mb-0">
+                          {moment(booking.date.$d).format('DD/MM/YYYY')} - {getLableSlot(booking.time)}
                         </p>
                         <Button
-                          type="danger"
+                          danger
+                          type="primary"
                           onClick={() => {
                             const updatedBookings = flexibleBookings.filter(
                               (_, i) => i !== index
@@ -321,6 +425,7 @@ const CourtDetails = () => {
                 )}
               </div>
             )}
+
             <div className="mb-4">
               <label className="block mb-2">Mã khuyến mãi</label>
               <Input
@@ -333,43 +438,20 @@ const CourtDetails = () => {
             </div>
           </div>
 
-          <Button type="primary" className="w-full" onClick={handleBooking}>
+          <Button type="primary" className="w-full" onClick={handleShowConfirm}>
             Đặt Sân
           </Button>
         </Col>
       </Row>
 
-      <div className="mt-8 bg-white p-4 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Đặt sân theo khung thời gian</h2>
-        <div className="flex justify-between items-center mb-4">
-          <Button onClick={() => setCurrentWeek((prev) => prev - 1)} type="primary">
-            Tuần trước
-          </Button>
-          <h3 className="text-xl font-semibold">
-            Từ ngày {weekDates[0].toLocaleDateString()} đến ngày{" "}
-            {weekDates[6].toLocaleDateString()}
-          </h3>
-          <Button onClick={() => setCurrentWeek((prev) => prev + 1)} type="primary">
-            Tuần sau
-          </Button>
-        </div>
-        <Row gutter={[16, 16]}>
-          {weekDates.map((date, index) => {
-            const now = new Date();
-            const isPast = date < now.setHours(0, 0, 0, 0);
-            return (
-              <Col key={index} xs={24} md={12} lg={8} xl={4}>
-                <h4 
-                  className={`font-bold cursor-pointer ${isPast ? 'text-gray-500' : ''}`} 
-                  onClick={() => !isPast && openModal(date)}
-                >
-                  {date.toLocaleDateString()}
-                </h4>
-              </Col>
-            );
-          })}
-        </Row>
-      </div>
+      <Modal open={showConfirm} width={1200} onCancel={() => setShowConfirm(false)}>
+        <MyCalendar
+          message={bookingDetails.map(booking => ({
+            date: booking.date,
+            message: booking.time,
+          }))}
+        />
+      </Modal>
 
       <Modal
         title={`Đặt sân vào ngày ${selectedDay ? selectedDay.toLocaleDateString() : ''}`}

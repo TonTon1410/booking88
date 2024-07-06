@@ -13,7 +13,7 @@ const CourtCard = ({ court }) => {
   const navigate = useNavigate();
 
   const handleViewDetails = () => {
-    navigate("/court-details", { state: { court } });
+    navigate(`/court-details/${court.id}`);
   };
 
   useEffect(() => {
@@ -62,13 +62,14 @@ const CourtCard = ({ court }) => {
 
 CourtCard.propTypes = {
   court: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     hotline: PropTypes.string.isRequired,
     address: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     courts: PropTypes.number.isRequired,
-    photo: PropTypes.string.isRequired, 
+    photo: PropTypes.string.isRequired,
     closeTime: PropTypes.string.isRequired,
     openTime: PropTypes.string.isRequired,
     availableTimes: PropTypes.arrayOf(PropTypes.shape({

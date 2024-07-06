@@ -21,6 +21,7 @@ import News from '../components/News/News.jsx';
 import Contact from '../components/Contact/Contact.jsx';
 import Promotion from "../components/promotion/index.jsx";
 import Overview from "../components/overview/index.jsx";
+import History from "../components/history/index.jsx";
 
 const router = createBrowserRouter([
   {
@@ -46,7 +47,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "overview",
-            element: <Overview/>
+            element: <Overview />
           },
           {
             path: 'staffs',
@@ -62,11 +63,11 @@ const router = createBrowserRouter([
           },
           {
             path: 'statistics',
-            element: <Statistics />, 
+            element: <Statistics />,
           },
           {
             path: 'manage-fields',
-            element: <ClubStaffManageFields />, 
+            element: <ClubStaffManageFields />,
           },
           {
             path: 'account-list',
@@ -74,13 +75,17 @@ const router = createBrowserRouter([
           },
           {
             path: 'promotion',
-            element: <Promotion/>
+            element: <Promotion />
           },
         ],
       },
       {
         path: "/UserProfile",
         element: <UserProfile />,
+      },
+      {
+        path: "/history",
+        element: <History />,
       },
       {
         path: "/login",
@@ -100,7 +105,7 @@ const router = createBrowserRouter([
         element: <PasswordReset />,
       },
       {
-        path: "court-details",
+        path: "court-details/:id",
         element: <CourtDetails />,
       },
       {
