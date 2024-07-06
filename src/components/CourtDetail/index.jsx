@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Row, Col, Button, Select, Input, DatePicker, Modal } from 'antd';
+import { Row, Col, Button, Select, Input, DatePicker, Modal, message } from 'antd';
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../config/firebase";
 import api from '../../config/axios';
@@ -21,6 +21,7 @@ const CourtDetails = () => {
   const [months, setMonths] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [flexibleBookings, setFlexibleBookings] = useState([]);
+  const [totalHours, setTotalHours] = useState(0);
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedDay, setSelectedDay] = useState(null);
   const [promoCode, setPromoCode] = useState("");
@@ -52,7 +53,7 @@ const CourtDetails = () => {
 
     const fetchImage = async () => {
       try {
-        const imageRef = ref(storage, court.image); // court.image là tên file trên Firebase Storage
+        const imageRef = ref(storage, court.photo); // court.image là tên file trên Firebase Storage
         const imageUrl = await getDownloadURL(imageRef);
         setImageSrc(imageUrl);
       } catch (error) {
@@ -61,10 +62,10 @@ const CourtDetails = () => {
     };
 
     fetchSlotData();
-    if (court.image) {
+    if (court.photo) {
       fetchImage();
     }
-  }, [court.image]);
+  }, [court.photo]);
 
   if (!court) {
     return <div>Không tìm thấy thông tin sân</div>;
@@ -79,6 +80,10 @@ const CourtDetails = () => {
         totalAmount: selectedSlots.length * slotPrice,
         selectedTimes: selectedSlots.map(slot => slotTimes[slot]),
       };
+      if (bookingType === "flexible" && totalHours < 20) {
+        message.error("Bạn phải đăng ký ít nhất 20 giờ chơi.");
+        return;
+      }
       navigate("/payment", { state: bookingInfo });
     }
   };
@@ -144,7 +149,7 @@ const CourtDetails = () => {
   return (
     <div className="container mx-auto my-8">
       <Row gutter={[16, 16]}>
-        <Col xs={24} md={12}>
+        <Col xs={24}>
           <div className="court-card">
             {imageSrc ? (
               <img src={imageSrc} alt={court.name} />
@@ -153,6 +158,8 @@ const CourtDetails = () => {
             )}
           </div>
         </Col>
+      </Row>
+      <Row gutter={[16, 16]}>
         <Col xs={24} md={12}>
           <h1 className="text-4xl font-bold mb-4">{court.name}</h1>
           <p className="text-gray-700 text-base mb-2">Khu vực: {court.address}</p>
@@ -165,7 +172,8 @@ const CourtDetails = () => {
               {court.openTime} - {court.closeTime}
             </p>
           </div>
-
+        </Col>
+        <Col xs={24} md={12}>
           <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-4">
             <h2 className="text-2xl font-bold mb-4">Chọn loại lịch đặt sân</h2>
             <div className="mb-4">
@@ -238,6 +246,16 @@ const CourtDetails = () => {
             )}
             {bookingType === "flexible" && (
               <div>
+                <div className="mb-4">
+                  <label className="block mb-2">Số giờ đăng ký trong 1 tháng (ít nhất 20 giờ)</label>
+                  <Input
+                    type="number"
+                    className="w-full"
+                    value={totalHours}
+                    onChange={(e) => setTotalHours(e.target.value)}
+                    required
+                  />
+                </div>
                 <div className="mb-4">
                   <label className="block mb-2">Chọn ngày và giờ</label>
                   <div className="flex mb-2">

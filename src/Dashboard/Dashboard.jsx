@@ -33,7 +33,6 @@ const Dashboard = () => {
         getItem("Cập Nhật Sân", "update-field", <EditOutlined />),
         getItem("Quản lý Nhân Viên", "staffs", <UserOutlined />),
         getItem("Thống kê", "statistics", <BarChartOutlined />),
-        getItem("Tạo Sân Mới", "create-new-field", <PlusOutlined />),
         getItem("Quản lý Tài khoản", "account-list", <TeamOutlined />), // Thêm mục này
       ]);
     } else if (role === "CLUB_STAFF") {
