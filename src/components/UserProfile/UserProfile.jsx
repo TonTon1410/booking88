@@ -6,9 +6,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import './UserProfile.scss';
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, login } from "../../redux/features/counterSlice";
-
+import { Button, Space, Typography } from 'antd';
+import { FaWallet } from "react-icons/fa6";
 const UserProfile = () => {
-    const [activeTab, setActiveTab] = useState('personalDetails');
+    const [activeTab, setActiveTab] = useState('Recharge');
     const user = useSelector(selectUser);
     const [isDataFetched, setIsDataFetched] = useState(false);
 
@@ -18,6 +19,7 @@ const UserProfile = () => {
         email: user?.email || ''
     });
 
+    const { Text, Link } = Typography;
     const [bookingHistory, setBookingHistory] = useState([]);
     const dispatch = useDispatch();
     const userId = user?.id;
@@ -110,6 +112,9 @@ const UserProfile = () => {
         <div className="account-page">
             <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
             <div className="account-nav">
+            <button className={`nav-link ${activeTab === 'Recharge' ? 'active' : ''}`} onClick={() => handleTabChange('Recharge')}>
+                    <FaWallet /> Nạp tiền 
+                </button>
                 <button className={`nav-link ${activeTab === 'personalDetails' ? 'active' : ''}`} onClick={() => handleTabChange('personalDetails')}>
                     <FaInfoCircle /> Thông tin tài khoản
                 </button>
@@ -119,6 +124,7 @@ const UserProfile = () => {
                 <button className={`nav-link ${activeTab === 'bookingHistory' ? 'active' : ''}`} onClick={() => handleTabChange('bookingHistory')}>
                     <FaHistory /> Lịch sử đặt lịch
                 </button>
+               
             </div>
 
             <div className="account-content">
@@ -162,7 +168,7 @@ const UserProfile = () => {
 
                 {activeTab === 'bookingHistory' && (
                     <div className="account-section active">
-                        <h2>Lịch sử đặt lịch</h2>
+                        
                         <table className="booking-history-table">
                             <thead>
                                 <tr>
@@ -175,6 +181,24 @@ const UserProfile = () => {
                         </table>
                     </div>
                 )}
+
+                {
+                    activeTab=="Recharge" && (
+
+                        <>
+                        <Button style={{
+                            display:"block",
+                            marginBottom:"20px"
+                        }}>
+                            Nạp tiền thêm 
+                        </Button>
+                           <Text style={{
+                            fontSize:"20px"
+                        }}>Số dư của bạn là : 300.000Vnd</Text>
+                        </>
+                     
+                    )
+                }
             </div>
 
             <div className="account-sidebar">
