@@ -68,7 +68,7 @@ CourtCard.propTypes = {
     address: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     courts: PropTypes.number.isRequired,
-    photo: PropTypes.string.isRequired, // Thay đổi từ 'photo' thành 'image'
+    photo: PropTypes.string.isRequired, 
     closeTime: PropTypes.string.isRequired,
     openTime: PropTypes.string.isRequired,
     availableTimes: PropTypes.arrayOf(PropTypes.shape({

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Input, Button, message, Form, Modal, Upload, TimePicker } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import { getBase64 } from '../Dashboard/utils.jsx';
+import uploadFile from '../assets/hook/uploadFile.js';
+import CreateNewField from './CreateNewField.jsx';
 import api from '../config/axios';
 import uploadFile from '../assets/hook/uploadFile';
 import dayjs from 'dayjs';
@@ -12,6 +15,7 @@ const UpdateFieldList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
   const [imageFileList, setImageFileList] = useState([]);
+  const [showForm,setShowForm] = useState(false);
 
   useEffect(() => {
     const fetchFields = async () => {
@@ -232,7 +236,21 @@ const UpdateFieldList = () => {
 
   return (
     <>
+
+<Button onClick={() => setShowForm(true)} style={{
+  width:"fit-content",
+  marginBottom:"20px"
+  
+}}>Tạo sân mới</Button>
+
+
+    <Modal title="Tạo sân mới" onCancel={() => setShowForm(false)} footer={false} open={showForm}>
+      <CreateNewField/>
+    </Modal>
+
+
       <Form form={form} component={false}>
+        
         <Table
           bordered
           dataSource={fields}

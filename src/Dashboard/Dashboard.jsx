@@ -35,6 +35,8 @@ const Dashboard = () => {
         getItem("Quản lý Nhân Viên", "staffs", <UserOutlined />),
         getItem("Quản lý Tài khoản", "account-list", <TeamOutlined />),
         getItem("Thống kê", "statistics", <BarChartOutlined />),
+        getItem("Quản lý Tài khoản", "account-list", <TeamOutlined />), // Thêm mục này
+
       ]);
     } else if (role === "CLUB_STAFF") {
       setItems([
