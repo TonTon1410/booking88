@@ -23,6 +23,7 @@ import Promotion from "../components/promotion/index.jsx";
 import Overview from "../components/overview/index.jsx";
 import History from "../components/history/index.jsx";
 
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -49,6 +50,7 @@ const router = createBrowserRouter([
             path: "overview",
             element: <Overview />
           },
+
           {
             path: 'staffs',
             element: <ManageStaff />,
@@ -77,6 +79,7 @@ const router = createBrowserRouter([
             path: 'promotion',
             element: <Promotion />
           },
+
         ],
       },
       {

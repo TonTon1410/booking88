@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Input, Button, message, Form, Modal, Upload } from 'antd';
+import { Table, Input, Button, message, Form, Modal, Upload, Image } from 'antd';
 import PropTypes from 'prop-types';
 import api from '../config/axios';
+
 import { UploadOutlined } from '@ant-design/icons';
 import { getBase64 } from '../Dashboard/utils.jsx';
 import uploadFile from '../assets/hook/uploadFile.js';
 import CreateNewField from './CreateNewField.jsx';
+
 
 const UpdateFieldList = () => {
   const [fields, setFields] = useState([]);
@@ -19,16 +21,22 @@ const UpdateFieldList = () => {
   useEffect(() => {
     const fetchFields = async () => {
       try {
-        const response = await api.get('/getAllClub');
+        const response = await api.get('/admin/location');
+        console.log(response.data)
         setFields(response.data);
       } catch (error) {
-        message.error('Lỗi khi lấy danh sách sân');
+        // message.error('Lỗi khi lấy danh sách sân');
         console.error('Error fetching fields:', error);
       }
     };
 
     fetchFields();
   }, []);
+  
+
+
+  
+
 
   const isEditing = (record) => record.locationId === editingKey;
 
@@ -77,6 +85,7 @@ const UpdateFieldList = () => {
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, { ...item, ...row, images: imagesBase64 });
+
         setFields(newData);
         setEditingKey('');
 
@@ -110,8 +119,8 @@ const UpdateFieldList = () => {
 
   const deleteField = async (locationId) => {
     try {
-      await api.delete(`/deleta-club/${locationId}`);
-      setFields(fields.filter((item) => item.locationId !== locationId));
+      await api.delete(`/location/${locationId}`);
+      setFields(fields.filter((item) => item.id !== locationId));
       message.success('Xóa sân thành công');
     } catch (err) {
       console.error('Error deleting field:', err);
@@ -125,6 +134,7 @@ const UpdateFieldList = () => {
       const image = await uploadFile(item.originFileObj)
       setImageFileList([...imageFileList,image])
     })
+
   };
 
   const columns = [
@@ -133,6 +143,7 @@ const UpdateFieldList = () => {
       dataIndex: 'name',
       key: 'name',
       editable: true,
+
     },
     {
       title: 'Mô tả',
@@ -152,12 +163,32 @@ const UpdateFieldList = () => {
       key: 'hotline',
       editable: true,
     },
+
+  
+
     {
-      title: 'Giá',
-      dataIndex: 'price',
-      key: 'price',
+      title: 'Giờ mở cửa',
+      dataIndex: 'openTime',
+      key: 'openTime',
+      editable: true,
+
+    },
+    {
+      title: 'Giờ đóng cửa',
+      dataIndex: 'closeTime',
+      key: 'closeTime',
       editable: true,
     },
+   
+        {
+      title: 'Hình ảnh',
+      dataIndex: 'photo',
+      key: 'photo',
+      editable: true,
+      render: (images) => (
+            <Image src={images} />
+      ),
+    }, 
     {
       title: 'Trạng thái',
       dataIndex: 'status',
@@ -165,25 +196,7 @@ const UpdateFieldList = () => {
       editable: true,
       render: (status) => (status === 'ACTIVE' ? 'Đang hoạt động' : 'Trống'),
     },
-    {
-      title: 'Hình ảnh',
-      dataIndex: 'images',
-      key: 'images',
-      editable: true,
-      render: (images) => (
-        <div>
-          {images && images.map((img, index) => (
-            <img key={index} src={img} alt={`field-img-${index}`} style={{ width: '50px', height: '50px', marginRight: '5px' }} />
-          ))}
-        </div>
-      ),
-    },
-    {
-      title: 'Khuyến mãi',
-      dataIndex: 'promotions',
-      key: 'promotions',
-      editable: true,
-    },
+
     {
       title: 'Hành động',
       dataIndex: 'action',
@@ -209,14 +222,17 @@ const UpdateFieldList = () => {
                 color: '#fff',
               }}
               danger
-              onClick={() => deleteField(record.locationId)}
+              onClick={() => deleteField(record.id)}
+
             >
               Xóa
             </Button>
           </div>
         );
       },
+      
     },
+    
   ];
 
   const mergedColumns = columns.map((col) => {
@@ -227,6 +243,7 @@ const UpdateFieldList = () => {
       ...col,
     };
   });
+
 
   return (
     <>
@@ -239,12 +256,10 @@ const UpdateFieldList = () => {
 
 
     <Modal title="Tạo sân mới" onCancel={() => setShowForm(false)} footer={false} open={showForm}>
-      <CreateNewField/>
+      <CreateNewField setFields={setFields} setShowForm={setShowForm}/>
     </Modal>
 
-
       <Form form={form} component={false}>
-        
         <Table
           components={{
             body: {
@@ -303,19 +318,22 @@ const UpdateFieldList = () => {
             <Input />
           </Form.Item>
           <Form.Item
-            name="price"
+            name="priceSlot"
+
             label="Giá"
             rules={[{ required: true, message: 'Vui lòng nhập giá!' }]}
           >
             <Input type="number" />
           </Form.Item>
           <Form.Item
+
             name="images"
             label="Hình ảnh"
           >
             <Upload
               listType="picture"
               urlList={imageFileList}
+
               onChange={handleImageChange}
               beforeUpload={() => false}
               accept="image/*"
@@ -329,6 +347,7 @@ const UpdateFieldList = () => {
           >
             <Input />
           </Form.Item>
+
         </Form>
       </Modal>
     </>
@@ -370,5 +389,6 @@ EditableCell.propTypes = {
   index: PropTypes.number.isRequired,
   children: PropTypes.node,
 };
+
 
 export default UpdateFieldList;

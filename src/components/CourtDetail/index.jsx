@@ -177,6 +177,7 @@ const CourtDetails = () => {
 
   const getWeekDates = (weekOffset = 0) => {
     const now = new Date();
+    window.scrollTo(0, 0);
     const startOfWeek = new Date(
       now.setDate(now.getDate() - now.getDay() + 1 + 7 * weekOffset)
     );

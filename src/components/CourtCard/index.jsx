@@ -19,7 +19,7 @@ const CourtCard = ({ court }) => {
   useEffect(() => {
     const fetchImage = async () => {
       try {
-        const imageRef = ref(storage, court.image); // court.image là tên file trên Firebase Storage
+        const imageRef = ref(storage, court.photo); // court.image là tên file trên Firebase Storage
         const imageUrl = await getDownloadURL(imageRef);
         setImageSrc(imageUrl);
       } catch (error) {
@@ -27,10 +27,10 @@ const CourtCard = ({ court }) => {
       }
     };
 
-    if (court.image) {
+    if (court.photo) {
       fetchImage();
     }
-  }, [court.image]);
+  }, [court.photo]);
 
   return (
     <Card
