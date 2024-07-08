@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { Button, Form, Input, InputNumber, message, Select, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
@@ -58,6 +59,8 @@ const CreateNewField = ({setShowForm,setFields}) => {
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
+
+
   };
 
   const handleImageChange = async ({ fileList }) => {
@@ -70,6 +73,7 @@ const CreateNewField = ({setShowForm,setFields}) => {
             url: imageUrl,
             thumbUrl: imageUrl,
             status: "done",
+
           };
         }
         return item;
@@ -157,6 +161,7 @@ const CreateNewField = ({setShowForm,setFields}) => {
       </Form.Item>
 
       <Form.Item label="Hình ảnh" name="photo">
+
         <Upload
           listType="picture"
           fileList={imageFileList}

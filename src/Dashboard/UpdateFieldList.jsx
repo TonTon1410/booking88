@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Table, Input, Button, message, Form, Modal, Upload, Image } from 'antd';
 import PropTypes from 'prop-types';
 import api from '../config/axios';
+
 import { UploadOutlined } from '@ant-design/icons';
 import { getBase64 } from '../Dashboard/utils.jsx';
 import uploadFile from '../assets/hook/uploadFile.js';
 import CreateNewField from './CreateNewField.jsx';
+
 
 const UpdateFieldList = () => {
   const [fields, setFields] = useState([]);
@@ -34,6 +36,7 @@ const UpdateFieldList = () => {
 
 
   
+
 
   const isEditing = (record) => record.locationId === editingKey;
 
@@ -82,6 +85,7 @@ const UpdateFieldList = () => {
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, { ...item, ...row, images: imagesBase64 });
+
         setFields(newData);
         setEditingKey('');
 
@@ -130,6 +134,7 @@ const UpdateFieldList = () => {
       const image = await uploadFile(item.originFileObj)
       setImageFileList([...imageFileList,image])
     })
+
   };
 
   const columns = [
@@ -138,6 +143,7 @@ const UpdateFieldList = () => {
       dataIndex: 'name',
       key: 'name',
       editable: true,
+
     },
     {
       title: 'Mô tả',
@@ -159,11 +165,13 @@ const UpdateFieldList = () => {
     },
 
   
+
     {
       title: 'Giờ mở cửa',
       dataIndex: 'openTime',
       key: 'openTime',
       editable: true,
+
     },
     {
       title: 'Giờ đóng cửa',
@@ -215,6 +223,7 @@ const UpdateFieldList = () => {
               }}
               danger
               onClick={() => deleteField(record.id)}
+
             >
               Xóa
             </Button>
@@ -234,6 +243,7 @@ const UpdateFieldList = () => {
       ...col,
     };
   });
+
 
   return (
     <>
@@ -309,18 +319,21 @@ const UpdateFieldList = () => {
           </Form.Item>
           <Form.Item
             name="priceSlot"
+
             label="Giá"
             rules={[{ required: true, message: 'Vui lòng nhập giá!' }]}
           >
             <Input type="number" />
           </Form.Item>
           <Form.Item
+
             name="images"
             label="Hình ảnh"
           >
             <Upload
               listType="picture"
               urlList={imageFileList}
+
               onChange={handleImageChange}
               beforeUpload={() => false}
               accept="image/*"
@@ -334,6 +347,7 @@ const UpdateFieldList = () => {
           >
             <Input />
           </Form.Item>
+
         </Form>
       </Modal>
     </>
@@ -375,5 +389,6 @@ EditableCell.propTypes = {
   index: PropTypes.number.isRequired,
   children: PropTypes.node,
 };
+
 
 export default UpdateFieldList;

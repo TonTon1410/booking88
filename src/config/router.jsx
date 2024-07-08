@@ -22,6 +22,7 @@ import Contact from '../components/Contact/Contact.jsx';
 import Promotion from "../components/promotion/index.jsx";
 import Overview from "../components/overview/index.jsx";
 
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -48,6 +49,7 @@ const router = createBrowserRouter([
             path: "overview",
             element: <Overview/>
           },
+
           {
             path: 'staffs',
             element: <ManageStaff />,
@@ -76,6 +78,7 @@ const router = createBrowserRouter([
             path: 'promotion',
             element: <Promotion/>
           },
+
         ],
       },
       {
