@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../../api/userapi';
 import '../../App.css';
 // import video from '../../assets/videologin.mp4';
 import logo from '../../assets/logologin.png';
@@ -23,7 +23,7 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post('http://157.230.43.225:8080/register', { // Replace with your actual endpoint
+      const response = await api.post('api/register', { // Replace with your actual endpoint
         email,
         phone,
         password,

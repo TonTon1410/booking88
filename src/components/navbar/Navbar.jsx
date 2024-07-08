@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Avatar } from "antd";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { CiMenuBurger, CiBitcoin } from "react-icons/ci";
-import {  logout, selectUser } from "../../redux/features/counterSlice";
+import { logout, selectUser } from "../../redux/features/counterSlice";
 import "./Navbar.scss";
 
 const Navbar = () => {
@@ -67,11 +67,11 @@ const Navbar = () => {
                 Liên Hệ
               </a>
             </li>
-            {user && ['ADMIN', 'CLUB_STAFF'].includes(user.role) && (              <li className="navItem">
-                <a href="/dashboard" className="navLink">
-                  Dashboard
-                </a>
-              </li>
+            {user && ['ADMIN', 'CLUB_STAFF'].includes(user.role) && (<li className="navItem">
+              <a href="/dashboard" className="navLink">
+                Dashboard
+              </a>
+            </li>
             )}
             {user ? (
               <div className="userDropdown" onClick={toggleDropdown}>
@@ -82,6 +82,7 @@ const Navbar = () => {
                 />
                 {dropdownActive && (
                   <div className="dropdownMenu">
+                    <button onClick={() => navigate("/history")}>Lịch sử đặt sân</button>
                     <button onClick={handleProfile}>Thông tin</button>
                     <button onClick={handleLogout}>Đăng Xuất</button>
                   </div>
@@ -100,8 +101,8 @@ const Navbar = () => {
         <div onClick={showNav} className="toggleNavbar">
           <CiMenuBurger className="icon" />
         </div>
-      </header>
-    </section>
+      </header >
+    </section >
   );
 };
 

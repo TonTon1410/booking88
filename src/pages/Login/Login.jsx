@@ -1,4 +1,4 @@
-import { useState } from "react"; 
+import { useState } from "react";
 import "../../App.css";
 import logo from "../../assets/logologin.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,13 +8,13 @@ import { AiOutlineSwapRight } from "react-icons/ai";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import GGLogin from "../../api/GGlogin"; 
+import GGLogin from "../../api/GGlogin";
 import api from "../../config/axios";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/features/counterSlice";
 import { Form, Input, Button, Typography } from "antd";
 
-const clientId = "YOUR_GOOGLE_CLIENT_ID"; 
+const clientId = "YOUR_GOOGLE_CLIENT_ID";
 const { Title, Text } = Typography;
 
 const Login = () => {
@@ -26,7 +26,7 @@ const Login = () => {
   const handleSubmit = async (values) => {
     const { email, password } = values;
     try {
-      const res = await api.post("/login", { email, password });
+      const res = await api.post("/api/login", { email, password });
       const token = res.data.token;
       // Lưu token vào localStorage
       localStorage.setItem("token", token);
@@ -44,7 +44,7 @@ const Login = () => {
     <div className="loginPage flex">
       <ToastContainer
         position="top-center"
-        autoClose={3000}
+        autoClose={1000}
         hideProgressBar={false}
         closeOnClick
         pauseOnHover

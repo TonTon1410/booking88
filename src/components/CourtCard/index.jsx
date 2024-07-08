@@ -13,13 +13,13 @@ const CourtCard = ({ court }) => {
   const navigate = useNavigate();
 
   const handleViewDetails = () => {
-    navigate("/court-details", { state: { court } });
+    navigate(`/court-details/${court.id}`);
   };
 
   useEffect(() => {
     const fetchImage = async () => {
       try {
-        const imageRef = ref(storage, court.image); // court.image là tên file trên Firebase Storage
+        const imageRef = ref(storage, court.photo); // court.image là tên file trên Firebase Storage
         const imageUrl = await getDownloadURL(imageRef);
         setImageSrc(imageUrl);
       } catch (error) {
@@ -27,10 +27,10 @@ const CourtCard = ({ court }) => {
       }
     };
 
-    if (court.image) {
+    if (court.photo) {
       fetchImage();
     }
-  }, [court.image]);
+  }, [court.photo]);
 
   return (
     <Card
@@ -62,13 +62,14 @@ const CourtCard = ({ court }) => {
 
 CourtCard.propTypes = {
   court: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     hotline: PropTypes.string.isRequired,
     address: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     courts: PropTypes.number.isRequired,
-    photo: PropTypes.string.isRequired, 
+    photo: PropTypes.string.isRequired,
     closeTime: PropTypes.string.isRequired,
     openTime: PropTypes.string.isRequired,
     availableTimes: PropTypes.arrayOf(PropTypes.shape({
