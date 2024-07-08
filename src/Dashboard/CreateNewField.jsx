@@ -1,63 +1,51 @@
-import React, { useEffect, useState } from "react";
-import { Button, Form, Input, InputNumber, message, Select, Upload } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import api from "../config/axios";
-import uploadFile from "../assets/hook/uploadFile.js";
-import { useSelector } from "react-redux";
-import { selectUser } from "../redux/features/counterSlice.js";
-import { Option } from "antd/es/mentions/index.js";
-import { toast } from "react-toastify";
+import React, { useState } from "react";
+import { Button, Form, Input, message, Upload } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+import api from '../config/axios';
+import uploadFile from '../assets/hook/uploadFile.js';
 
-const CreateNewField = ({setShowForm}) => {
+const CreateNewField = () => {
   const [form] = Form.useForm();
-
   const [imageFileList, setImageFileList] = useState([]);
-  const user = useSelector(selectUser);
-    const [data, setData] = useState([])
-    const [loading, setLoading] = useState(false)
-    const fetch = async () => {
-      try {
-        const response = await api.get("/admin/owner");
-        setData(response.data)
-        setShowForm(false)
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    useEffect(() => {
-      fetch()
-    }, []);
-    console.log(data)
-
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
-  };
-
-
 
   const onFinish = async (values) => {
-    console.log(values);
     try {
-      setLoading(true)
-      const img = await uploadFile(values.photo.file);
-      values.photo = img;
-      const response = await api.post("/location",values)
-      toast.success("Thêm sân thành công")
-      setData((prev) => [...prev,response.data])
-      console.log(response.data)
-    } catch (error) {
-      console.log(error)
-      toast.error(error.response.data)
-    }
-    finally{
-      setLoading(false)
-    }
+      // Upload image files and get their URLs
+      const imagesURLs = await Promise.all(
+        imageFileList.map(async (file) => {
+          if (!file.url) {
+            const imageUrl = await uploadFile(file.originFileObj);
+            return imageUrl;
+          }
+          return file.url;
+        })
+      );
 
+      const clubRequest = {
+        name: values.name,
+        description: values.description,
+        address: values.address,
+        hotline: values.hotline,
+        status: "ACTIVE",
+        price: values.price || "0", // Assuming price is required and defaulting to "0"
+        photo: imagesURLs[0],
+      };
+
+      console.log('Sending request:', clubRequest); // Log request for debugging
+
+      await api.post("/createNewClub", clubRequest);
+
+      message.success('Thêm sân thành công');
+      form.resetFields();
+      setImageFileList([]);
+    } catch (error) {
+      message.error('Lỗi khi thêm sân');
+      console.error('Error creating new field:', error.response ? error.response.data : error.message);
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    console.log('Failed:', errorInfo);
   };
 
   const handleImageChange = async ({ fileList }) => {
@@ -69,7 +57,7 @@ const CreateNewField = ({setShowForm}) => {
             ...item,
             url: imageUrl,
             thumbUrl: imageUrl,
-            status: "done",
+            status: 'done'
           };
         }
         return item;
@@ -91,27 +79,15 @@ const CreateNewField = ({setShowForm}) => {
       <Form.Item
         label="Tên sân"
         name="name"
-        rules={[{ required: true, message: "Vui lòng nhập tên sân!" }]}
+        rules={[{ required: true, message: 'Vui lòng nhập tên sân!' }]}
       >
         <Input />
-      </Form.Item>
-      <Form.Item
-        label="Giờ mở cửa"
-        name="openingTime"
-      >
-      <InputNumber  addonAfter="Giờ" defaultValue={6} />
-      </Form.Item>
-      <Form.Item
-        label="Giờ đóng cửa"
-        name="closingTime"
-      >
-       <InputNumber  addonAfter="Giờ" defaultValue={12} />
       </Form.Item>
 
       <Form.Item
         label="Mô tả"
         name="description"
-        rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
+        rules={[{ required: true, message: 'Vui lòng nhập mô tả!' }]}
       >
         <Input />
       </Form.Item>
@@ -119,7 +95,7 @@ const CreateNewField = ({setShowForm}) => {
       <Form.Item
         label="Địa chỉ"
         name="address"
-        rules={[{ required: true, message: "Vui lòng nhập địa chỉ!" }]}
+        rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' }]}
       >
         <Input />
       </Form.Item>
@@ -127,36 +103,23 @@ const CreateNewField = ({setShowForm}) => {
       <Form.Item
         label="Hotline"
         name="hotline"
-        rules={[{ required: true, message: "Vui lòng nhập hotline!" }]}
+        rules={[{ required: true, message: 'Vui lòng nhập hotline!' }]}
       >
         <Input />
       </Form.Item>
 
       <Form.Item
-        label="Giá Slot"
-        name="priceSlot"
-        rules={[{ required: true, message: "Vui lòng nhập giá!" }]}
+        label="Giá"
+        name="price"
+        rules={[{ required: true, message: 'Vui lòng nhập giá!' }]}
       >
         <Input />
       </Form.Item>
-      <Form.Item
-        label="Chọn chủ sân"
-        name="ownerId"
-        // rules={[{ required: true, message: "Vui lòng chọn!" }]}  
-      >
- <Select
-      defaultValue=""
-      style={{ width: 120 }}
-      onChange={handleChange}
-      options={data?.map((item) =>({
-        value: item.id,
-        label: item.name
-      }))}
-    >
-    </Select>
-      </Form.Item>
 
-      <Form.Item label="Hình ảnh" name="photo">
+      <Form.Item
+        label="Hình ảnh"
+        name="images"
+      >
         <Upload
           listType="picture"
           fileList={imageFileList}
@@ -169,7 +132,7 @@ const CreateNewField = ({setShowForm}) => {
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button loading={loading} type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit">
           Tạo Sân
         </Button>
       </Form.Item>
