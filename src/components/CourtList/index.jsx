@@ -19,12 +19,7 @@ const CourtList = () => {
 
   const fetchData = async () => {
     try {
-<<<<<<< HEAD
-      const response = await api.get("/api/location")
-=======
       const response = await api.get("/location")
-
->>>>>>> 37a8cdbeeb9803df723bba8edba5d1585af53854
       if (Array.isArray(response.data)) {
         setCourtData(response.data);
         const uniqueAddresses = [
