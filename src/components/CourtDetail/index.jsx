@@ -50,7 +50,7 @@ const CourtDetails = () => {
     // Fetch slot times and prices from API
     const fetchSlotData = async () => {
       try {
-        const response = await api.get(`/api/court/${id}`); // Replace with your API endpoint
+        const response = await api.get(`/court/${id}`); // Replace with your API endpoint
         setSlots(response.data.location.slots)
         setCourt(response.data)
       } catch (error) {
