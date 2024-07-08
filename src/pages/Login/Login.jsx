@@ -26,7 +26,7 @@ const Login = () => {
   const handleSubmit = async (values) => {
     const { email, password } = values;
     try {
-      const res = await api.post("/api/login", { email, password });
+      const res = await api.post("/login", { email, password });
       const token = res.data.token;
       // Lưu token vào localStorage
       localStorage.setItem("token", token);
