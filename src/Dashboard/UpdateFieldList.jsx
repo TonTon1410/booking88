@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Input, Button, message, Form, Modal, Upload, Image } from 'antd';
+import { Table, Input, Button, message, Form, Modal, Upload, Image, InputNumber } from 'antd';
 import PropTypes from 'prop-types';
 import api from '../config/axios';
 
@@ -11,13 +11,14 @@ import CreateNewField from './CreateNewField.jsx';
 
 const UpdateFieldList = () => {
   const [fields, setFields] = useState([]);
+  const [field, setField] = useState({});
   const [editingKey, setEditingKey] = useState('');
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
-  const [imageFileList, setImageFileList] = useState([]);
+  const [imageFileList, setImageFileList] = useState("");
   const [showForm,setShowForm] = useState(false);
-
+//  const [imageUpload,setImageUpload] = useState([])
   useEffect(() => {
     const fetchFields = async () => {
       try {
@@ -32,31 +33,34 @@ const UpdateFieldList = () => {
 
     fetchFields();
   }, []);
+
+
   
-
-
   
 
 
   const isEditing = (record) => record.locationId === editingKey;
-
   const edit = (record) => {
+    setField(record)
+
+    console.log(record.photo)
+    // setImageFileList(record.photo)
     form.setFieldsValue({
       ...record,
     });
-    setCurrentRecord(record);
+    // setCurrentRecord(record);
     setIsModalOpen(true);
-    setEditingKey(record.locationId);
+    // setEditingKey(record.locationId);
+    // setImageFileList(
+    //   record.photo ? record.photo.map((img, index) => ({
+    //     uid: index,
+    //     name: `image${index}`,
+    //     status: 'done',
+    //     url: img.startsWith("data:image/") ? img : `data:image/jpeg;base64,${img}`,
+    //     thumbUrl: img.startsWith("data:image/") ? img : `data:image/jpeg;base64,${img}`,
+    //   })) : []
+    // );
 
-    setImageFileList(
-      record.images ? record.images.map((img, index) => ({
-        uid: index,
-        name: `image${index}`,
-        status: 'done',
-        url: img.startsWith("data:image/") ? img : `data:image/jpeg;base64,${img}`,
-        thumbUrl: img.startsWith("data:image/") ? img : `data:image/jpeg;base64,${img}`,
-      })) : []
-    );
   };
 
   const cancel = () => {
@@ -66,55 +70,92 @@ const UpdateFieldList = () => {
     setImageFileList([]);
   };
 
-  const save = async (locationId) => {
-    try {
-      const row = await form.validateFields();
-      const newData = [...fields];
-      const index = newData.findIndex((item) => locationId === item.locationId);
+  const save = async (location) => {
+    // form.submit()  
+try {
+  const res = await api.put(`/location/${location.id}`,{
+    name: location.name,
+    description: location.description,
+    address: location.address,
+    hotline: location.hotline,
+    // openingTime: 0,
+    // closingTime: 0,
+    photo: imageFileList,
+  }) 
 
-      const imagesBase64 = await Promise.all(
-        imageFileList.map((file) => {
-          if (file.originFileObj) {
-            return getBase64(file.originFileObj);
-          } else {
-            return file.url;
-          }
-        })
-      );
+  setFields((oldItems)=>{
+    return  oldItems.map(oldItem =>{
+     if(oldItem.id == res.data.id){
+        return res.data
+     }
+     else{
+      return oldItem;
+     }
 
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, { ...item, ...row, images: imagesBase64 });
 
-        setFields(newData);
-        setEditingKey('');
+  })
 
-        await api.put(`/updateClub/${locationId}`, {
-          ...row,
-          images: imagesBase64,
-        });
+})
 
-        message.success('Cập nhật sân thành công');
-      } else {
-        newData.push({ ...row, images: imagesBase64 });
-        setFields(newData);
-        setEditingKey('');
+  console.log("res: x",res.data)
+} catch (error) {
+  console.log(error)
+}
 
-        await api.put(`/updateClub/${locationId}`, {
-          ...row,
-          images: imagesBase64,
-        });
 
-        message.success('Cập nhật sân thành công');
-      }
+//     try {
+//       console.log("hi")
+//       // const row = await form.validateFields();
+//       const newData = [...fields];
+//       console.log(newData)
+//       const index = newData.findIndex((item) => locationId === item.locationId);
+// console.log(index)
+//       const imagesBase64 = await Promise.all(
+//         imageFileList.map((file) => {
+//           if (file.originFileObj) {
+//             return getBase64(file.originFileObj);
+//           } else {
+//             return file.url;
+//           }
+//         })
+//       );
 
-      setIsModalOpen(false);
-      setCurrentRecord(null);
-      setImageFileList([]);
-    } catch (err) {
-      console.error('Error saving field:', err);
-      message.error('Lỗi khi cập nhật sân');
-    }
+//       if (index > -1) {
+//         const item = newData[index];
+//         newData.splice(index, 1, { ...item, ...row, images: imagesBase64 });
+
+//         setFields(newData);
+//         setEditingKey('');
+
+//         await api.put(`/updateClub/${locationId}`, {
+//           ...row,
+//           images: imagesBase64,
+//         });
+
+//         message.success('Cập nhật sân thành công');
+//       } else {
+//         newData.push({ ...row, images: imagesBase64 });
+//         setFields(newData);
+//         setEditingKey('');
+
+//         await api.put(`/updateClub/${locationId}`, {
+//           ...row,
+//           images: imagesBase64,
+//         });
+
+//         message.success('Cập nhật sân thành công');
+//       }
+
+//       setIsModalOpen(false);
+//       setCurrentRecord(null);
+//       console.log("hi")
+//       setImageFileList([]);
+//       console.log("hi")
+//     } catch (err) {
+//       console.error('Error saving field:', err);
+//       // message.error('Lỗi khi cập nhật sân');
+//     }
+setIsModalOpen(false)
   };
 
   const deleteField = async (locationId) => {
@@ -128,12 +169,9 @@ const UpdateFieldList = () => {
     }
   };
 
-  const handleImageChange =  ({ fileList }) => {
-  
-    fileList.map(async (item)=>{
-      const image = await uploadFile(item.originFileObj)
-      setImageFileList([...imageFileList,image])
-    })
+  const handleImageChange = async ({file,fileList} ) => {
+    const image = await uploadFile(file)
+    setImageFileList(image)
 
   };
 
@@ -211,7 +249,10 @@ const UpdateFieldList = () => {
                 color: '#fff',
               }}
               disabled={editingKey !== ''}
-              onClick={() => edit(record)}
+              onClick={() =>{
+                setImageFileList(record.photo)
+                edit(record)}
+              } 
             >
               Sửa
             </Button>
@@ -283,12 +324,18 @@ const UpdateFieldList = () => {
           <Button key="cancel" onClick={cancel}>
             Hủy
           </Button>,
-          <Button key="save" type="primary" onClick={() => save(currentRecord?.locationId)}>
+          <Button key="save" onClick={()=> form.submit()} >
             Lưu
           </Button>,
         ]}
       >
-        <Form form={form} layout="vertical">
+        <Form form={form} layout="vertical"
+        onFinish={save}
+        >
+           <Form.Item
+            name="id"
+          hidden
+          />
           <Form.Item
             name="name"
             label="Tên sân"
@@ -296,6 +343,18 @@ const UpdateFieldList = () => {
           >
             <Input />
           </Form.Item>
+                <Form.Item
+        label="Giờ mở cửa"
+        name="openTime"
+      >
+      <InputNumber  addonAfter="Giờ"  />
+      </Form.Item>
+      <Form.Item
+        label="Giờ đóng cửa"
+        name="closeTime"
+      >
+       <InputNumber  addonAfter="Giờ"  />
+      </Form.Item>
           <Form.Item
             name="description"
             label="Mô tả"
@@ -318,22 +377,12 @@ const UpdateFieldList = () => {
             <Input />
           </Form.Item>
           <Form.Item
-            name="priceSlot"
 
-            label="Giá"
-            rules={[{ required: true, message: 'Vui lòng nhập giá!' }]}
-          >
-            <Input type="number" />
-          </Form.Item>
-          <Form.Item
-
-            name="images"
+            name="photo"
             label="Hình ảnh"
           >
             <Upload
               listType="picture"
-              urlList={imageFileList}
-
               onChange={handleImageChange}
               beforeUpload={() => false}
               accept="image/*"
@@ -342,11 +391,12 @@ const UpdateFieldList = () => {
             </Upload>
           </Form.Item>
           <Form.Item
-            name="promotions"
-            label="Khuyến mãi"
-          >
-            <Input />
-          </Form.Item>
+      wrapperCol={{
+        offset: 8,
+        span: 16,
+      }}
+    >
+    </Form.Item>
 
         </Form>
       </Modal>
