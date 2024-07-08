@@ -19,6 +19,9 @@ import Statistics from '../Dashboard/Statistics.jsx'; // Thêm đường dẫn t
 import AccountList from '../Dashboard/AccountList.jsx';
 import News from '../components/News/News.jsx';
 import Contact from '../components/Contact/Contact.jsx';
+import Promotion from "../components/promotion/index.jsx";
+import Overview from "../components/overview/index.jsx";
+
 
 const router = createBrowserRouter([
   {
@@ -42,6 +45,10 @@ const router = createBrowserRouter([
         path: 'dashboard',
         element: <Dashboard />,
         children: [
+          {
+            path: "overview",
+            element: <Overview/>
+          },
 
           {
             path: 'staffs',
@@ -67,6 +74,11 @@ const router = createBrowserRouter([
             path: 'account-list',
             element: <AccountList />,
           },
+          {
+            path: 'promotion',
+            element: <Promotion/>
+          },
+
         ],
       },
       {
