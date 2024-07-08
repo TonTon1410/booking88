@@ -19,7 +19,7 @@ const UpdateFieldList = () => {
   useEffect(() => {
     const fetchFields = async () => {
       try {
-        const response = await api.get('/location');
+        const response = await api.get('/admin/location');
         console.log(response.data)
         setFields(response.data);
       } catch (error) {
@@ -246,7 +246,7 @@ const UpdateFieldList = () => {
 
 
     <Modal title="Tạo sân mới" onCancel={() => setShowForm(false)} footer={false} open={showForm}>
-      <CreateNewField setShowForm={setShowForm}/>
+      <CreateNewField setFields={setFields} setShowForm={setShowForm}/>
     </Modal>
 
       <Form form={form} component={false}>
@@ -308,7 +308,7 @@ const UpdateFieldList = () => {
             <Input />
           </Form.Item>
           <Form.Item
-            name="price"
+            name="priceSlot"
             label="Giá"
             rules={[{ required: true, message: 'Vui lòng nhập giá!' }]}
           >

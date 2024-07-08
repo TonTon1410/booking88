@@ -8,9 +8,8 @@ import { selectUser } from "../redux/features/counterSlice.js";
 import { Option } from "antd/es/mentions/index.js";
 import { toast } from "react-toastify";
 
-const CreateNewField = ({setShowForm}) => {
+const CreateNewField = ({setShowForm,setFields}) => {
   const [form] = Form.useForm();
-
   const [imageFileList, setImageFileList] = useState([]);
   const user = useSelector(selectUser);
     const [data, setData] = useState([])
@@ -19,7 +18,6 @@ const CreateNewField = ({setShowForm}) => {
       try {
         const response = await api.get("/admin/owner");
         setData(response.data)
-        setShowForm(false)
       } catch (e) {
         console.log(e);
       }
@@ -44,7 +42,9 @@ const CreateNewField = ({setShowForm}) => {
       values.photo = img;
       const response = await api.post("/location",values)
       toast.success("Thêm sân thành công")
-      setData((prev) => [...prev,response.data])
+      setFields((prev) => [...prev,response.data])
+      setShowForm(false)
+      form.resetFields();
       console.log(response.data)
     } catch (error) {
       console.log(error)
@@ -99,13 +99,13 @@ const CreateNewField = ({setShowForm}) => {
         label="Giờ mở cửa"
         name="openingTime"
       >
-      <InputNumber  addonAfter="Giờ" defaultValue={6} />
+      <InputNumber  addonAfter="Giờ"  />
       </Form.Item>
       <Form.Item
         label="Giờ đóng cửa"
         name="closingTime"
       >
-       <InputNumber  addonAfter="Giờ" defaultValue={12} />
+       <InputNumber  addonAfter="Giờ"  />
       </Form.Item>
 
       <Form.Item
@@ -137,7 +137,7 @@ const CreateNewField = ({setShowForm}) => {
         name="priceSlot"
         rules={[{ required: true, message: "Vui lòng nhập giá!" }]}
       >
-        <Input />
+        <InputNumber />
       </Form.Item>
       <Form.Item
         label="Chọn chủ sân"
