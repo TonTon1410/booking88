@@ -1,6 +1,6 @@
 import { Button, Form, Input, Modal, Table, message } from 'antd';
 import { useEffect, useState } from 'react';
-import api from '../config/axios';  
+import api from '../config/axios';
 
 const QuanLyNhanVien = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);

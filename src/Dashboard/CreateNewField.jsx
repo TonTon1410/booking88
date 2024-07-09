@@ -1,66 +1,60 @@
-
 import React, { useEffect, useState } from "react";
-import { Button, Form, Input, InputNumber, message, Select, Upload } from "antd";
+import { Button, Form, Input, InputNumber, Select, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import api from "../config/axios";
 import uploadFile from "../assets/hook/uploadFile.js";
 import { useSelector } from "react-redux";
 import { selectUser } from "../redux/features/counterSlice.js";
-import { Option } from "antd/es/mentions/index.js";
 import { toast } from "react-toastify";
 
-const CreateNewField = ({setShowForm,setFields}) => {
+const CreateNewField = ({ setShowForm, setFields }) => {
   const [form] = Form.useForm();
   const [imageFileList, setImageFileList] = useState([]);
   const user = useSelector(selectUser);
-    const [data, setData] = useState([])
-    const [loading, setLoading] = useState(false)
-    const fetch = async () => {
-      try {
-        const response = await api.get("/admin/owner");
-        setData(response.data)
-      } catch (e) {
-        console.log(e);
-      }
-    };
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-      fetch()
-    }, []);
-    console.log(data)
+  const fetch = async () => {
+    try {
+      const response = await api.get("/admin/owner");
+      setData(response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    fetch();
+  }, []);
+
+  console.log(data);
 
   const handleChange = (value) => {
     console.log(`selected ${value}`);
   };
 
-
-
   const onFinish = async (values) => {
     console.log(values);
     try {
-      setLoading(true)
+      setLoading(true);
       const img = await uploadFile(values.photo.file);
       values.photo = img;
-      const response = await api.post("/location",values)
-      toast.success("Thêm sân thành công")
-      setFields((prev) => [...prev,response.data])
-      setShowForm(false)
+      const response = await api.post("/location", values);
+      toast.success("Thêm sân thành công");
+      setFields((prev) => [...prev, response.data]);
+      setShowForm(false);
       form.resetFields();
-      console.log(response.data)
+      console.log(response.data);
     } catch (error) {
-      console.log(error)
-      toast.error(error.response.data)
+      console.log(error);
+      toast.error(error.response.data);
+    } finally {
+      setLoading(false);
     }
-    finally{
-      setLoading(false)
-    }
-
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
-
-
   };
 
   const handleImageChange = async ({ fileList }) => {
@@ -73,7 +67,6 @@ const CreateNewField = ({setShowForm,setFields}) => {
             url: imageUrl,
             thumbUrl: imageUrl,
             status: "done",
-
           };
         }
         return item;
@@ -81,6 +74,9 @@ const CreateNewField = ({setShowForm,setFields}) => {
     );
     setImageFileList(updatedFileList);
   };
+
+  // Lọc các tài khoản có trạng thái "ACTIVE"
+  const activeAccounts = data?.filter((account) => account.status === "ACTIVE");
 
   return (
     <Form
@@ -103,13 +99,13 @@ const CreateNewField = ({setShowForm,setFields}) => {
         label="Giờ mở cửa"
         name="openingTime"
       >
-      <InputNumber  addonAfter="Giờ"  />
+        <InputNumber addonAfter="Giờ" />
       </Form.Item>
       <Form.Item
         label="Giờ đóng cửa"
         name="closingTime"
       >
-       <InputNumber  addonAfter="Giờ"  />
+        <InputNumber addonAfter="Giờ" />
       </Form.Item>
 
       <Form.Item
@@ -146,22 +142,21 @@ const CreateNewField = ({setShowForm,setFields}) => {
       <Form.Item
         label="Chọn chủ sân"
         name="ownerId"
-        // rules={[{ required: true, message: "Vui lòng chọn!" }]}  
+        rules={[{ required: true, message: "Vui lòng chọn!" }]}
       >
- <Select
-      defaultValue=""
-      style={{ width: 120 }}
-      onChange={handleChange}
-      options={data?.map((item) =>({
-        value: item.id,
-        label: item.name
-      }))}
-    >
-    </Select>
+        <Select
+          defaultValue=""
+          style={{ width: 120 }}
+          onChange={handleChange}
+          options={activeAccounts?.map((item) => ({
+            value: item.id,
+            label: item.name,
+          }))}
+        >
+        </Select>
       </Form.Item>
 
       <Form.Item label="Hình ảnh" name="photo">
-
         <Upload
           listType="picture"
           fileList={imageFileList}
