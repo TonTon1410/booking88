@@ -46,6 +46,7 @@ const CourtDetails = () => {
     setSelectedDays(selectedDays.filter(day => day !== removedValue));
   };
 
+  console.log(selectedTime)
   useEffect(() => {
     // Fetch slot times and prices from API
     const fetchSlotData = async () => {
@@ -100,7 +101,8 @@ const CourtDetails = () => {
         bookingDetail.push({
           date: `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`,
           time: getLableSlot(selectedTime),
-          slot: slot
+          slot: slot,
+          idSlot: selectedTime
         });
       }
     }
@@ -177,7 +179,6 @@ const CourtDetails = () => {
 
   const getWeekDates = (weekOffset = 0) => {
     const now = new Date();
-    window.scrollTo(0, 0);
     const startOfWeek = new Date(
       now.setDate(now.getDate() - now.getDay() + 1 + 7 * weekOffset)
     );
@@ -196,6 +197,8 @@ const CourtDetails = () => {
   const getLableSlot = (id) => {
     return slots.filter(item => item.id === id)[0].time
   }
+
+  // console.log([...,\])
 
   const weekDates = getWeekDates(currentWeek);
 

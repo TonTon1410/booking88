@@ -17,8 +17,8 @@ const UpdateFieldList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
   const [imageFileList, setImageFileList] = useState("");
-  const [showForm,setShowForm] = useState(false);
-//  const [imageUpload,setImageUpload] = useState([])
+  const [showForm, setShowForm] = useState(false);
+  //  const [imageUpload,setImageUpload] = useState([])
   useEffect(() => {
     const fetchFields = async () => {
       try {
@@ -35,8 +35,8 @@ const UpdateFieldList = () => {
   }, []);
 
 
-  
-  
+
+
 
 
   const isEditing = (record) => record.locationId === editingKey;
@@ -72,90 +72,90 @@ const UpdateFieldList = () => {
 
   const save = async (location) => {
     // form.submit()  
-try {
-  const res = await api.put(`/location/${location.id}`,{
-    name: location.name,
-    description: location.description,
-    address: location.address,
-    hotline: location.hotline,
-    // openingTime: 0,
-    // closingTime: 0,
-    photo: imageFileList,
-  }) 
+    try {
+      const res = await api.put(`/location/${location.id}`, {
+        name: location.name,
+        description: location.description,
+        address: location.address,
+        hotline: location.hotline,
+        // openingTime: 0,
+        // closingTime: 0,
+        photo: imageFileList,
+      })
 
-  setFields((oldItems)=>{
-    return  oldItems.map(oldItem =>{
-     if(oldItem.id == res.data.id){
-        return res.data
-     }
-     else{
-      return oldItem;
-     }
-
-
-  })
-
-})
-
-  console.log("res: x",res.data)
-} catch (error) {
-  console.log(error)
-}
+      setFields((oldItems) => {
+        return oldItems.map(oldItem => {
+          if (oldItem.id == res.data.id) {
+            return res.data
+          }
+          else {
+            return oldItem;
+          }
 
 
-//     try {
-//       console.log("hi")
-//       // const row = await form.validateFields();
-//       const newData = [...fields];
-//       console.log(newData)
-//       const index = newData.findIndex((item) => locationId === item.locationId);
-// console.log(index)
-//       const imagesBase64 = await Promise.all(
-//         imageFileList.map((file) => {
-//           if (file.originFileObj) {
-//             return getBase64(file.originFileObj);
-//           } else {
-//             return file.url;
-//           }
-//         })
-//       );
+        })
 
-//       if (index > -1) {
-//         const item = newData[index];
-//         newData.splice(index, 1, { ...item, ...row, images: imagesBase64 });
+      })
 
-//         setFields(newData);
-//         setEditingKey('');
+      console.log("res: x", res.data)
+    } catch (error) {
+      console.log(error)
+    }
 
-//         await api.put(`/updateClub/${locationId}`, {
-//           ...row,
-//           images: imagesBase64,
-//         });
 
-//         message.success('Cập nhật sân thành công');
-//       } else {
-//         newData.push({ ...row, images: imagesBase64 });
-//         setFields(newData);
-//         setEditingKey('');
+    //     try {
+    //       console.log("hi")
+    //       // const row = await form.validateFields();
+    //       const newData = [...fields];
+    //       console.log(newData)
+    //       const index = newData.findIndex((item) => locationId === item.locationId);
+    // console.log(index)
+    //       const imagesBase64 = await Promise.all(
+    //         imageFileList.map((file) => {
+    //           if (file.originFileObj) {
+    //             return getBase64(file.originFileObj);
+    //           } else {
+    //             return file.url;
+    //           }
+    //         })
+    //       );
 
-//         await api.put(`/updateClub/${locationId}`, {
-//           ...row,
-//           images: imagesBase64,
-//         });
+    //       if (index > -1) {
+    //         const item = newData[index];
+    //         newData.splice(index, 1, { ...item, ...row, images: imagesBase64 });
 
-//         message.success('Cập nhật sân thành công');
-//       }
+    //         setFields(newData);
+    //         setEditingKey('');
 
-//       setIsModalOpen(false);
-//       setCurrentRecord(null);
-//       console.log("hi")
-//       setImageFileList([]);
-//       console.log("hi")
-//     } catch (err) {
-//       console.error('Error saving field:', err);
-//       // message.error('Lỗi khi cập nhật sân');
-//     }
-setIsModalOpen(false)
+    //         await api.put(`/updateClub/${locationId}`, {
+    //           ...row,
+    //           images: imagesBase64,
+    //         });
+
+    //         message.success('Cập nhật sân thành công');
+    //       } else {
+    //         newData.push({ ...row, images: imagesBase64 });
+    //         setFields(newData);
+    //         setEditingKey('');
+
+    //         await api.put(`/updateClub/${locationId}`, {
+    //           ...row,
+    //           images: imagesBase64,
+    //         });
+
+    //         message.success('Cập nhật sân thành công');
+    //       }
+
+    //       setIsModalOpen(false);
+    //       setCurrentRecord(null);
+    //       console.log("hi")
+    //       setImageFileList([]);
+    //       console.log("hi")
+    //     } catch (err) {
+    //       console.error('Error saving field:', err);
+    //       // message.error('Lỗi khi cập nhật sân');
+    //     }
+    setIsModalOpen(false)
   };
 
   const deleteField = async (locationId) => {
@@ -169,7 +169,7 @@ setIsModalOpen(false)
     }
   };
 
-  const handleImageChange = async ({file,fileList} ) => {
+  const handleImageChange = async ({ file, fileList }) => {
     const image = await uploadFile(file)
     setImageFileList(image)
 
@@ -202,7 +202,7 @@ setIsModalOpen(false)
       editable: true,
     },
 
-  
+
 
     {
       title: 'Giờ mở cửa',
@@ -217,16 +217,16 @@ setIsModalOpen(false)
       key: 'closeTime',
       editable: true,
     },
-   
-        {
+
+    {
       title: 'Hình ảnh',
       dataIndex: 'photo',
       key: 'photo',
       editable: true,
       render: (images) => (
-            <Image src={images} />
+        <Image src={images} />
       ),
-    }, 
+    },
     {
       title: 'Trạng thái',
       dataIndex: 'status',
@@ -249,10 +249,11 @@ setIsModalOpen(false)
                 color: '#fff',
               }}
               disabled={editingKey !== ''}
-              onClick={() =>{
+              onClick={() => {
                 setImageFileList(record.photo)
-                edit(record)}
-              } 
+                edit(record)
+              }
+              }
             >
               Sửa
             </Button>
@@ -271,9 +272,9 @@ setIsModalOpen(false)
           </div>
         );
       },
-      
+
     },
-    
+
   ];
 
   const mergedColumns = columns.map((col) => {
@@ -289,16 +290,16 @@ setIsModalOpen(false)
   return (
     <>
 
-<Button onClick={() => setShowForm(true)} style={{
-  width:"fit-content",
-  marginBottom:"20px"
-  
-}}>Tạo sân mới</Button>
+      <Button onClick={() => setShowForm(true)} style={{
+        width: "fit-content",
+        marginBottom: "20px"
+
+      }}>Tạo sân mới</Button>
 
 
-    <Modal title="Tạo sân mới" onCancel={() => setShowForm(false)} footer={false} open={showForm}>
-      <CreateNewField setFields={setFields} setShowForm={setShowForm}/>
-    </Modal>
+      <Modal title="Tạo sân mới" onCancel={() => setShowForm(false)} footer={false} open={showForm}>
+        <CreateNewField setFields={setFields} setShowForm={setShowForm} />
+      </Modal>
 
       <Form form={form} component={false}>
         <Table
@@ -324,17 +325,17 @@ setIsModalOpen(false)
           <Button key="cancel" onClick={cancel}>
             Hủy
           </Button>,
-          <Button key="save" onClick={()=> form.submit()} >
+          <Button key="save" onClick={() => form.submit()} >
             Lưu
           </Button>,
         ]}
       >
         <Form form={form} layout="vertical"
-        onFinish={save}
+          onFinish={save}
         >
-           <Form.Item
+          <Form.Item
             name="id"
-          hidden
+            hidden
           />
           <Form.Item
             name="name"
@@ -343,18 +344,18 @@ setIsModalOpen(false)
           >
             <Input />
           </Form.Item>
-                <Form.Item
-        label="Giờ mở cửa"
-        name="openTime"
-      >
-      <InputNumber  addonAfter="Giờ"  />
-      </Form.Item>
-      <Form.Item
-        label="Giờ đóng cửa"
-        name="closeTime"
-      >
-       <InputNumber  addonAfter="Giờ"  />
-      </Form.Item>
+          <Form.Item
+            label="Giờ mở cửa"
+            name="openTime"
+          >
+            <InputNumber addonAfter="Giờ" />
+          </Form.Item>
+          <Form.Item
+            label="Giờ đóng cửa"
+            name="closeTime"
+          >
+            <InputNumber addonAfter="Giờ" />
+          </Form.Item>
           <Form.Item
             name="description"
             label="Mô tả"
@@ -391,12 +392,12 @@ setIsModalOpen(false)
             </Upload>
           </Form.Item>
           <Form.Item
-      wrapperCol={{
-        offset: 8,
-        span: 16,
-      }}
-    >
-    </Form.Item>
+            wrapperCol={{
+              offset: 8,
+              span: 16,
+            }}
+          >
+          </Form.Item>
 
         </Form>
       </Modal>

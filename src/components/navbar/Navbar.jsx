@@ -67,7 +67,7 @@ const Navbar = () => {
                 Liên Hệ
               </a>
             </li>
-            {user && ['ADMIN', 'CLUB_STAFF'].includes(user.role) && (<li className="navItem">
+            {user && ['ADMIN', 'CLUB_STAFF', 'CLUB_OWNER'].includes(user.role) && (<li className="navItem">
               <a href="/dashboard" className="navLink">
                 Dashboard
               </a>
