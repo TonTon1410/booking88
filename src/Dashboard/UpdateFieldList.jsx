@@ -177,6 +177,13 @@ const UpdateFieldList = () => {
 
   const columns = [
     {
+      title: 'id',
+      dataIndex: 'id',
+      key: 'id',
+      editable: true,
+
+    },
+    {
       title: 'Tên sân',
       dataIndex: 'name',
       key: 'name',

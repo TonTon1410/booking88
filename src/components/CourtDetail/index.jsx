@@ -56,7 +56,7 @@ const CourtDetails = () => {
   const [slots, setSlots] = useState([]);
   const [promotion, setPromotion] = useState([]);
   const user = useSelector(selectUser);
-
+  window.scrollTo(0, 0);
   const handleChange = (selectedValues) => {
     setSelectedDays(selectedValues);
   };
