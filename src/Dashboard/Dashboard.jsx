@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { HeartOutlined, UserOutlined, BarChartOutlined, PlusOutlined, EditOutlined, TeamOutlined } from "@ant-design/icons";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Breadcrumb, Layout, Menu, Button, theme } from "antd";
 import { Footer } from "antd/es/layout/layout";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -33,20 +33,23 @@ const Dashboard = () => {
     // Định nghĩa các mục menu dựa trên vai trò của người dùng
     if (role === "ADMIN") {
       setItems([
-
         getItem("Doanh thu", "overview", <FaRegMoneyBillAlt />),
         getItem("Cập Nhật Sân", "update-field", <EditOutlined />),
-        getItem("Quản lý Nhân Viên", "staffs", <UserOutlined />),
-        getItem("Thống kê", "statistics", <BarChartOutlined />),
-        getItem("Quản lý Tài khoản", "account-list", <TeamOutlined />), 
+        // getItem("Quản lý Nhân Viên", "staffs", <UserOutlined />),
+        // getItem("Thống kê", "statistics", <BarChartOutlined />),
+        getItem("Quản lý Tài Khoản", "account-list", <TeamOutlined />), 
         getItem("Quản lý Mã Giảm Giá", "promotion", <TeamOutlined />), 
-
       ]);
     } else if (role === "CLUB_STAFF") {
       setItems([
         getItem("Quản lý Sân", "manage-fields", <HeartOutlined />),
       ]);
-
+    } else if (role === "CLUB_OWNER") {
+      setItems([
+        getItem("Cập Nhật Sân", "update-field", <EditOutlined />),
+        getItem("Quản lý Nhân Viên", "account-staff", <TeamOutlined />), 
+        getItem("Doanh thu", "overview", <FaRegMoneyBillAlt />),
+      ]);
     }
   }, [role]);
 
@@ -96,8 +99,13 @@ const Dashboard = () => {
         </Menu>
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }}>
+        <Header style={{ padding: 0, background: colorBgContainer, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <header></header>
+          <Button type="primary" style={{ marginRight: '16px' }}>
+            <Link to="/" className="no-underline" style={{ color: 'white' }}>
+              Trang chủ
+            </Link>
+          </Button>
         </Header>
         <Content
           style={{ margin: "0 16px", display: "flex", flexDirection: "column" }}
