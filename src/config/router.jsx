@@ -9,20 +9,19 @@ import CourtList from "../components/CourtList";
 import CourtDetails from "../components/CourtDetail";
 import Login from "../pages/Login/Login";
 import Payment from "../components/Payment/index";
-import UserProfile from '../components/UserProfile/UserProfile.jsx';
+import UserProfile from "../components/UserProfile/UserProfile.jsx";
 import Dashboard from "../Dashboard/Dashboard.jsx";
-import ManageStaff from '../Dashboard/ManageStaff.jsx';
-import CreateNewField from '../Dashboard/CreateNewField.jsx';
-import UpdateFieldList from '../Dashboard/UpdateFieldList.jsx';
-import ClubStaffManageFields from '../Dashboard/ClubStaffManageFields.jsx';
-import Statistics from '../Dashboard/Statistics.jsx'; // Thêm đường dẫn tới component Statistics
-import AccountList from '../Dashboard/AccountList.jsx';
-import News from '../components/News/News.jsx';
-import Contact from '../components/Contact/Contact.jsx';
+import ManageStaff from "../Dashboard/ManageStaff.jsx";
+import CreateNewField from "../Dashboard/CreateNewField.jsx";
+import UpdateFieldList from "../Dashboard/UpdateFieldList.jsx";
+import ClubStaffManageFields from "../Dashboard/ClubStaffManageFields.jsx";
+import Statistics from "../Dashboard/Statistics.jsx"; // Thêm đường dẫn tới component Statistics
+import AccountList from "../Dashboard/AccountList.jsx";
+import News from "../components/News/News.jsx";
+import Contact from "../components/Contact/Contact.jsx";
 import Promotion from "../components/promotion/index.jsx";
 import Overview from "../components/overview/index.jsx";
 import History from "../components/history/index.jsx";
-
 
 const router = createBrowserRouter([
   {
@@ -42,46 +41,7 @@ const router = createBrowserRouter([
         path: "courtlist",
         element: <CourtList />,
       },
-      {
-        path: 'dashboard',
-        element: <Dashboard />,
-        children: [
-          {
-            path: "overview",
-            element: <Overview />
-          },
 
-          {
-            path: 'staffs',
-            element: <ManageStaff />,
-          },
-          {
-            path: 'create-new-field',
-            element: <CreateNewField />,
-          },
-          {
-            path: 'update-field',
-            element: <UpdateFieldList />,
-          },
-          {
-            path: 'statistics',
-            element: <Statistics />,
-          },
-          {
-            path: 'manage-fields',
-            element: <ClubStaffManageFields />,
-          },
-          {
-            path: 'account-list',
-            element: <AccountList />,
-          },
-          {
-            path: 'promotion',
-            element: <Promotion />
-          },
-
-        ],
-      },
       {
         path: "/UserProfile",
         element: <UserProfile />,
@@ -126,6 +86,45 @@ const router = createBrowserRouter([
       {
         path: "*",
         element: <div>404 Not Found</div>,
+      },
+    ],
+  },
+  {
+    path: "dashboard",
+    element: <Dashboard />,
+    children: [
+      {
+        path: "overview",
+        element: <Overview />,
+      },
+
+      {
+        path: "staffs",
+        element: <ManageStaff />,
+      },
+      {
+        path: "create-new-field",
+        element: <CreateNewField />,
+      },
+      {
+        path: "update-field",
+        element: <UpdateFieldList />,
+      },
+      {
+        path: "statistics",
+        element: <Statistics />,
+      },
+      {
+        path: "manage-fields",
+        element: <ClubStaffManageFields />,
+      },
+      {
+        path: "account-list",
+        element: <AccountList />,
+      },
+      {
+        path: "promotion",
+        element: <Promotion />,
       },
     ],
   },
