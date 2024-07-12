@@ -56,7 +56,9 @@ const CourtDetails = () => {
   const [slots, setSlots] = useState([]);
   const [promotion, setPromotion] = useState([]);
   const user = useSelector(selectUser);
+
   window.scrollTo(0, 0);
+
   const handleChange = (selectedValues) => {
     setSelectedDays(selectedValues);
   };
@@ -70,6 +72,7 @@ const CourtDetails = () => {
     bookingRequest = bookingDetails?.map((item) => {
       return {
         idSlot: item.idSlot,
+        date: moment(item.date).format("MM-DD-YYYY"),
         date: item.date,
       };
     });
@@ -230,10 +233,12 @@ const CourtDetails = () => {
   const handleShowConfirm = () => {
     console.log(selectedDate, selectedTime);
     if (bookingType === "now") {
-      console.log(moment(selectedDate.$d).format("MM/DD/YYYY"));
+
+      console.log(moment(selectedDate.$d).format("MM-DD-YYYY"));
       setBookingDetails([
         {
-          date: moment(selectedDate.$d).format("MM/DD/YYYY"),
+          date: moment(selectedDate.$d).format("MM-DD-YYYY"),
+     
           time: getLableSlot(selectedTime),
           idSlot: selectedTime,
         },
@@ -241,7 +246,8 @@ const CourtDetails = () => {
     } else if (bookingType === "flexible") {
       setBookingDetails(
         flexibleBookings.map((item) => ({
-          date: moment(item.date.$d).format("MM/DD/YYYY"),
+          date: moment(item.date.$d).format("MM-DD-YYYY"),
+
           time: getLableSlot(item.idSlot),
           idSlot: item.idSlot,
         }))
@@ -368,6 +374,9 @@ const CourtDetails = () => {
       }}
       className="container mx-auto my-8 "
     >
+
+      <ToastContainer />
+
       {/* <Row gutter={[16, 16]}>
         <Col xs={24}>
           <div className="court-card">
@@ -554,7 +563,9 @@ const CourtDetails = () => {
                     {flexibleBookings.map((booking, index) => (
                       <div key={index} className="flex items-center mb-2">
                         <p className="me-2 mb-0">
+
                           {moment(booking.date.$d).format("DD/MM/YYYY")} -{" "}
+
                           {getLableSlot(booking.idSlot)}
                         </p>
                         <Button

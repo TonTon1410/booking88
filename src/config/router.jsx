@@ -15,14 +15,17 @@ import ManageStaff from "../Dashboard/ManageStaff.jsx";
 import CreateNewField from "../Dashboard/CreateNewField.jsx";
 import UpdateFieldList from "../Dashboard/UpdateFieldList.jsx";
 import ClubStaffManageFields from "../Dashboard/ClubStaffManageFields.jsx";
-import Statistics from "../Dashboard/Statistics.jsx";
+
+import Statistics from "../Dashboard/Statistics.jsx"; // Thêm đường dẫn tới component Statistics
 import AccountList from "../Dashboard/AccountList.jsx";
 import AccountStaff from "../Dashboard/Owner/AccountStaff.jsx";
+
 import News from "../components/News/News.jsx";
 import Contact from "../components/Contact/Contact.jsx";
 import Promotion from "../components/promotion/index.jsx";
 import Overview from "../components/overview/index.jsx";
 import History from "../components/history/index.jsx";
+import CheckIn from "../components/checkin";
 
 const router = createBrowserRouter([
   {
@@ -35,30 +38,98 @@ const router = createBrowserRouter([
         ),
       },
       {path: "courtlist",element: <CourtList />,},
-      {path: "/UserProfile",element: <UserProfile />,},
-      {path: "/history",element: <History />,},
-      {path: "/login",element: <Login />,},
-      {path: "register",element: <Register />,},
-      {path: "PasswordRecovery",element: <PasswordRecovery />,},
-      {path: "reset-password",element: <PasswordReset />,},
-      {path: "court-details/:id",element: <CourtDetails />,},
-      {path: "payment",element: <Payment />,},
-      {path: "News",element: <News />,},
-      {path: "Contact",element: <Contact />,},
-      {path: "*",element: <div>404 Not Found</div>,},
+
+      {
+        path: "/UserProfile",
+        element: <UserProfile />,
+      },
+      {
+        path: "/history",
+        element: <History />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "register",
+        element: <Register />,
+      },
+
+      {
+        path: "PasswordRecovery",
+        element: <PasswordRecovery />,
+      },
+      {
+        path: "reset-password",
+        element: <PasswordReset />,
+      },
+      {
+        path: "court-details/:id",
+        element: <CourtDetails />,
+      },
+      {
+        path: "payment",
+        element: <Payment />,
+      },
+      {
+        path: "News",
+        element: <News />,
+      },
+      {
+        path: "Contact",
+        element: <Contact />,
+      },
+      {
+        path: "*",
+        element: <div>404 Not Found</div>,
+      },
+
     ],
   },
-  {path: "dashboard",element: <Dashboard />,
+  {
+    path: "dashboard",
+    element: <Dashboard />,
     children: [
-      {path: "overview",element: <Overview />,},
-      {path: "staffs",element: <ManageStaff />,},
-      {path: "create-new-field",element: <CreateNewField />,},
-      {path: "update-field",element: <UpdateFieldList />,},
-      {path: "statistics",element: <Statistics />,},
-      {path: "manage-fields",element: <ClubStaffManageFields />,},
-      {path: "account-list",element: <AccountList />,},
+      {
+        path: "overview",
+        element: <Overview />,
+      },
+
+      {
+        path: "staffs",
+        element: <ManageStaff />,
+      },
+      {
+        path: "create-new-field",
+        element: <CreateNewField />,
+      },
+      {
+        path: "update-field",
+        element: <UpdateFieldList />,
+      },
+      {
+        path: "statistics",
+        element: <Statistics />,
+      },
+      {
+        path: "manage-fields",
+        element: <ClubStaffManageFields />,
+      },
+      {
+        path: "account-list",
+        element: <AccountList />,
+       
+      },
       {path: "account-staff",element: <AccountStaff />,},
-      {path: "promotion",element: <Promotion />,},
+      {
+        path: "promotion",
+        element: <Promotion />,
+      },
+      {
+        path: "checkin",
+        element: <CheckIn />,
+      },
     ],
   },
 ]);
