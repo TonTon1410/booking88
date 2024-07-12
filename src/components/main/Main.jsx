@@ -10,7 +10,6 @@ import api from "../../config/axios";
 import { Button } from "antd";
 import { QRComponent, QRScanner } from "../qr";
 
-
 const Data = [
   {
     id: 1,
@@ -91,7 +90,6 @@ const Main = () => {
           Tin Tức
         </h3>
       </div>
-
       <div className="secContent grid">
         {data?.map((data) => {
           return (
@@ -116,13 +114,14 @@ const Main = () => {
                     </span>
                   </div>
                   <div className="price">
-                    <h5>{data?.slots[0].price}</h5>
+                    <h5>{data?.slots && data?.slots.length > 0 ? data.slots[0].price : "N/A"}</h5>
                   </div>
                 </div>
 
                 <div className="desc">
                   <p>{data.description}</p>
                 </div>
+
 
                 <Button onClick={() => navigate(`/court-details/${data?.id}`)}>
                   Đặt sân

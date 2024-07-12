@@ -124,9 +124,11 @@ const UserProfile = () => {
                 <button className={`nav-link ${activeTab === 'forgotPassword' ? 'active' : ''}`} onClick={() => handleTabChange('forgotPassword')}>
                     <FaEnvelope /> Đặt lại mật khẩu
                 </button>
-                <button className={`nav-link ${activeTab === 'bookingHistory' ? 'active' : ''}`} onClick={() => handleTabChange('bookingHistory')}>
+                {/* <button className={`nav-link ${activeTab === 'bookingHistory' ? 'active' : ''}`} onClick={() => handleTabChange('bookingHistory')}>
                     <FaHistory /> Lịch sử đặt lịch
+
                 </button>
+
             </div>
 
             <div className="account-content">

@@ -57,6 +57,7 @@ const CourtDetails = () => {
   const [promotion, setPromotion] = useState([]);
   const user = useSelector(selectUser);
 
+
   window.scrollTo(0, 0);
 
   const handleChange = (selectedValues) => {
@@ -65,6 +66,37 @@ const CourtDetails = () => {
 
   const handleDeselect = (removedValue) => {
     setSelectedDays(selectedDays.filter((day) => day !== removedValue));
+  };
+
+  let bookingRequest;
+  if (bookingDetails.length > 0) {
+    bookingRequest = bookingDetails?.map((item) => {
+      return {
+        idSlot: item.idSlot,
+        date: moment(item.date).format("MM-DD-YYYY"),
+      };
+    });
+
+    console.log(bookingRequest);
+  }
+  console.log(bookingType);
+  const getPrice = async () => {
+    try {
+      const response = await api.post("booking/price", {
+        idPromotion: promoCode,
+        idUser: user.id,
+        idLocation: id,
+        bookingDetailRequests: bookingRequest,
+        bookingType: bookingType === "now" ? "SLOT" : bookingType.toUpperCase(),
+      });
+      console.log(response.data);
+      setSlotPrices(response.data);
+      // setData(response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   };
 
   let bookingRequest;
@@ -238,7 +270,7 @@ const CourtDetails = () => {
       setBookingDetails([
         {
           date: moment(selectedDate.$d).format("MM-DD-YYYY"),
-     
+
           time: getLableSlot(selectedTime),
           idSlot: selectedTime,
         },
@@ -374,7 +406,6 @@ const CourtDetails = () => {
       }}
       className="container mx-auto my-8 "
     >
-
       <ToastContainer />
 
       {/* <Row gutter={[16, 16]}>
@@ -563,6 +594,7 @@ const CourtDetails = () => {
                     {flexibleBookings.map((booking, index) => (
                       <div key={index} className="flex items-center mb-2">
                         <p className="me-2 mb-0">
+
 
                           {moment(booking.date.$d).format("DD/MM/YYYY")} -{" "}
 
