@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { HeartOutlined, UserOutlined, BarChartOutlined, PlusOutlined, EditOutlined, TeamOutlined } from "@ant-design/icons";
+import {
+  HeartOutlined,
+  UserOutlined,
+  BarChartOutlined,
+  PlusOutlined,
+  EditOutlined,
+  TeamOutlined,
+} from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Footer } from "antd/es/layout/layout";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../redux/features/counterSlice";
-import './Dashboard.scss';
+import "./Dashboard.scss";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
 
 const { Header, Content, Sider } = Layout;
@@ -23,30 +30,26 @@ const Dashboard = () => {
   const [items, setItems] = useState([]);
   const [openKeys, setOpenKeys] = useState([]);
   const location = useLocation();
-  const currentURI = location.pathname.split("/")[location.pathname.split("/").length - 1];
+  const currentURI =
+    location.pathname.split("/")[location.pathname.split("/").length - 1];
   const user = useSelector(selectUser);
   // const role = user?.role;
   const role = "ADMIN";
-
 
   useEffect(() => {
     // Định nghĩa các mục menu dựa trên vai trò của người dùng
     if (role === "ADMIN") {
       setItems([
-
         getItem("Doanh thu", "overview", <FaRegMoneyBillAlt />),
         getItem("Cập Nhật Sân", "update-field", <EditOutlined />),
         getItem("Quản lý Nhân Viên", "staffs", <UserOutlined />),
         getItem("Thống kê", "statistics", <BarChartOutlined />),
-        getItem("Quản lý Tài khoản", "account-list", <TeamOutlined />), 
-        getItem("Quản lý Mã Giảm Giá", "promotion", <TeamOutlined />), 
-
+        getItem("Quản lý Tài khoản", "account-list", <TeamOutlined />),
+        getItem("Quản lý Mã Giảm Giá", "promotion", <TeamOutlined />),
+        getItem("Quản lý Check In", "checkin", <TeamOutlined />),
       ]);
     } else if (role === "CLUB_STAFF") {
-      setItems([
-        getItem("Quản lý Sân", "manage-fields", <HeartOutlined />),
-      ]);
-
+      setItems([getItem("Quản lý Sân", "manage-fields", <HeartOutlined />)]);
     }
   }, [role]);
 
@@ -79,7 +82,10 @@ const Dashboard = () => {
               <Menu.SubMenu key={item.key} icon={item.icon} title={item.label}>
                 {item.children.map((subItem) => (
                   <Menu.Item key={subItem.key}>
-                    <Link to={`/dashboard/${subItem.key}`} className="no-underline">
+                    <Link
+                      to={`/dashboard/${subItem.key}`}
+                      className="no-underline"
+                    >
                       {subItem.label}
                     </Link>
                   </Menu.Item>
@@ -106,9 +112,14 @@ const Dashboard = () => {
             {location.pathname.split("/").map((path, index, array) => (
               <Breadcrumb.Item key={index}>
                 {index === 0 ? (
-                  <Link to="/dashboard" className="no-underline">Bảng điều khiển</Link>
+                  <Link to="/dashboard" className="no-underline">
+                    Bảng điều khiển
+                  </Link>
                 ) : (
-                  <Link to={`/${array.slice(0, index + 1).join("/")}`} className="no-underline">
+                  <Link
+                    to={`/${array.slice(0, index + 1).join("/")}`}
+                    className="no-underline"
+                  >
                     {path}
                   </Link>
                 )}

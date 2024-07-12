@@ -6,7 +6,6 @@ import { FaUserShield } from "react-icons/fa";
 import { BsFillShieldLockFill } from "react-icons/bs";
 import { AiOutlineSwapRight } from "react-icons/ai";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import GGLogin from "../../api/GGlogin";
 import api from "../../config/axios";
@@ -36,7 +35,9 @@ const Login = () => {
         navigate("/");
       }, 2000);
     } catch (error) {
-      toast.error("Đã có lỗi xảy ra trong quá trình đăng nhập. Vui lòng thử lại.");
+      toast.error(
+        "Đã có lỗi xảy ra trong quá trình đăng nhập. Vui lòng thử lại."
+      );
     }
   };
 
@@ -72,7 +73,9 @@ const Login = () => {
           >
             <Form.Item
               name="email"
-              rules={[{ required: true, message: "Vui lòng nhập email của bạn!" }]}
+              rules={[
+                { required: true, message: "Vui lòng nhập email của bạn!" },
+              ]}
             >
               <Input
                 prefix={<FaUserShield />}
@@ -82,7 +85,9 @@ const Login = () => {
             </Form.Item>
             <Form.Item
               name="password"
-              rules={[{ required: true, message: "Vui lòng nhập mật khẩu của bạn!" }]}
+              rules={[
+                { required: true, message: "Vui lòng nhập mật khẩu của bạn!" },
+              ]}
             >
               <Input.Password
                 prefix={<BsFillShieldLockFill />}
