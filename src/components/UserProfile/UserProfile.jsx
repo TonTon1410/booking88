@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { FaInfoCircle, FaEnvelope, FaHistory } from 'react-icons/fa';
+import { FaInfoCircle, FaEnvelope, FaHistory, FaWallet } from 'react-icons/fa';
 import userApi from '../../api/UserProfileApi';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './UserProfile.scss';
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, login } from "../../redux/features/counterSlice";
-import { Button, Space, Typography } from 'antd';
-import { FaWallet } from "react-icons/fa6";
+import { Button, Typography } from 'antd';
+
 const UserProfile = () => {
     const [activeTab, setActiveTab] = useState('Recharge');
     const user = useSelector(selectUser);
@@ -19,7 +19,9 @@ const UserProfile = () => {
         email: user?.email || ''
     });
 
-    const { Text, Link } = Typography;
+    const [amount, setAmount] = useState(0); // State to store amount
+
+    const { Text } = Typography;
     const [bookingHistory, setBookingHistory] = useState([]);
     const dispatch = useDispatch();
     const userId = user?.id;
@@ -45,6 +47,7 @@ const UserProfile = () => {
                         email: data.email
                     });
                     dispatch(login(data));
+                    setAmount(data.wallet?.amount || 0); // Set the amount
                 } else {
                     console.error('Invalid user data structure:', data);
                 }
@@ -112,7 +115,7 @@ const UserProfile = () => {
         <div className="account-page">
             <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
             <div className="account-nav">
-            <button className={`nav-link ${activeTab === 'Recharge' ? 'active' : ''}`} onClick={() => handleTabChange('Recharge')}>
+                <button className={`nav-link ${activeTab === 'Recharge' ? 'active' : ''}`} onClick={() => handleTabChange('Recharge')}>
                     <FaWallet /> Nạp tiền 
                 </button>
                 <button className={`nav-link ${activeTab === 'personalDetails' ? 'active' : ''}`} onClick={() => handleTabChange('personalDetails')}>
@@ -123,8 +126,9 @@ const UserProfile = () => {
                 </button>
                 {/* <button className={`nav-link ${activeTab === 'bookingHistory' ? 'active' : ''}`} onClick={() => handleTabChange('bookingHistory')}>
                     <FaHistory /> Lịch sử đặt lịch
-                </button> */}
-               
+
+                </button>
+
             </div>
 
             <div className="account-content">
@@ -168,7 +172,7 @@ const UserProfile = () => {
 
                 {activeTab === 'bookingHistory' && (
                     <div className="account-section active">
-                        
+                        <h2>Lịch sử đặt lịch</h2>
                         <table className="booking-history-table">
                             <thead>
                                 <tr>
@@ -176,29 +180,34 @@ const UserProfile = () => {
                                     <th>Sân</th>
                                     <th>Thời gian</th>
                                     <th>Số tiền</th>
+                                    <th>Loại đặt sân</th>
                                 </tr>
                             </thead>
+                            <tbody>
+                                {bookingHistory.map((history, index) => (
+                                    <tr key={index}>
+                                        <td>{history.bookingDate}</td>
+                                        <td>{history.location.name}</td>
+                                        <td>{history.bookingDetails.map(detail => detail.courtSlot.slot.time).join(', ')}</td>
+                                        <td>{history.totalPrice}</td>
+                                        <td>{history.bookingType}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
                         </table>
                     </div>
                 )}
 
-                {
-                    activeTab=="Recharge" && (
-
-                        <>
-                        <Button style={{
-                            display:"block",
-                            marginBottom:"20px"
-                        }}>
-                            Nạp tiền thêm 
+                {activeTab === 'Recharge' && (
+                    <>
+                        <Button style={{ display: "block", marginBottom: "20px" }}>
+                            Nạp tiền thêm
                         </Button>
-                           <Text style={{
-                            fontSize:"20px"
-                        }}>Số dư của bạn là : 300.000Vnd</Text>
-                        </>
-                     
-                    )
-                }
+                        <Text style={{ fontSize: "20px" }}>
+                            Số dư của bạn là: {amount.toLocaleString()} VND
+                        </Text>
+                    </>
+                )}
             </div>
 
             <div className="account-sidebar">

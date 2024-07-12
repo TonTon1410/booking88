@@ -57,6 +57,7 @@ const Data = [
 const Main = () => {
   const [data, setData] = useState([]);
 
+
   const fetch = async () => {
     try {
       const response = await api.get("/location");
@@ -83,8 +84,7 @@ const Main = () => {
 
   return (
     <section className="main container section">
-      {/* <QRComponent />
-      <QRScanner /> */}
+
       <div className="secTitle">
         <h3 data-aos="fade-right" className="title">
           Tin Tức
@@ -121,6 +121,7 @@ const Main = () => {
                 <div className="desc">
                   <p>{data.description}</p>
                 </div>
+
 
                 <Button onClick={() => navigate(`/court-details/${data?.id}`)}>
                   Đặt sân
