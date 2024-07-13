@@ -6,7 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import './UserProfile.scss';
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, login } from "../../redux/features/counterSlice";
-import { Button, Typography } from 'antd';
+import { Button, Typography, Input, Modal } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 const UserProfile = () => {
     const [activeTab, setActiveTab] = useState('Recharge');
@@ -20,11 +21,14 @@ const UserProfile = () => {
     });
 
     const [amount, setAmount] = useState(0); // State to store amount
+    const [rechargeAmount, setRechargeAmount] = useState(0); // State to store recharge amount
+    const [isModalVisible, setIsModalVisible] = useState(false); // State to control modal visibility
 
     const { Text } = Typography;
     const [bookingHistory, setBookingHistory] = useState([]);
     const dispatch = useDispatch();
     const userId = user?.id;
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -111,6 +115,23 @@ const UserProfile = () => {
         }
     };
 
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleOk = () => {
+        setIsModalVisible(false);
+        navigate('/payment', { state: { rechargeAmount } }); // Redirect to the payment page after closing the modal
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
+
+    const handleRechargeAmountChange = (e) => {
+        setRechargeAmount(Number(e.target.value));
+    };
+
     return (
         <div className="account-page">
             <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
@@ -127,7 +148,7 @@ const UserProfile = () => {
                 {/* <button className={`nav-link ${activeTab === 'bookingHistory' ? 'active' : ''}`} onClick={() => handleTabChange('bookingHistory')}>
                     <FaHistory /> Lịch sử đặt lịch
 
-                </button>
+                </button> */}
 
             </div>
 
@@ -200,12 +221,20 @@ const UserProfile = () => {
 
                 {activeTab === 'Recharge' && (
                     <>
-                        <Button style={{ display: "block", marginBottom: "20px" }}>
+                        <Button style={{ display: "block", marginBottom: "20px" }} onClick={showModal}>
                             Nạp tiền thêm
                         </Button>
                         <Text style={{ fontSize: "20px" }}>
                             Số dư của bạn là: {amount.toLocaleString()} VND
                         </Text>
+                        <Modal title="Nạp tiền" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                            <Input
+                                type="number"
+                                value={rechargeAmount}
+                                onChange={handleRechargeAmountChange}
+                                placeholder="Nhập số tiền cần nạp"
+                            />
+                        </Modal>
                     </>
                 )}
             </div>

@@ -54,9 +54,12 @@ const Login = () => {
       <div className="container flex">
         <div className="videoDiv">
           <div className="footerDiv flex">
-            <span className="text">Chưa có tài khoản?</span>
+            
             <Link to={"/register"}>
-              <Button type="primary">Đăng ký</Button>
+              <Button type="primary">Đăng ký khách hàng</Button>
+            </Link>
+            <Link to={"/register_owner"}>
+              <Button type="primary">Đăng ký chủ sân</Button>
             </Link>
           </div>
         </div>

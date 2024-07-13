@@ -408,17 +408,6 @@ const CourtDetails = () => {
     >
       <ToastContainer />
 
-      {/* <Row gutter={[16, 16]}>
-        <Col xs={24}>
-          <div className="court-card">
-            {imageSrc ? (
-              <img src={imageSrc} alt={court.name} />
-            ) : (
-              <p>No image available</p>
-            )}
-          </div>
-        </Col>
-      </Row> */}
       <Row
         style={{
           margin: "20px 0",
@@ -428,19 +417,7 @@ const CourtDetails = () => {
           alignItems: "center",
         }}
       >
-        {/* <Col xs={24} md={12}>
-          <h1 className="text-4xl font-bold mb-4">{court.name}</h1>
-          <p className="text-gray-700 text-base mb-2">Khu vực: {court.address}</p>
-          <p className="text-gray-700 text-base mb-2">Miêu tả: {court.description}</p>
-          <p className="text-gray-700 text-base mb-2">Hotline: {court.hotline}</p>
-          <p className="text-gray-700 text-base mb-2">Giá: {court.price} VNĐ</p>
-          <div className="mb-4">
-            <span className="text-lg font-semibold">Giờ hoạt động:</span>
-            <p className="text-gray-700 text-base">
-              {court.openTime} - {court.closeTime}
-            </p>
-          </div>
-        </Col> */}
+
         <Col xs={24} md={12}>
           <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-4">
             <h2 className="text-2xl font-bold mb-4">Chọn loại lịch đặt sân</h2>
@@ -522,17 +499,6 @@ const CourtDetails = () => {
               <div>
                 {bookingType === "flexible" && (
                   <div className="mb-4">
-                    {/* <label className="block mb-2">
-                      Số giờ đăng ký trong 1 tháng (ít nhất 20 giờ)
-                    </label>
-
-                    <Input
-                      type="number"
-                      className="w-full"
-                      value={totalSlots}
-                      onChange={(e) => setTotalSlots(e.target.value)}
-                      required
-                    /> */}
                   </div>
                 )}
                 <div className="mb-4">
@@ -621,13 +587,6 @@ const CourtDetails = () => {
 
             <div className="mb-4">
               <label className="block mb-2">Mã khuyến mãi</label>
-              {/* <Input
-                type="text"
-                className="w-full"
-                value={promoCode}
-                onChange={(e) => setPromoCode(e.target.value)}
-                placeholder="Nhập mã khuyến mãi"
-              /> */}
               <Select
                 onChange={(e) => setPromoCode(e)}
                 options={promotion.map((item) => ({

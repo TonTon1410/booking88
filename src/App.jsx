@@ -4,7 +4,6 @@ import router from "./config/router.jsx";
 import { persistor, store } from "./redux/store.js";
 import { RouterProvider } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {

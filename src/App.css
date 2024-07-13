@@ -126,192 +126,205 @@ body{
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 7px 50px rgba(214, 223, 213, 0.5); /* Softer shadow */
-
+  
     .container {
-        height: 90vh;
-        width: 80%; /* Adjusted width to make it fit better */
+      height: 90vh;
+      width: 80%; /* Adjusted width to make it fit better */
+      margin: auto;
+      justify-content: space-between;
+      border-radius: 10px;
+      background-image: url('../../booking88/src/assets/imglogin.webp');
+      background-size: cover; /* Ensure the background covers the entire container */
+      display: flex; /* Ensure flexbox is enabled */
+      align-items: center; /* Center content vertically */
+  
+      .videoDiv {
+        position: relative;
+        display: flex;
+        flex-basis: 50%;
+        width: 50%; /* Adjusted width */
+        height: 100%;
+        padding: 0 1.5rem;
+        text-align: center;
+        flex-direction: column;
         margin: auto;
-        justify-content: space-between;
         border-radius: 10px;
-        background-image: url('../../booking88/src/assets/imglogin.webp');
-        background-size: cover; /* Ensure the background covers the entire container */
-        display: flex; /* Ensure flexbox is enabled */
-        align-items: center; /* Center content vertically */
-
-        .videoDiv {
-            position: relative;
+        overflow: hidden;
+  
+        video, .footerDiv {
+          position: absolute;
+        }
+  
+        video {
+          height: 100%;
+          width: 100%;
+          object-fit: cover;
+          top: 0;
+          bottom: 0;
+          right: 0;
+          left: 0;
+        }
+  
+        .footerDiv {
+          bottom: 10px;
+          padding: 0 1rem;
+          height: 60px;
+          background: rgba(255, 255, 255, 0.5); /* Lighter background for footer */
+          left: 10px; /* Adjusted to 10px from left */
+          right: 10px; /* Adjusted to 10px from right */
+          display: flex; /* Ensure flexbox is enabled */
+          justify-content: space-between;
+          backdrop-filter: blur(5px);
+          border-radius: 10px;
+  
+          .text {
+            color: var(--blackColor); /* Changed to black for better readability */
+          }
+  
+          .btn {
+            background: var(--primaryColor);
+            color: var(--whiteColor);
+            padding: .8rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 400;
+            transition: .3s ease;
+  
+            &:hover {
+              background: var(--hoverColor);
+              color: var(--whiteColor); /* Keeping white color on hover */
+            }
+          }
+        }
+      }
+  
+      .formDiv {
+        flex-basis: 50%;
+        margin: auto;
+        flex-direction: column;
+        gap: 1.5rem;
+        transform: translateY(-1rem);
+        display: flex;
+        align-items: center; /* Center form horizontally */
+        background: rgba(255, 255, 255, 0.8); /* Adding a semi-transparent background for better readability */
+        padding: 2rem;
+        border-radius: 10px;
+  
+        .headerDiv {
+          text-align: center;
+          padding: 1.5rem 0;
+  
+          img {
+            width: 100px;
+            padding-bottom: .5rem;
+          }
+  
+          h3 {
+            font-size: 25px;
+            color: var(--blackColor);
+            font-weight: 600;
+          }
+        }
+  
+        .form {
+          gap: 1rem;
+          width: 80%; /* Adjusted width for smaller form */
+          max-width: 400px; /* Set a max-width for the form */
+          display: flex;
+          flex-direction: column;
+  
+          .inputDiv {
             display: flex;
-            flex-basis: 50%;
-            width: 50%; /* Adjusted width */
-            height: 100%;
-            padding: 0 1.5rem;
+            flex-direction: column;
+            gap: .5rem;
+  
+            .icon {
+              color: var(--greyText);
+            }
+  
+            input {
+              background: var(--inputColor); /* Light grey background */
+              outline: none;
+              border: 1px solid var(--greyText); /* Light border */
+              padding: 10px; /* Padding for input */
+              width: 100%; /* Adjust input width */
+              border-radius: 5px; /* Rounded corners */
+            }
+  
+            label {
+              color: var(--blackColor);
+              font-weight: 400;
+              font-size: 14px;
+              padding: .5rem 0;
+              display: block;
+            }
+  
+            .input {
+              gap: .5rem;
+              padding: 1rem;
+              background: var(--inputColor);
+              border-radius: 10px;
+            }
+          }
+  
+          .btn {
+            padding: .8rem;
+            background: var(--primaryColor); /* Uncommented background color */
+            border-radius: 10px;
+            color: var(--whiteColor);
+            align-items: center;
+            margin: auto;
+            justify-content: center;
+            font-size: 16px;
+            width: 100%;
+            gap: .5rem;
+            transition: .3s ease;
+  
+            .icon {
+              font-size: 25px;
+              transition: .3s ease;
+            }
+  
+            &:hover {
+              background: var(--hoverColor);
+              color: var(--whiteColor);
+  
+              .icon {
+                color: var(--whiteColor);
+                transform: translateX(5px);
+              }
+            }
+          }
+  
+          .forgotPassword {
+            font-size: 13px;
+            color: var(--blackColor);
+            opacity: .7;
             text-align: center;
-            flex-direction: column;
-            margin: auto;
-            border-radius: 10px;
-            overflow: hidden;
-
-            video, .footerDiv {
-                position: absolute;
+  
+            a {
+              text-decoration: underline;
+              cursor: pointer;
+              opacity: 1;
             }
-
-            video {
-                height: 100%;
-                width: 100%;
-                object-fit: cover;
-                top: 0;
-                bottom: 0;
-                right: 0;
-                left: 0;
-            }
-
-            .footerDiv {
-                bottom: 10px;
-                padding: 0 1rem;
-                height: 60px;
-                background: rgba(255, 255, 255, 0.5); /* Lighter background for footer */
-                left: 10px; /* Adjusted to 10px from left */
-                right: 10px; /* Adjusted to 10px from right */
-                display: flex; /* Ensure flexbox is enabled */
-                justify-content: space-between;
-                backdrop-filter: blur(5px);
-                border-radius: 10px;
-
-                .text {
-                    color: var(--blackColor); /* Changed to black for better readability */
-                }
-
-                .btn {
-                    background: var(--primaryColor);
-                    color: var(--whiteColor);
-                    padding: .8rem 1.5rem;
-                    border-radius: 10px;
-                    font-weight: 400;
-                    transition: .3s ease;
-
-                    &:hover {
-                        background: var(--hoverColor);
-                        color: var(--whiteColor); /* Keeping white color on hover */
-                    }
-                }
-            }
+          }
         }
-
-        .formDiv {
-            flex-basis: 50%;
-            margin: auto;
-            flex-direction: column;
-            gap: 1.5rem;
-            transform: translateY(-1rem);
-            display: flex;
-            align-items: center; /* Center form horizontally */
-            background: rgba(255, 255, 255, 0.8); /* Adding a semi-transparent background for better readability */
-            padding: 2rem;
-            border-radius: 10px;
-
-            .headerDiv {
-                text-align: center;
-                padding: 1.5rem 0;
-
-                img {
-                    width: 100px;
-                    padding-bottom: .5rem;
-                }
-
-                h3 {
-                    font-size: 25px;
-                    color: var(--blackColor);
-                    font-weight: 600;
-                }
-            }
-
-            .form {
-                gap: 1rem;
-                width: 80%; /* Adjusted width for smaller form */
-                max-width: 400px; /* Set a max-width for the form */
-                display: flex;
-                flex-direction: column;
-
-                .inputDiv {
-                    display: flex;
-                    flex-direction: column;
-                    gap: .5rem;
-
-                    .icon {
-                        color: var(--greyText);
-                    }
-
-                    input {
-                        background: var(--inputColor); /* Light grey background */
-                        outline: none;
-                        border: 1px solid var(--greyText); /* Light border */
-                        padding: 10px; /* Padding for input */
-                        width: 100%; /* Adjust input width */
-                        border-radius: 5px; /* Rounded corners */
-                    }
-
-                    label {
-                        color: var(--blackColor);
-                        font-weight: 400;
-                        font-size: 14px;
-                        padding: .5rem 0;
-                        display: block;
-                    }
-
-                    .input {
-                        gap: .5rem;
-                        padding: 1rem;
-                        background: var(--inputColor);
-                        border-radius: 10px;
-                    }
-                }
-
-                .btn {
-                    padding: .8rem;
-                    background: var(--primaryColor); /* Uncommented background color */
-                    border-radius: 10px;
-                    color: var(--whiteColor);
-                    align-items: center;
-                    margin: auto;
-                    justify-content: center;
-                    font-size: 16px;
-                    width: 100%;
-                    gap: .5rem;
-                    transition: .3s ease;
-
-                    .icon {
-                        font-size: 25px;
-                        transition: .3s ease;
-                    }
-
-                    &:hover {
-                        background: var(--hoverColor);
-                        color: var(--whiteColor);
-
-                        .icon {
-                            color: var(--whiteColor);
-                            transform: translateX(5px);
-                        }
-                    }
-                }
-
-                .forgotPassword {
-                    font-size: 13px;
-                    color: var(--blackColor);
-                    opacity: .7;
-                    text-align: center;
-
-                    a {
-                        text-decoration: underline;
-                        cursor: pointer;
-                        opacity: 1;
-                    }
-                }
-            }
-        }
+      }
+  
+      .roleSelect {
+        margin-top: 20px;
+        text-align: left;
+      }
+  
+      .roleSelect .ant-form-item-label {
+        padding-bottom: 8px;
+      }
+  
+      .roleSelect .ant-radio-group {
+        display: flex;
+        gap: 20px;
+      }
     }
-}
-
+  }
 
 .dashboard{
     height: 100vh;

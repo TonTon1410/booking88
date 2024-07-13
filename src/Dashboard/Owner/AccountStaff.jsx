@@ -2,16 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { Table, message, Button, Popconfirm, Modal, Form, Input, Tag } from 'antd';
 import api from '../../config/axios';
 import { useForm } from 'antd/es/form/Form';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../redux/features/counterSlice';
 
 const AccountStaff = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [accounts, setAccounts] = useState([]);
     const [form] = useForm();
     const [editingAccount, setEditingAccount] = useState(null);
+    const user = useSelector(selectUser);
+    console.log(user);
 
     const fetchAccounts = async () => {
         try {
-            const response = await api.get('/owner/accounts');
+            const response = await api.get(`/owner/accountss/${user.id}`);
             setAccounts(response.data);
             console.log(response.data);
         } catch (error) {
