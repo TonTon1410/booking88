@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
-import { Form, Input, Button, message, Radio } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { Form, Input, Button, message } from 'antd';
 import { FaPhoneAlt } from "react-icons/fa";
 import { MdMarkEmailRead } from "react-icons/md";
 import { AiOutlineSwapRight } from "react-icons/ai";
@@ -9,7 +8,7 @@ import { BsFillShieldLockFill } from "react-icons/bs";
 import logo from '../../assets/logologin.png';
 import '../../App.css';
 
-const Register = () => {
+const Register_owner = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const onFinish = async (values) => {
@@ -21,7 +20,7 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post('http://157.230.43.225:8080/api/register', {
+      const response = await axios.post('http://157.230.43.225:8080/api/admin/account', {
         email,
         phone,
         password
@@ -114,7 +113,6 @@ const Register = () => {
             </Form.Item>
 
 
-
             <Form.Item>
               <Button type="primary" htmlType="submit" className='btn flex'>
                 <span>Đăng ký</span>
@@ -129,4 +127,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Register_owner;

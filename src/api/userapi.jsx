@@ -1,7 +1,7 @@
 // userapi.jsx
 import axios from 'axios';
 
-const API_URL = 'http://157.230.43.225:8080'; // Thay bằng URL API thực sự của bạn
+const API_URL = 'http://157.230.43.225:8080/api'; // Thay bằng URL API thực sự của bạn
 
 const CustomerControler = {
   Login: async (email, password) => {

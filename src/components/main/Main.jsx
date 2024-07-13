@@ -116,7 +116,7 @@ const Main = () => {
                     </span>
                   </div>
                   <div className="price">
-                    <h5>{data?.slots[0].price}</h5>
+                    <h5>{data?.slots && data?.slots.length > 0 ? data.slots[0].price : "N/A"}</h5>
                   </div>
                 </div>
 

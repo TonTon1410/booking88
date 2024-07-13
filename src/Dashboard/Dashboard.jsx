@@ -26,8 +26,8 @@ const Dashboard = () => {
   const currentURI =
     location.pathname.split("/")[location.pathname.split("/").length - 1];
   const user = useSelector(selectUser);
-  // const role = user?.role;
-  const role = "ADMIN";
+  const role = user?.role;
+  // const role = "ADMIN";
 
   useEffect(() => {
     // Định nghĩa các mục menu dựa trên vai trò của người dùng
@@ -35,20 +35,22 @@ const Dashboard = () => {
       setItems([
         getItem("Doanh thu", "overview", <FaRegMoneyBillAlt />),
         getItem("Cập Nhật Sân", "update-field", <EditOutlined />),
-        getItem("Quản lý Nhân Viên", "staffs", <UserOutlined />),
-        getItem("Thống kê", "statistics", <BarChartOutlined />),
+        // getItem("Quản lý Nhân Viên", "staffs", <UserOutlined />),
+        // getItem("Thống kê", "statistics", <BarChartOutlined />),
         getItem("Quản lý Tài khoản", "account-list", <TeamOutlined />),
-        getItem("Quản lý Mã Giảm Giá", "promotion", <TeamOutlined />),
-        getItem("Quản lý Check In", "checkin", <TeamOutlined />),
       ]);
     } else if (role === "CLUB_STAFF") {
-      setItems([getItem("Quản lý Sân", "manage-fields", <HeartOutlined />)]);
-        getItem("Quản lý Tài Khoản", "account-list", <TeamOutlined />), 
-        getItem("Quản lý Mã Giảm Giá", "promotion", <TeamOutlined />), 
-      ]);
-    }  else if (role === "CLUB_OWNER") {
       setItems([
-        getItem("Cập Nhật Sân", "update-field", <EditOutlined />),
+        getItem("Quản lý Sân", "LocationDetail", <HeartOutlined />),
+        // getItem("Quản lý Tài Khoản", "account-list", <TeamOutlined />), 
+        // getItem("Quản lý Mã Giảm Giá", "promotion", <TeamOutlined />),
+        getItem("Quản lý Check In", "checkin", <TeamOutlined />),
+      ]);
+    } else if (role === "CLUB_OWNER") {
+      setItems([
+        getItem("Thông Tin Sân", "LocationDetail", <EditOutlined />),
+        getItem("Cập Nhật Sân", "ManagerField", <EditOutlined />),
+        getItem("Quản lý Mã Giảm Giá", "promotion", <TeamOutlined />),
         getItem("Quản lý Nhân Viên", "account-staff", <TeamOutlined />), 
         getItem("Doanh thu", "overview", <FaRegMoneyBillAlt />),
       ]);

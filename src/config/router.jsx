@@ -15,18 +15,19 @@ import ManageStaff from "../Dashboard/ManageStaff.jsx";
 import CreateNewField from "../Dashboard/CreateNewField.jsx";
 import UpdateFieldList from "../Dashboard/UpdateFieldList.jsx";
 import ClubStaffManageFields from "../Dashboard/ClubStaffManageFields.jsx";
-
 import Statistics from "../Dashboard/Statistics.jsx"; // Thêm đường dẫn tới component Statistics
 import AccountList from "../Dashboard/AccountList.jsx";
 import AccountStaff from "../Dashboard/Owner/AccountStaff.jsx";
-
+import ManagerField from "../Dashboard/Owner/ManagerField.jsx";
+import LocationDetail from "../Dashboard/Owner/LocationDetail.jsx";
 import News from "../components/News/News.jsx";
 import Contact from "../components/Contact/Contact.jsx";
 import Promotion from "../components/promotion/index.jsx";
 import Overview from "../components/overview/index.jsx";
 import History from "../components/history/index.jsx";
 import CheckIn from "../components/checkin";
-
+import Register_owner from "../pages/Register/Register_owner.jsx";
+import PaymentSuccess from "../components/Payment/PaymentSuccess.jsx";
 const router = createBrowserRouter([
   {
     path: "/",element: <MainLayout />,children: [
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
         path: "register",
         element: <Register />,
       },
+      {
+        path: "register_owner",
+        element: < Register_owner/>,
+      },
 
       {
         path: "PasswordRecovery",
@@ -71,6 +76,10 @@ const router = createBrowserRouter([
       {
         path: "payment",
         element: <Payment />,
+      },
+      {
+        path: "payment_success",
+        element: <PaymentSuccess />,
       },
       {
         path: "News",
@@ -99,6 +108,14 @@ const router = createBrowserRouter([
       {
         path: "staffs",
         element: <ManageStaff />,
+      },
+      {
+        path: "ManagerField",
+        element: <ManagerField />,
+      },
+      {
+        path: "LocationDetail",
+        element: <LocationDetail />,
       },
       {
         path: "create-new-field",
