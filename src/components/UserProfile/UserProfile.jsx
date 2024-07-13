@@ -147,7 +147,9 @@ const UserProfile = () => {
                 </button>
                 {/* <button className={`nav-link ${activeTab === 'bookingHistory' ? 'active' : ''}`} onClick={() => handleTabChange('bookingHistory')}>
                     <FaHistory /> Lịch sử đặt lịch
+
                 </button> */}
+
             </div>
 
             <div className="account-content">
