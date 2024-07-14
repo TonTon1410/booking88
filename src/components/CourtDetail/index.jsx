@@ -73,7 +73,7 @@ const CourtDetails = () => {
       return {
         idSlot: item.idSlot,
         date: moment(item.date).format("MM-DD-YYYY"),
-        date: item.date,
+
       };
     });
 
@@ -196,9 +196,8 @@ const CourtDetails = () => {
 
       if (isInDays(currentDate)) {
         bookingDetail.push({
-          date: `${
-            currentDate.getMonth() + 1
-          }/${currentDate.getDate()}/${currentDate.getFullYear()}`,
+          date: `${currentDate.getMonth() + 1
+            }/${currentDate.getDate()}/${currentDate.getFullYear()}`,
           time: getLableSlot(selectedTime),
           slot: slot,
           idSlot: selectedTime,
@@ -238,7 +237,7 @@ const CourtDetails = () => {
       setBookingDetails([
         {
           date: moment(selectedDate.$d).format("MM-DD-YYYY"),
-     
+
           time: getLableSlot(selectedTime),
           idSlot: selectedTime,
         },
@@ -346,13 +345,11 @@ const CourtDetails = () => {
       return (
         <div
           key={index}
-          className={`m-2 p-2 border rounded-lg shadow-lg ${
-            isSelected ? "bg-blue-300" : "bg-blue-100"
-          } ${
-            isPast || isBooked
+          className={`m-2 p-2 border rounded-lg shadow-lg ${isSelected ? "bg-blue-300" : "bg-blue-100"
+            } ${isPast || isBooked
               ? "bg-gray-300 cursor-not-allowed"
               : "cursor-pointer"
-          }`}
+            }`}
           onClick={handleClick}
         >
           <p className="text-center">
@@ -589,9 +586,8 @@ const CourtDetails = () => {
       </Modal>
 
       <Modal
-        title={`Đặt sân vào ngày ${
-          selectedDay ? selectedDay.toLocaleDateString() : ""
-        }`}
+        title={`Đặt sân vào ngày ${selectedDay ? selectedDay.toLocaleDateString() : ""
+          }`}
         visible={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
       >

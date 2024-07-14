@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { HeartOutlined, UserOutlined, BarChartOutlined, PlusOutlined, EditOutlined, TeamOutlined } from "@ant-design/icons";
+import {
+  HeartOutlined,
+  UserOutlined,
+  BarChartOutlined,
+  PlusOutlined,
+  EditOutlined,
+  TeamOutlined,
+} from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, Button, theme } from "antd";
 import { Footer } from "antd/es/layout/layout";
 import { Link, Outlet, useLocation } from "react-router-dom";
@@ -34,7 +41,8 @@ const Dashboard = () => {
     if (role === "ADMIN") {
       setItems([
         getItem("Doanh thu", "overview", <FaRegMoneyBillAlt />),
-        getItem("Cập Nhật Sân", "update-field", <EditOutlined />),
+        getItem("Thông tin Sân", "FieldAdmin", <EditOutlined />),
+        // getItem("Thông tin Sân", "update-field", <EditOutlined />),
         // getItem("Quản lý Nhân Viên", "staffs", <UserOutlined />),
         // getItem("Thống kê", "statistics", <BarChartOutlined />),
         getItem("Quản lý Tài khoản", "account-list", <TeamOutlined />),
@@ -42,16 +50,16 @@ const Dashboard = () => {
     } else if (role === "CLUB_STAFF") {
       setItems([
         getItem("Quản lý Sân", "LocationDetail", <HeartOutlined />),
-        // getItem("Quản lý Tài Khoản", "account-list", <TeamOutlined />), 
+        // getItem("Quản lý Tài Khoản", "account-list", <TeamOutlined />),
         // getItem("Quản lý Mã Giảm Giá", "promotion", <TeamOutlined />),
         getItem("Quản lý Check In", "checkin", <TeamOutlined />),
       ]);
     } else if (role === "CLUB_OWNER") {
       setItems([
-        getItem("Thông Tin Sân", "LocationDetail", <EditOutlined />),
+        getItem("Thông Tin Sân", "LocationDetail", <HeartOutlined />),
         getItem("Cập Nhật Sân", "ManagerField", <EditOutlined />),
         getItem("Quản lý Mã Giảm Giá", "promotion", <TeamOutlined />),
-        getItem("Quản lý Nhân Viên", "account-staff", <TeamOutlined />), 
+        getItem("Quản lý Nhân Viên", "account-staff", <TeamOutlined />),
         getItem("Doanh thu", "overview", <FaRegMoneyBillAlt />),
       ]);
     }
@@ -106,10 +114,18 @@ const Dashboard = () => {
         </Menu>
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Header
+          style={{
+            padding: 0,
+            background: colorBgContainer,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <header></header>
-          <Button type="primary" style={{ marginRight: '16px' }}>
-            <Link to="/" className="no-underline" style={{ color: 'white' }}>
+          <Button type="primary" style={{ marginRight: "16px" }}>
+            <Link to="/" className="no-underline" style={{ color: "white" }}>
               Trang chủ
             </Link>
           </Button>

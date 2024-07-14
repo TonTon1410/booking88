@@ -1,5 +1,5 @@
 import { Button, Modal, Table, Tag } from "antd";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../../config/axios";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";

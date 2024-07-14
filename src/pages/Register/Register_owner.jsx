@@ -7,12 +7,14 @@ import { AiOutlineSwapRight } from "react-icons/ai";
 import { BsFillShieldLockFill } from "react-icons/bs";
 import logo from '../../assets/logologin.png';
 import '../../App.css';
+import React from 'react';
 
-const Register_owner = () => {
+const RegisterOwner = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+
   const onFinish = async (values) => {
-    const { email, phone, password, confirmPassword } = values;
+    const { email, phone, password, confirmPassword, name } = values;
 
     if (password !== confirmPassword) {
       message.error('Mật khẩu không khớp');
@@ -20,10 +22,11 @@ const Register_owner = () => {
     }
 
     try {
-      const response = await axios.post('http://157.230.43.225:8080/api/admin/account', {
+      const response = await axios.post('http://157.230.43.225:8080/api/admin/register', {
         email,
         phone,
-        password
+        password,
+        name,
       });
 
       if (response.status === 200) {
@@ -55,6 +58,15 @@ const Register_owner = () => {
             onFinish={onFinish}
             className='form grid'
           >
+            <Form.Item
+              name="name"
+              rules={[{ required: true, message: 'Vui lòng nhập tên!' }]}
+            >
+              <Input
+                placeholder="Tên"
+              />
+            </Form.Item>
+
             <Form.Item
               name="email"
               rules={[{ required: true, message: 'Vui lòng nhập email!' }]}
@@ -112,12 +124,10 @@ const Register_owner = () => {
               />
             </Form.Item>
 
-
             <Form.Item>
               <Button type="primary" htmlType="submit" className='btn flex'>
                 <span>Đăng ký</span>
                 <AiOutlineSwapRight />
-                
               </Button>
             </Form.Item>
           </Form>
@@ -127,4 +137,4 @@ const Register_owner = () => {
   );
 };
 
-export default Register_owner;
+export default RegisterOwner;
