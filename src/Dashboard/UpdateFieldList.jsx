@@ -78,9 +78,11 @@ const UpdateFieldList = () => {
         description: location.description,
         address: location.address,
         hotline: location.hotline,
-        // openingTime: 0,
-        // closingTime: 0,
+        openingTime: location.openingTime,
+        closingTime: location.closingTime,
         photo: imageFileList,
+        priceSlot: location.priceSlot,
+        ownerId: location.ownerId
       })
 
       setFields((oldItems) => {
@@ -208,20 +210,28 @@ const UpdateFieldList = () => {
       key: 'hotline',
       editable: true,
     },
-
-
-
     {
       title: 'Giờ mở cửa',
       dataIndex: 'openTime',
       key: 'openTime',
       editable: true,
-
     },
     {
       title: 'Giờ đóng cửa',
       dataIndex: 'closeTime',
       key: 'closeTime',
+      editable: true,
+    },
+    {
+      title: 'Giá mỗi slot',
+      dataIndex: 'priceSlot',
+      key: 'priceSlot',
+      editable: true,
+    },
+    {
+      title: 'Mã chủ sở hữu',
+      dataIndex: 'ownerId', 
+      key: 'ownerId',
       editable: true,
     },
 
@@ -351,60 +361,59 @@ const UpdateFieldList = () => {
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            label="Giờ mở cửa"
-            name="openTime"
-          >
-            <InputNumber addonAfter="Giờ" />
-          </Form.Item>
-          <Form.Item
-            label="Giờ đóng cửa"
-            name="closeTime"
-          >
-            <InputNumber addonAfter="Giờ" />
-          </Form.Item>
-          <Form.Item
-            name="description"
-            label="Mô tả"
-            rules={[{ required: true, message: 'Vui lòng nhập mô tả!' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="address"
-            label="Địa chỉ"
-            rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="hotline"
-            label="Hotline"
-            rules={[{ required: true, message: 'Vui lòng nhập hotline!' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-
-            name="photo"
-            label="Hình ảnh"
-          >
-            <Upload
-              listType="picture"
-              onChange={handleImageChange}
-              beforeUpload={() => false}
-              accept="image/*"
-            >
-              <Button icon={<UploadOutlined />}>Tải ảnh lên</Button>
-            </Upload>
-          </Form.Item>
-          <Form.Item
-            wrapperCol={{
-              offset: 8,
-              span: 16,
-            }}
-          >
-          </Form.Item>
+    <Form.Item
+      label="Giờ mở cửa"
+      name="openingTime" 
+    >
+      <InputNumber addonAfter="Giờ" />
+    </Form.Item>
+    <Form.Item
+      label="Giờ đóng cửa"
+      name="closingTime" 
+    >
+      <InputNumber addonAfter="Giờ" />
+    </Form.Item>
+    <Form.Item
+      name="description"
+      label="Mô tả"
+      rules={[{ required: true, message: 'Vui lòng nhập mô tả!' }]}
+    >
+      <Input />
+    </Form.Item>
+    <Form.Item
+      name="address"
+      label="Địa chỉ"
+      rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' }]}
+    >
+      <Input />
+    </Form.Item>
+    <Form.Item
+      name="hotline"
+      label="Hotline"
+      rules={[{ required: true, message: 'Vui lòng nhập hotline!' }]}
+    >
+      <Input />
+    </Form.Item>
+    <Form.Item
+      name="photo"
+      label="Hình ảnh"
+    >
+      <Upload
+        listType="picture"
+        onChange={handleImageChange}
+        beforeUpload={() => false}
+        accept="image/*"
+      >
+        <Button icon={<UploadOutlined />}>Tải ảnh lên</Button>
+      </Upload>
+    </Form.Item>
+    <Form.Item
+      wrapperCol={{
+        offset: 8,
+        span: 16,
+      }}
+    >
+    </Form.Item>
 
         </Form>
       </Modal>

@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import QRCode from "react-qr-code";
 import { Modal, Button } from "antd";
 import { Html5QrcodeScanner } from "html5-qrcode";
 import api from "../../config/axios";
+
+
 
 const QRComponent = ({ data }) => {
   return (

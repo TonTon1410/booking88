@@ -32,6 +32,7 @@ import History from "../components/history/index.jsx";
 import CheckIn from "../components/checkin";
 import Register_owner from "../pages/Register/Register_owner.jsx";
 import PaymentSuccess from "../components/Payment/PaymentSuccess.jsx";
+import FieldAdmin from "../Dashboard/FieldAdmin.jsx";
 const router = createBrowserRouter([
   {
     path: "/",element: <MainLayout />,children: [
@@ -132,6 +133,10 @@ const router = createBrowserRouter([
       {
         path: "update-field",
         element: <UpdateFieldList />,
+      },
+      {
+        path: "FieldAdmin",
+        element: <FieldAdmin />,
       },
       {
         path: "statistics",
