@@ -1,0 +1,50 @@
+.regulations-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  
+    .regulations-title {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+  
+    h3 {
+      margin-top: 20px;
+      color: #007bff;
+    }
+  
+    p {
+      margin-bottom: 10px;
+      color: #555;
+    }
+  
+    strong {
+      color: #333;
+    }
+  
+    .ant-typography {
+      &.ant-typography-secondary {
+        color: #888;
+      }
+    }
+  
+    // Specific styling for email and phone contact information
+    .contact-info {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #e9f5ff;
+      border-left: 4px solid #007bff;
+    }
+  
+    .ant-typography {
+      &.ant-typography-text {
+        font-weight: 600;
+      }
+    }
+  }
+  

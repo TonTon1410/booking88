@@ -67,6 +67,11 @@ const Navbar = () => {
                 Liên Hệ
               </a>
             </li>
+            <li className="navItem">
+              <a href="/regulations" className="navLink">
+                Quy Định Chung
+              </a>
+            </li>
             {user && ['ADMIN', 'CLUB_STAFF', 'CLUB_OWNER'].includes(user.role) && (<li className="navItem">
               <a href="/dashboard" className="navLink">
                 Dashboard
@@ -82,7 +87,6 @@ const Navbar = () => {
                 />
                 {dropdownActive && (
                   <div className="dropdownMenu">
-                    <button onClick={() => navigate("/history")}>Lịch sử đặt sân</button>
                     <button onClick={handleProfile}>Thông tin</button>
                     <button onClick={handleLogout}>Đăng Xuất</button>
                   </div>

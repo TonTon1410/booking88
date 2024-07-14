@@ -44,6 +44,36 @@ const userApi = {
       console.error('Error fetching booking history:', error);
       throw error;
     }
+  },
+  getTopUpHistory: async (userId) => {
+    try {
+      const response = await api.get(`/wallet/Transaction/${userId}`);
+      console.log('Top-Up History Response:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching top-up history:', error);
+      throw error;
+    }
+  },
+  getWalletAmount: async (userId) => {
+    try {
+      const response = await api.get(`/wallet/amount/${userId}`);
+      console.log('Wallet Amount Response:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching wallet amount:', error);
+      throw error;
+    }
+  },
+  cancelBooking: async (bookingId, bookingSlotId) => {
+    try {
+      const response = await api.put(`/booking/Cancelbookings/${bookingId}`);
+      console.log('Cancel Booking Response:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error cancelling booking:', error);
+      throw error;
+    }
   }
 };
 
