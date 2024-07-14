@@ -116,13 +116,6 @@ const Login = () => {
               <GGLogin />
             </GoogleOAuthProvider>
           </div>
-
-
-          <div className="field button-field">
-            <GoogleOAuthProvider clientId={clientId}>
-              <GGLogin />
-            </GoogleOAuthProvider>
-          </div>
         </div>
       </div>
     </div>
