@@ -18,8 +18,6 @@ import ClubStaffManageFields from "../Dashboard/ClubStaffManageFields.jsx";
 import Statistics from "../Dashboard/Statistics.jsx"; // Thêm đường dẫn tới component Statistics
 import AccountList from "../Dashboard/AccountList.jsx";
 
-import Statistics from "../Dashboard/Statistics.jsx"; // Thêm đường dẫn tới component Statistics
-import AccountList from "../Dashboard/AccountList.jsx";
 import AccountStaff from "../Dashboard/Owner/AccountStaff.jsx";
 import ManagerField from "../Dashboard/Owner/ManagerField.jsx";
 import LocationDetail from "../Dashboard/Owner/LocationDetail.jsx";
