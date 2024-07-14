@@ -73,7 +73,7 @@ const CourtDetails = () => {
       return {
         idSlot: item.idSlot,
         date: moment(item.date).format("MM-DD-YYYY"),
-        date: item.date,
+        // date: item.date,
       };
     });
 
