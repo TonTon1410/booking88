@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import MainLayout from "../layout/MainLayout"; // Đảm bảo đường dẫn chính xác đến MainLayout
+import MainLayout from "../layout/MainLayout";
 import Home from "../components/home/Home";
 import Register from "../pages/Register/Register";
 import PasswordRecovery from "../components/reset/PasswordRecovery";
@@ -15,13 +15,11 @@ import ManageStaff from "../Dashboard/ManageStaff.jsx";
 import CreateNewField from "../Dashboard/CreateNewField.jsx";
 import UpdateFieldList from "../Dashboard/UpdateFieldList.jsx";
 import ClubStaffManageFields from "../Dashboard/ClubStaffManageFields.jsx";
-import Statistics from "../Dashboard/Statistics.jsx"; // Thêm đường dẫn tới component Statistics
+import Statistics from "../Dashboard/Statistics.jsx";
 import AccountList from "../Dashboard/AccountList.jsx";
-
 import AccountStaff from "../Dashboard/Owner/AccountStaff.jsx";
 import ManagerField from "../Dashboard/Owner/ManagerField.jsx";
 import LocationDetail from "../Dashboard/Owner/LocationDetail.jsx";
-
 import News from "../components/News/News.jsx";
 import Contact from "../components/Contact/Contact.jsx";
 import Promotion from "../components/promotion/index.jsx";
@@ -31,10 +29,16 @@ import CheckIn from "../components/checkin";
 import Register_owner from "../pages/Register/Register_owner.jsx";
 import PaymentSuccess from "../components/Payment/PaymentSuccess.jsx";
 import FieldAdmin from "../Dashboard/FieldAdmin.jsx";
+import Regulations from "../components/Regulations/Regulations.jsx"; // Import Regulations
+
 const router = createBrowserRouter([
   {
-    path: "/",element: <MainLayout />,children: [
-      {path: "/",element: (
+    path: "/",
+    element: <MainLayout />,
+    children: [
+      {
+        path: "/",
+        element: (
           <>
             <Home />
             <Main />
@@ -45,18 +49,16 @@ const router = createBrowserRouter([
         path: "courtlist",
         element: <CourtList />,
       },
-
-
       {
-        path: "/UserProfile",
+        path: "UserProfile",
         element: <UserProfile />,
       },
       {
-        path: "/history",
+        path: "history",
         element: <History />,
       },
       {
-        path: "/login",
+        path: "login",
         element: <Login />,
       },
       {
@@ -65,9 +67,8 @@ const router = createBrowserRouter([
       },
       {
         path: "register_owner",
-        element: < Register_owner/>,
+        element: <Register_owner />,
       },
-
       {
         path: "PasswordRecovery",
         element: <PasswordRecovery />,
@@ -97,10 +98,13 @@ const router = createBrowserRouter([
         element: <Contact />,
       },
       {
+        path: "regulations",
+        element: <Regulations />, // Add the Regulations route
+      },
+      {
         path: "*",
         element: <div>404 Not Found</div>,
       },
-
     ],
   },
   {
@@ -111,7 +115,6 @@ const router = createBrowserRouter([
         path: "overview",
         element: <Overview />,
       },
-
       {
         path: "staffs",
         element: <ManageStaff />,
@@ -147,51 +150,10 @@ const router = createBrowserRouter([
       {
         path: "account-list",
         element: <AccountList />,
-       
-      },
-      {path: "account-staff",element: <AccountStaff />,},
-      {
-        path: "promotion",
-        element: <Promotion />,
       },
       {
-        path: "checkin",
-        element: <CheckIn />,
-      },
-    ],
-  },
-  {
-    path: "dashboard",
-    element: <Dashboard />,
-    children: [
-      {
-        path: "overview",
-        element: <Overview />,
-      },
-
-      {
-        path: "staffs",
-        element: <ManageStaff />,
-      },
-      {
-        path: "create-new-field",
-        element: <CreateNewField />,
-      },
-      {
-        path: "update-field",
-        element: <UpdateFieldList />,
-      },
-      {
-        path: "statistics",
-        element: <Statistics />,
-      },
-      {
-        path: "manage-fields",
-        element: <ClubStaffManageFields />,
-      },
-      {
-        path: "account-list",
-        element: <AccountList />,
+        path: "account-staff",
+        element: <AccountStaff />,
       },
       {
         path: "promotion",
