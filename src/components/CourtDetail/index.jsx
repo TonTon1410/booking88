@@ -49,22 +49,30 @@ const CourtDetails = () => {
   const [slotTimes, setSlotTimes] = useState([]);
   const [slotPrices, setSlotPrices] = useState([]);
   const [slotPrice, setSlotPrice] = useState([]); // Default price if not fetched
-  const [imageSrc, setImageSrc] = useState(null);
   const [bookingDetails, setBookingDetails] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [slots, setSlots] = useState([]);
   const [promotion, setPromotion] = useState([]);
+  const [selectedDaySlots, setSelectedDaySlots] = useState({});
   const user = useSelector(selectUser);
 
   window.scrollTo(0, 0);
 
   const handleChange = (selectedValues) => {
     setSelectedDays(selectedValues);
+    const updatedDaySlots = selectedValues.reduce((acc, day) => {
+      acc[day] = selectedDaySlots[day] || [];
+      return acc;
+    }, {});
+    setSelectedDaySlots(updatedDaySlots);
   };
 
   const handleDeselect = (removedValue) => {
     setSelectedDays(selectedDays.filter((day) => day !== removedValue));
+    const updatedDaySlots = { ...selectedDaySlots };
+    delete updatedDaySlots[removedValue];
+    setSelectedDaySlots(updatedDaySlots);
   };
 
   let bookingRequest;
@@ -73,7 +81,6 @@ const CourtDetails = () => {
       return {
         idSlot: item.idSlot,
         date: moment(item.date).format("MM-DD-YYYY"),
-        date: item.date,
       };
     });
 
@@ -165,18 +172,9 @@ const CourtDetails = () => {
     }
   };
 
-  const getBookingDetailOfFixed = (days, duration, startFrom, slot) => {
-    // days = ['Monday', 'Tuesday'];
-
-    // duration = 60; // days
-
-    // startFrom = new Date('10/10/2024');
-
-    // slot = 'Test';
-
+  const getBookingDetailOfFixed = (days, duration, startFrom, daySlots) => {
     const bookingDetail = [];
 
-    // Function to check if a day is in the given days array
     const isInDays = (date) => {
       const dayNames = [
         "Sunday",
@@ -195,14 +193,19 @@ const CourtDetails = () => {
       currentDate.setDate(currentDate.getDate() + i);
 
       if (isInDays(currentDate)) {
-        bookingDetail.push({
-          date: `${
-            currentDate.getMonth() + 1
-          }/${currentDate.getDate()}/${currentDate.getFullYear()}`,
-          time: getLableSlot(selectedTime),
-          slot: slot,
-          idSlot: selectedTime,
-        });
+        const dayName = currentDate.toLocaleString("en-US", { weekday: "long" });
+        if (daySlots[dayName]) {
+          daySlots[dayName].forEach((slot) => {
+            bookingDetail.push({
+              date: `${
+                currentDate.getMonth() + 1
+              }/${currentDate.getDate()}/${currentDate.getFullYear()}`,
+              time: getLableSlot(slot),
+              slot: slot,
+              idSlot: slot,
+            });
+          });
+        }
       }
     }
 
@@ -210,25 +213,14 @@ const CourtDetails = () => {
   };
 
   function getDaysDuration(startDate, durationInMonths) {
-    // Parse the start date
     const start = new Date(startDate);
-
-    // Create a new date object for the end date
     const end = new Date(start);
-
-    // Add the specified number of months to the end date
     end.setMonth(end.getMonth() + durationInMonths);
-
-    // Calculate the difference in milliseconds
     const diffInMilliseconds = end - start;
-
-    // Convert milliseconds to days
     const millisecondsPerDay = 1000 * 60 * 60 * 24;
     const diffInDays = Math.round(diffInMilliseconds / millisecondsPerDay);
-
     return diffInDays;
   }
-  console.log(flexibleBookings);
 
   const handleShowConfirm = () => {
     console.log(selectedDate, selectedTime);
@@ -237,7 +229,6 @@ const CourtDetails = () => {
       setBookingDetails([
         {
           date: moment(selectedDate.$d).format("MM-DD-YYYY"),
-
           time: getLableSlot(selectedTime),
           idSlot: selectedTime,
         },
@@ -246,7 +237,6 @@ const CourtDetails = () => {
       setBookingDetails(
         flexibleBookings.map((item) => ({
           date: moment(item.date.$d).format("MM-DD-YYYY"),
-
           time: getLableSlot(item.idSlot),
           idSlot: item.idSlot,
         }))
@@ -254,7 +244,7 @@ const CourtDetails = () => {
     } else {
       const month = getDaysDuration(startDate, Number(months));
       setBookingDetails(
-        getBookingDetailOfFixed(selectedDays, month, startDate, "test")
+        getBookingDetailOfFixed(selectedDays, month, startDate, selectedDaySlots)
       );
     }
 
@@ -423,20 +413,28 @@ const CourtDetails = () => {
                     <Option value="Sunday">Chủ Nhật</Option>
                   </Select>
                 </div>
-                <div className="mb-4">
-                  <label className="block mb-2">Chon slot</label>
-                  <Select
-                    className="w-100 d-block "
-                    defaultValue={"Select slot"}
-                    value={selectedTime}
-                    onChange={(value) => setSelectedTime(value)}
-                    options={slots.map((item) => ({
-                      value: item.id,
-                      label: item.time,
-                      disabled: item.status === "INACTIVE",
-                    }))}
-                  />
-                </div>
+
+                {selectedDays.map((day) => (
+                  <div className="mb-4" key={day}>
+                    <label className="block mb-2">Chọn slot cho {day}</label>
+                    <Select
+                      className="w-full"
+                      mode="multiple"
+                      value={selectedDaySlots[day]}
+                      onChange={(slots) => {
+                        setSelectedDaySlots({
+                          ...selectedDaySlots,
+                          [day]: slots,
+                        });
+                      }}
+                      options={slots.map((item) => ({
+                        value: item.id,
+                        label: item.time,
+                        disabled: item.status === "INACTIVE",
+                      }))}
+                    />
+                  </div>
+                ))}
 
                 <div className="mb-4">
                   <label className="block mb-2">Đăng ký bao nhiêu tháng</label>
