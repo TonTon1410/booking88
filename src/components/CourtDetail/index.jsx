@@ -57,6 +57,7 @@ const CourtDetails = () => {
   const [promotion, setPromotion] = useState([]);
   const user = useSelector(selectUser);
 
+
   window.scrollTo(0, 0);
 
   const handleChange = (selectedValues) => {
@@ -73,7 +74,38 @@ const CourtDetails = () => {
       return {
         idSlot: item.idSlot,
         date: moment(item.date).format("MM-DD-YYYY"),
+      };
+    });
 
+    console.log(bookingRequest);
+  }
+  console.log(bookingType);
+  const getPrice = async () => {
+    try {
+      const response = await api.post("booking/price", {
+        idPromotion: promoCode,
+        idUser: user.id,
+        idLocation: id,
+        bookingDetailRequests: bookingRequest,
+        bookingType: bookingType === "now" ? "SLOT" : bookingType.toUpperCase(),
+      });
+      console.log(response.data);
+      setSlotPrices(response.data);
+      // setData(response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  };
+
+  let bookingRequest;
+  if (bookingDetails.length > 0) {
+    bookingRequest = bookingDetails?.map((item) => {
+      return {
+        idSlot: item.idSlot,
+        date: moment(item.date).format("MM-DD-YYYY"),
+        date: item.date,
       };
     });
 
@@ -371,7 +403,6 @@ const CourtDetails = () => {
       }}
       className="container mx-auto my-8 "
     >
-
       <ToastContainer />
 
       <Row
@@ -526,6 +557,7 @@ const CourtDetails = () => {
                     {flexibleBookings.map((booking, index) => (
                       <div key={index} className="flex items-center mb-2">
                         <p className="me-2 mb-0">
+
 
                           {moment(booking.date.$d).format("DD/MM/YYYY")} -{" "}
 
