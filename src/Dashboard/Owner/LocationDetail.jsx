@@ -91,7 +91,7 @@ const LocationDetail = () => {
   };
 
   if (!location) {
-    return <div>Chưa có sân! Vui lòng liên hệ Admin</div>;
+    return <div>Chưa có sân! Vui lòng vào phần liên hệ để đăng kí thông tin sân</div>;
   }
 
   return (

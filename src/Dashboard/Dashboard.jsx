@@ -1,21 +1,4 @@
 import React, { useEffect, useState } from "react";
-import {
-  HeartOutlined,
-  UserOutlined,
-  BarChartOutlined,
-  PlusOutlined,
-  EditOutlined,
-  TeamOutlined,
-} from "@ant-design/icons";
-import {
-  HeartOutlined,
-  UserOutlined,
-  BarChartOutlined,
-  PlusOutlined,
-  EditOutlined,
-  TeamOutlined,
-} from "@ant-design/icons";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { HeartOutlined, UserOutlined, BarChartOutlined, PlusOutlined, EditOutlined, TeamOutlined } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, Button, theme } from "antd";
 import { Footer } from "antd/es/layout/layout";
@@ -60,7 +43,7 @@ const Dashboard = () => {
     } else if (role === "CLUB_STAFF") {
 
       setItems([
-        getItem("Quản lý Sân", "LocationDetail", <HeartOutlined />),
+        // getItem("Quản lý Sân", "LocationDetail", <HeartOutlined />),
         // getItem("Quản lý Tài Khoản", "account-list", <TeamOutlined />),
         // getItem("Quản lý Mã Giảm Giá", "promotion", <TeamOutlined />),
         getItem("Quản lý Check In", "checkin", <TeamOutlined />),

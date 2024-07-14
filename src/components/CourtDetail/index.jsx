@@ -57,7 +57,6 @@ const CourtDetails = () => {
   const [promotion, setPromotion] = useState([]);
   const user = useSelector(selectUser);
 
-
   window.scrollTo(0, 0);
 
   const handleChange = (selectedValues) => {
@@ -66,37 +65,6 @@ const CourtDetails = () => {
 
   const handleDeselect = (removedValue) => {
     setSelectedDays(selectedDays.filter((day) => day !== removedValue));
-  };
-
-  let bookingRequest;
-  if (bookingDetails.length > 0) {
-    bookingRequest = bookingDetails?.map((item) => {
-      return {
-        idSlot: item.idSlot,
-        date: moment(item.date).format("MM-DD-YYYY"),
-      };
-    });
-
-    console.log(bookingRequest);
-  }
-  console.log(bookingType);
-  const getPrice = async () => {
-    try {
-      const response = await api.post("booking/price", {
-        idPromotion: promoCode,
-        idUser: user.id,
-        idLocation: id,
-        bookingDetailRequests: bookingRequest,
-        bookingType: bookingType === "now" ? "SLOT" : bookingType.toUpperCase(),
-      });
-      console.log(response.data);
-      setSlotPrices(response.data);
-      // setData(response.data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   };
 
   let bookingRequest;
@@ -228,8 +196,9 @@ const CourtDetails = () => {
 
       if (isInDays(currentDate)) {
         bookingDetail.push({
-          date: `${currentDate.getMonth() + 1
-            }/${currentDate.getDate()}/${currentDate.getFullYear()}`,
+          date: `${
+            currentDate.getMonth() + 1
+          }/${currentDate.getDate()}/${currentDate.getFullYear()}`,
           time: getLableSlot(selectedTime),
           slot: slot,
           idSlot: selectedTime,
@@ -264,7 +233,6 @@ const CourtDetails = () => {
   const handleShowConfirm = () => {
     console.log(selectedDate, selectedTime);
     if (bookingType === "now") {
-
       console.log(moment(selectedDate.$d).format("MM-DD-YYYY"));
       setBookingDetails([
         {
@@ -377,11 +345,13 @@ const CourtDetails = () => {
       return (
         <div
           key={index}
-          className={`m-2 p-2 border rounded-lg shadow-lg ${isSelected ? "bg-blue-300" : "bg-blue-100"
-            } ${isPast || isBooked
+          className={`m-2 p-2 border rounded-lg shadow-lg ${
+            isSelected ? "bg-blue-300" : "bg-blue-100"
+          } ${
+            isPast || isBooked
               ? "bg-gray-300 cursor-not-allowed"
               : "cursor-pointer"
-            }`}
+          }`}
           onClick={handleClick}
         >
           <p className="text-center">
@@ -414,7 +384,6 @@ const CourtDetails = () => {
           alignItems: "center",
         }}
       >
-
         <Col xs={24} md={12}>
           <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-4">
             <h2 className="text-2xl font-bold mb-4">Chọn loại lịch đặt sân</h2>
@@ -494,10 +463,7 @@ const CourtDetails = () => {
 
             {(bookingType === "flexible" || bookingType === "now") && (
               <div>
-                {bookingType === "flexible" && (
-                  <div className="mb-4">
-                  </div>
-                )}
+                {bookingType === "flexible" && <div className="mb-4"></div>}
                 <div className="mb-4">
                   <label className="block mb-2">Chọn ngày và giờ</label>
                   <div className="flex mb-2">
@@ -557,10 +523,7 @@ const CourtDetails = () => {
                     {flexibleBookings.map((booking, index) => (
                       <div key={index} className="flex items-center mb-2">
                         <p className="me-2 mb-0">
-
-
                           {moment(booking.date.$d).format("DD/MM/YYYY")} -{" "}
-
                           {getLableSlot(booking.idSlot)}
                         </p>
                         <Button
@@ -618,8 +581,9 @@ const CourtDetails = () => {
       </Modal>
 
       <Modal
-        title={`Đặt sân vào ngày ${selectedDay ? selectedDay.toLocaleDateString() : ""
-          }`}
+        title={`Đặt sân vào ngày ${
+          selectedDay ? selectedDay.toLocaleDateString() : ""
+        }`}
         visible={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
       >
