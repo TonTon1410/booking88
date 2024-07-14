@@ -1,29 +1,9 @@
-import React, { useState } from 'react';
-import { Button, Modal } from 'antd';
-import CreateNewField from "../../Dashboard/CreateNewField.jsx"; // Chỉnh sửa đường dẫn nếu cần
 import './Contact.scss';
-import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/features/counterSlice.js";
 
 const Contact = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [fields, setFields] = useState([]);
-  const user = useSelector(selectUser);
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
   return (
     <div className="contact-container">
       <h1>Liên hệ với chúng tôi</h1>
-      {user.role === 'CLUB_OWNER' && (
-        <Button onClick={handleOpenModal} style={{ marginBottom: "20px" }}>Đăng kí thông tin sân</Button>
-      )}
       <div className="contact-info">
         <div className="contact-item">
           <h2>Địa chỉ</h2>
@@ -56,9 +36,6 @@ const Contact = () => {
           <button type="submit">Gửi</button>
         </form>
       </div>
-      <Modal title="Thêm sân mới" visible={isModalOpen} onCancel={handleCloseModal} footer={null}>
-        <CreateNewField setShowForm={setIsModalOpen} setFields={setFields} />
-      </Modal>
     </div>
   );
 };

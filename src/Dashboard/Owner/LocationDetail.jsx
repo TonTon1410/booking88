@@ -13,17 +13,19 @@ import {
   Input,
   InputNumber,
   Upload,
-  Image,
+  Result,
 } from "antd";
 import api from "../../config/axios";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 import { UploadOutlined } from "@ant-design/icons";
 import uploadFile from "../../assets/hook/uploadFile.js";
+import CreateNewField from "../CreateNewField"; // Import the CreateNewField component
 
 const LocationDetail = () => {
   const [location, setLocation] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateFieldModalOpen, setIsCreateFieldModalOpen] = useState(false); // State to manage the create field modal
   const [form] = Form.useForm();
   const user = useSelector(selectUser);
   const [imageFileList, setImageFileList] = useState("");
@@ -43,18 +45,20 @@ const LocationDetail = () => {
   }, [user.id]);
 
   const showEditModal = () => {
-    form.setFieldsValue({
-      id: location.id,
-      name: location.name,
-      description: location.description,
-      address: location.address,
-      hotline: location.hotline,
-      openingTime: location.openingTime,
-      closingTime: location.closingTime,
-      photo: location.photo,
-      priceSlot: location.priceSlot,
-      ownerId: user.id,
-    });
+    if (location) {
+      form.setFieldsValue({
+        id: location.id,
+        name: location.name,
+        description: location.description,
+        address: location.address,
+        hotline: location.hotline,
+        openingTime: location.openingTime,
+        closingTime: location.closingTime,
+        photo: location.photo,
+        priceSlot: location.priceSlot,
+        ownerId: user.id,
+      });
+    }
     setIsModalOpen(true);
   };
 
@@ -91,7 +95,30 @@ const LocationDetail = () => {
   };
 
   if (!location) {
-    return <div>Chưa có sân! Vui lòng vào phần liên hệ để đăng kí thông tin sân</div>;
+    return (
+      <Result
+        status="warning"
+        title="Chưa có sân!"
+        subTitle="Vui lòng vào phần liên hệ để đăng kí thông tin sân"
+        extra={
+          <Button type="primary" onClick={() => setIsCreateFieldModalOpen(true)}>
+            Tạo sân mới
+          </Button>
+        }
+      >
+        <Modal
+          title="Tạo sân mới"
+          visible={isCreateFieldModalOpen}
+          onCancel={() => setIsCreateFieldModalOpen(false)}
+          footer={null}
+        >
+          <CreateNewField
+            setShowForm={setIsCreateFieldModalOpen}
+            setFields={setLocation} // Update location state after creating a new field
+          />
+        </Modal>
+      </Result>
+    );
   }
 
   return (
@@ -136,7 +163,7 @@ const LocationDetail = () => {
                 </Tag>
               </p>
               <p>
-                <strong>Chủ sở hữu:</strong> {location.owner.name}
+                <strong>Chủ sở hữu:</strong> {location.owner ? location.owner.name : 'N/A'}
               </p>
               <Button type="primary" onClick={showEditModal}>
                 Sửa thông tin địa điểm

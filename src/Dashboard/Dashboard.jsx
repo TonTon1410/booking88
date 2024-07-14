@@ -54,7 +54,9 @@ const Dashboard = () => {
         getItem("Cập Nhật Sân", "ManagerField", <EditOutlined />),
         getItem("Quản lý Mã Giảm Giá", "promotion", <TeamOutlined />),
         getItem("Quản lý Nhân Viên", "account-staff", <TeamOutlined />),
+        getItem("Lịch sử đặt sân", "HistoryBooking", <EditOutlined />),
         getItem("Doanh thu", "overview", <FaRegMoneyBillAlt />),
+
       ]);
     }
   }, [role]);

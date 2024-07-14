@@ -24,7 +24,7 @@ const AccountStaff = () => {
 
   const fetchAccounts = async () => {
     try {
-      const response = await api.get(`/owner/accountss/${user.id}`);
+      const response = await api.get(`/owner/accounts/${user.id}/staff`);
       setAccounts(response.data);
       console.log(response.data);
     } catch (error) {

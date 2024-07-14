@@ -1,4 +1,6 @@
+
 import React, { useState, useEffect, useRef } from 'react';
+
 import { FaInfoCircle, FaEnvelope, FaHistory, FaWallet } from 'react-icons/fa';
 import userApi from '../../api/UserProfileApi';
 import { toast, ToastContainer } from 'react-toastify';
@@ -209,10 +211,12 @@ const UserProfile = () => {
                 </button>
                 <button className={`nav-link ${activeTab === 'bookingHistory' ? 'active' : ''}`} onClick={() => handleTabChange('bookingHistory')}>
                     <FaHistory /> Lịch sử đặt lịch
+
                 </button>
                 <button className={`nav-link ${activeTab === 'topUpHistory' ? 'active' : ''}`} onClick={() => handleTabChange('topUpHistory')}>
                     <FaHistory /> Lịch sử nạp tiền
                 </button>
+
             </div>
 
             <div className="account-content">
@@ -275,8 +279,7 @@ const UserProfile = () => {
                                     <tr key={history.id}>
                                         <td>{history.bookingDate}</td>
                                         <td>{history.location.name}</td>
-                                        <td>{history.bookingDetails.map(detail => detail.courtSlot?.slot?.time || 'N/A').join(', ')}</td>
-                                        <td>{history.totalPrice}</td>
+                                        <td>{history.bookingDetails.map(detail => detail.courtSlot?.slot?.time || 'N/A').join(', ')}</td>                                        <td>{history.totalPrice}</td>
                                         <td>{history.bookingType}</td>
                                         <td>{history.status}</td>
                                         <td>

@@ -20,6 +20,8 @@ import AccountList from "../Dashboard/AccountList.jsx";
 import AccountStaff from "../Dashboard/Owner/AccountStaff.jsx";
 import ManagerField from "../Dashboard/Owner/ManagerField.jsx";
 import LocationDetail from "../Dashboard/Owner/LocationDetail.jsx";
+import HistoryBooking from "../Dashboard/Owner/HistoryBooking.jsx";
+
 import News from "../components/News/News.jsx";
 import Contact from "../components/Contact/Contact.jsx";
 import Promotion from "../components/promotion/index.jsx";
@@ -162,6 +164,10 @@ const router = createBrowserRouter([
       {
         path: "checkin",
         element: <CheckIn />,
+      },
+      {
+        path: "HistoryBooking",
+        element: <HistoryBooking />,
       },
     ],
   },

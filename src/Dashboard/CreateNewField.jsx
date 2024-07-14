@@ -14,40 +14,46 @@ const CreateNewField = ({ setShowForm, setFields }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const fetch = async () => {
-    try {
-      const response = await api.get("/admin/owner");
-      setData(response.data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   useEffect(() => {
+    const fetch = async () => {
+      try {
+        const response = await api.get("/admin/owner");
+        setData(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    };
     fetch();
   }, []);
-
-  console.log(data);
 
   const handleChange = (value) => {
     console.log(`selected ${value}`);
   };
 
   const onFinish = async (values) => {
-    console.log(values);
     try {
       setLoading(true);
       const img = await uploadFile(values.photo.file);
-      values.photo = img;
-      const response = await api.post("/location", values);
+      const requestPayload = {
+        name: values.name,
+        description: values.description,
+        address: values.address,
+        hotline: values.hotline,
+        openingTime: values.openingTime,
+        closingTime: values.closingTime,
+        photo: img,
+        priceSlot: values.priceSlot,
+        ownerId: user.role === 'ADMIN' ? values.ownerId : user.id,
+        timeSlot: values.timeSlot,
+      };
+      const response = await api.post("/location", requestPayload);
       toast.success("Thêm sân thành công");
       setFields((prev) => [...prev, response.data]);
       setShowForm(false);
       form.resetFields();
-      console.log(response.data);
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data);
+      toast.error("Lỗi khi tạo sân mới. Vui lòng thử lại.");
     } finally {
       setLoading(false);
     }
@@ -98,16 +104,17 @@ const CreateNewField = ({ setShowForm, setFields }) => {
       <Form.Item
         label="Giờ mở cửa"
         name="openingTime"
+        rules={[{ required: true, message: "Vui lòng nhập giờ mở cửa!" }]}
       >
-        <InputNumber addonAfter="Giờ" />
+        <InputNumber min={0} max={24} addonAfter="Giờ" />
       </Form.Item>
       <Form.Item
         label="Giờ đóng cửa"
         name="closingTime"
+        rules={[{ required: true, message: "Vui lòng nhập giờ đóng cửa!" }]}
       >
-        <InputNumber addonAfter="Giờ" />
+        <InputNumber min={0} max={24} addonAfter="Giờ" />
       </Form.Item>
-
       <Form.Item
         label="Mô tả"
         name="description"
@@ -115,7 +122,6 @@ const CreateNewField = ({ setShowForm, setFields }) => {
       >
         <Input />
       </Form.Item>
-
       <Form.Item
         label="Địa chỉ"
         name="address"
@@ -123,7 +129,6 @@ const CreateNewField = ({ setShowForm, setFields }) => {
       >
         <Input />
       </Form.Item>
-
       <Form.Item
         label="Hotline"
         name="hotline"
@@ -131,32 +136,47 @@ const CreateNewField = ({ setShowForm, setFields }) => {
       >
         <Input />
       </Form.Item>
-
       <Form.Item
         label="Giá Slot"
         name="priceSlot"
-        rules={[{ required: true, message: "Vui lòng nhập giá!" }]}
+        rules={[{ required: true, message: "Vui lòng nhập giá mỗi slot!" }]}
       >
-        <InputNumber />
+        <InputNumber min={0} />
       </Form.Item>
       <Form.Item
-        label="Chọn chủ sân"
-        name="ownerId"
-        rules={[{ required: true, message: "Vui lòng chọn!" }]}
+        label="Thời gian mỗi slot"
+        name="timeSlot"
+        rules={[{ required: true, message: "Vui lòng nhập thời gian mỗi slot!" }]}
       >
-        <Select
-          defaultValue=""
-          style={{ width: 120 }}
-          onChange={handleChange}
-          options={activeAccounts?.map((item) => ({
-            value: item.id,
-            label: item.name,
-          }))}
-        >
-        </Select>
+        <InputNumber min={0} addonAfter="Phút" />
       </Form.Item>
-
-      <Form.Item label="Hình ảnh" name="photo">
+      {user.role === 'ADMIN' ? (
+        <Form.Item
+          label="Chọn chủ sân"
+          name="ownerId"
+          rules={[{ required: true, message: "Vui lòng chọn!" }]}
+        >
+          <Select
+            defaultValue=""
+            style={{ width: 120 }}
+            onChange={handleChange}
+            options={activeAccounts?.map((item) => ({
+              value: item.id,
+              label: item.name,
+            }))}
+          >
+          </Select>
+        </Form.Item>
+      ) : (
+        <Form.Item
+          label="Chủ sân"
+          name="ownerName"
+          initialValue={user.name}
+        >
+          <Input disabled />
+        </Form.Item>
+      )}
+      <Form.Item label="Hình ảnh" name="photo" valuePropName="file">
         <Upload
           listType="picture"
           fileList={imageFileList}
@@ -167,7 +187,6 @@ const CreateNewField = ({ setShowForm, setFields }) => {
           <Button icon={<UploadOutlined />}>Tải ảnh lên</Button>
         </Upload>
       </Form.Item>
-
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
         <Button loading={loading} type="primary" htmlType="submit">
           Tạo Sân
