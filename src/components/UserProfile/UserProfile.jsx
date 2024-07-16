@@ -1,6 +1,4 @@
-
-import React, { useState, useEffect, useRef } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import { FaInfoCircle, FaEnvelope, FaHistory, FaWallet } from 'react-icons/fa';
 import userApi from '../../api/UserProfileApi';
 import { toast, ToastContainer } from 'react-toastify';
@@ -10,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectUser, login } from '../../redux/features/counterSlice';
 import { Button, Typography, Input, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { QRCode } from 'react-qr-code';
+import QRCode from 'react-qr-code';
 
 const { confirm } = Modal;
 const { Text } = Typography;
@@ -28,11 +26,12 @@ const UserProfile = () => {
 
     const [amount, setAmount] = useState(0);
     const [rechargeAmount, setRechargeAmount] = useState(0);
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isRechargeModalVisible, setIsRechargeModalVisible] = useState(false);
+    const [isQRCodeModalVisible, setIsQRCodeModalVisible] = useState(false);
+    const [selectedQRCode, setSelectedQRCode] = useState(null);
 
     const [bookingHistory, setBookingHistory] = useState([]);
     const [topUpHistory, setTopUpHistory] = useState([]);
-    const [selectedQRCode, setSelectedQRCode] = useState(null); // State to store selected QR code
     const dispatch = useDispatch();
     const userId = user?.id;
     const navigate = useNavigate();
@@ -49,6 +48,7 @@ const UserProfile = () => {
                 toast.error('Lấy lịch sử đặt lịch thất bại. Vui lòng thử lại.');
             }
         };
+
         const getAmount = async () => {
             try {
                 const data = await userApi.getWalletAmount(userId);
@@ -57,7 +57,7 @@ const UserProfile = () => {
                 console.error('Failed to fetch wallet amount:', error);
                 toast.error('Lấy số dư thất bại. Vui lòng thử lại.');
             }
-        }
+        };
 
         fetchBookingHistory();
         getAmount();
@@ -146,17 +146,17 @@ const UserProfile = () => {
         }
     };
 
-    const showModal = () => {
-        setIsModalVisible(true);
+    const showRechargeModal = () => {
+        setIsRechargeModalVisible(true);
     };
 
-    const handleOk = () => {
-        setIsModalVisible(false);
+    const handleRechargeOk = () => {
+        setIsRechargeModalVisible(false);
         navigate('/payment', { state: { rechargeAmount } });
     };
 
-    const handleCancel = () => {
-        setIsModalVisible(false);
+    const handleRechargeCancel = () => {
+        setIsRechargeModalVisible(false);
     };
 
     const handleRechargeAmountChange = (e) => {
@@ -193,7 +193,11 @@ const UserProfile = () => {
 
     const handleQRCodeClick = (qrData) => {
         setSelectedQRCode(qrData);
-        setIsModalVisible(true);
+        setIsQRCodeModalVisible(true);
+    };
+
+    const handleQRCodeModalCancel = () => {
+        setIsQRCodeModalVisible(false);
     };
 
     return (
@@ -211,12 +215,10 @@ const UserProfile = () => {
                 </button>
                 <button className={`nav-link ${activeTab === 'bookingHistory' ? 'active' : ''}`} onClick={() => handleTabChange('bookingHistory')}>
                     <FaHistory /> Lịch sử đặt lịch
-
                 </button>
                 <button className={`nav-link ${activeTab === 'topUpHistory' ? 'active' : ''}`} onClick={() => handleTabChange('topUpHistory')}>
                     <FaHistory /> Lịch sử nạp tiền
                 </button>
-
             </div>
 
             <div className="account-content">
@@ -247,11 +249,7 @@ const UserProfile = () => {
                         <form onSubmit={handleForgotPasswordSubmit}>
                             <div className="form-group">
                                 <label>Email của bạn</label>
-                                <input
-                                    type="email"
-                                    value={userInfo.email}
-                                    disabled
-                                />
+                                <input type="email" value={userInfo.email} disabled />
                             </div>
                             <button type="submit">Gửi yêu cầu</button>
                         </form>
@@ -279,7 +277,14 @@ const UserProfile = () => {
                                     <tr key={history.id}>
                                         <td>{history.bookingDate}</td>
                                         <td>{history.location.name}</td>
-                                        <td>{history.bookingDetails.map(detail => detail.courtSlot?.slot?.time || 'N/A').join(', ')}</td>                                        <td>{history.totalPrice}</td>
+                                        <td>
+                                            <ul>
+                                                {history.bookingDetails.map(detail => (
+                                                    <li key={detail.courtSlot?.id || detail.id}>{detail.courtSlot?.slot?.time || 'N/A'}</li>
+                                                ))}
+                                            </ul>
+                                        </td>
+                                        <td>{history.totalPrice}</td>
                                         <td>{history.bookingType}</td>
                                         <td>{history.status}</td>
                                         <td>
@@ -292,9 +297,9 @@ const UserProfile = () => {
                                             )}
                                         </td>
                                         <td>
-                                            <div onClick={() => handleQRCodeClick(history.bookingDetails[0]?.courtSlot?.id)}>
-                                                <QRCode value={history.bookingDetails[0]?.courtSlot?.id || ''} size={64} />
-                                            </div>
+                                            <Button onClick={() => handleQRCodeClick(history.id)}>
+                                                Xem QR Codes
+                                            </Button>
                                         </td>
                                     </tr>
                                 ))}
@@ -305,13 +310,13 @@ const UserProfile = () => {
 
                 {activeTab === 'Recharge' && (
                     <>
-                        <Button style={{ display: "block", marginBottom: "20px" }} onClick={showModal}>
+                        <Button style={{ display: "block", marginBottom: "20px" }} onClick={showRechargeModal}>
                             Nạp tiền thêm
                         </Button>
                         <Text style={{ fontSize: "20px" }}>
                             Số dư của bạn là: {amount !== null && amount !== undefined ? amount.toLocaleString() : '0'} VND
                         </Text>
-                        <Modal title="Nạp tiền" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                        <Modal title="Nạp tiền" visible={isRechargeModalVisible} onOk={handleRechargeOk} onCancel={handleRechargeCancel}>
                             <Input
                                 type="number"
                                 value={rechargeAmount}
@@ -354,13 +359,18 @@ const UserProfile = () => {
             </div>
 
             <Modal
-                title="QR Code"
-                visible={isModalVisible}
-                onOk={() => setIsModalVisible(false)}
-                onCancel={() => setIsModalVisible(false)}
+                title="QR Codes"
+                visible={isQRCodeModalVisible}
+                onOk={handleQRCodeModalCancel}
+                onCancel={handleQRCodeModalCancel}
                 footer={null}
             >
-                {selectedQRCode && <QRCode value={selectedQRCode} size={256} />}
+                {selectedQRCode && bookingHistory.find(history => history.id === selectedQRCode)?.bookingDetails.map((detail, index) => (
+                    <div key={index} style={{ marginBottom: '20px' }}>
+                        <Text>{detail.bookingDate}:</Text>
+                        <QRCode value={detail?.courtSlot?.id || ''} size={128} />
+                    </div>
+                ))}
             </Modal>
         </div>
     );

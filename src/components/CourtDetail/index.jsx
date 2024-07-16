@@ -11,8 +11,8 @@ import {
   Calendar,
   message,
 } from "antd";
-import { getDownloadURL, ref } from "firebase/storage";
-import { storage } from "../../config/firebase";
+// import { getDownloadURL, ref } from "firebase/storage";
+// import { storage } from "../../config/firebase";
 import api from "../../config/axios";
 import "../CourtDetail/Index.css";
 import moment from "moment";
@@ -37,7 +37,7 @@ const CourtDetails = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentWeek, setCurrentWeek] = useState(0);
   const [bookingType, setBookingType] = useState("");
-  const [dayOfWeek, setDayOfWeek] = useState("");
+  // const [dayOfWeek, setDayOfWeek] = useState("");
   const [months, setMonths] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [flexibleBookings, setFlexibleBookings] = useState([]);
@@ -49,7 +49,6 @@ const CourtDetails = () => {
   const [slotTimes, setSlotTimes] = useState([]);
   const [slotPrices, setSlotPrices] = useState([]);
   const [slotPrice, setSlotPrice] = useState([]); // Default price if not fetched
-  const [imageSrc, setImageSrc] = useState(null);
   const [bookingDetails, setBookingDetails] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -69,7 +68,9 @@ const CourtDetails = () => {
 
   let bookingRequest;
   if (bookingDetails.length > 0) {
+    //tao ra yeu cau dat cho o trong booking request moi 
     bookingRequest = bookingDetails?.map((item) => {
+      //map nó sẽ duyệt qua từng phần tử và trả về khi có thay đổi
       return {
         idSlot: item.idSlot,
         date: moment(item.date).format("MM-DD-YYYY"),
@@ -81,6 +82,7 @@ const CourtDetails = () => {
   }
   console.log(bookingType);
   const getPrice = async () => {
+      // dùng để lấy giá từ api price 
     try {
       const response = await api.post("booking/price", {
         idPromotion: promoCode,
@@ -118,15 +120,6 @@ const CourtDetails = () => {
       }
     };
 
-    // const fetchImage = async () => {
-    //   try {
-    //     const imageRef = ref(storage, court.photo); // court.image là tên file trên Firebase Storage
-    //     const imageUrl = await getDownloadURL(imageRef);
-    //     setImageSrc(imageUrl);
-    //   } catch (error) {
-    //     console.error("Error fetching image from Firebase Storage:", error);
-    //   }
-    // };
 
     fetchSlotData();
     fetPromotion();
@@ -190,6 +183,8 @@ const CourtDetails = () => {
       return days.includes(dayNames[date.getDay()]);
     };
 
+
+    // dùng để tạo danh sách chi tiết đặt chỗ dựa vào currentdate bắt đầu cụ thể từ starform
     for (let i = 0; i < duration; i++) {
       const currentDate = new Date(startFrom);
       currentDate.setDate(currentDate.getDate() + i);
@@ -314,6 +309,7 @@ const CourtDetails = () => {
   const renderTimeslots = () => {
     const now = new Date();
 
+    //kiểm tra giờ trong quá khứ và check giờ đã được chọn
     return slotTimes.map((time, index) => {
       const slotTime = new Date(selectedDay);
       slotTime.setHours(time);
@@ -323,6 +319,7 @@ const CourtDetails = () => {
       const isPast =
         selectedDay &&
         (selectedDay < new Date(now.setHours(0, 0, 0, 0)) ||
+        
           (selectedDay.toDateString() === now.toDateString() &&
             slotTime <= now));
       const isBooked = bookedSlots.some(
