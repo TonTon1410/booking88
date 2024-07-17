@@ -101,7 +101,10 @@ const LocationDetail = () => {
         title="Chưa có sân!"
         subTitle="Vui lòng vào phần liên hệ để đăng kí thông tin sân"
         extra={
-          <Button type="primary" onClick={() => setIsCreateFieldModalOpen(true)}>
+          <Button
+            type="primary"
+            onClick={() => setIsCreateFieldModalOpen(true)}
+          >
             Tạo sân mới
           </Button>
         }
@@ -163,7 +166,8 @@ const LocationDetail = () => {
                 </Tag>
               </p>
               <p>
-                <strong>Chủ sở hữu:</strong> {location.owner ? location.owner.name : 'N/A'}
+                <strong>Chủ sở hữu:</strong>{" "}
+                {location.owner ? location.owner.name : "N/A"}
               </p>
               <Button type="primary" onClick={showEditModal}>
                 Sửa thông tin địa điểm
