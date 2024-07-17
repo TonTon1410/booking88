@@ -68,7 +68,7 @@ function Overview({endpoint}) {
   };
 
   useEffect(() => {
-    document.title = "So sánh giữa các năm";
+    // document.title = "So sánh giữa các năm";
     if (chartRef.current) {
       const ctx = chartRef.current.getContext("2d");
 

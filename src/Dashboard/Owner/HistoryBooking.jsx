@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { Table, Tag, message } from "antd";
 import { useSelector } from "react-redux";
@@ -20,7 +20,9 @@ const HistoryBooking = () => {
         console.log("API Response:", response); // Debug: log the full API response
 
         if (Array.isArray(response.data)) {
-          setBookingDetails(response.data);
+          // Sort the booking details by booking date in descending order
+          const sortedData = response.data.sort((a, b) => b.id - a.id);
+          setBookingDetails(sortedData);
         } else {
           console.error("Unexpected API response format:", response.data);
           message.error("Lỗi khi lấy thông tin đặt lịch");
@@ -37,11 +39,11 @@ const HistoryBooking = () => {
   }, [user.id]);
 
   const columns = [
-    {
-      title: "Booking ID",
-      dataIndex: "id",
-      key: "id",
-    },
+    // {
+    //   title: "Booking ID",
+    //   dataIndex: "id",
+    //   key: "id",
+    // },
     {
       title: "Customer Name",
       dataIndex: ["customer", "name"],
@@ -68,7 +70,7 @@ const HistoryBooking = () => {
       key: "bookingDate",
     },
     {
-      title: "Status",
+      title: "Thanh toán",
       dataIndex: "status",
       key: "status",
       render: (status) => (
@@ -76,17 +78,38 @@ const HistoryBooking = () => {
       ),
     },
     {
+      title: "Trạng thái",
+      dataIndex: "bookingDetails",
+      key: "courtSlotStatus",
+      render: (bookingDetails) => (
+        <div style={{ flexDirection: "column" }}>
+          {bookingDetails.map((detail) => {
+            const status = detail.courtSlot?.status;
+            return (
+              <Tag
+                key={detail.id}
+                color={status === "ACTIVE" ? "green" : "red"}
+              >
+                {status}
+              </Tag>
+            );
+          })}
+        </div>
+      ),
+    },
+    {
       title: "Booking Details",
       dataIndex: "bookingDetails",
       key: "bookingDetails",
       render: (bookingDetails) => (
-        <ul>
+        <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
           {bookingDetails.map((detail) => (
-            <li key={detail.id}>
-              {detail.courtSlot?.court?.name} - {detail.courtSlot?.slot?.time}
-            </li>
+            <div key={detail.id}>
+              {detail.courtSlot?.date} - {detail.courtSlot?.court?.name} -{" "}
+              {detail.courtSlot?.slot?.time}
+            </div>
           ))}
-        </ul>
+        </div>
       ),
     },
   ];
@@ -96,7 +119,7 @@ const HistoryBooking = () => {
       columns={columns}
       dataSource={bookingDetails}
       rowKey="id"
-      pagination={{ pageSize: 5 }}
+      pagination={{ pageSize: 7 }}
       loading={loading}
     />
   );
