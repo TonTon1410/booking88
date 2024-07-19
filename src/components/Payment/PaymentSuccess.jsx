@@ -5,7 +5,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 const PaymentSuccess = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { rechargeAmount } = location.state || {};
 
     const handleBackHome = () => {
         navigate('/');
@@ -20,7 +19,6 @@ const PaymentSuccess = () => {
             <Result
                 status="success"
                 title="Thanh toán thành công"
-                subTitle={`Số tiền bạn đã nạp: ${rechargeAmount} VND`}
                 extra={[
                     <Button type="primary" key="home" onClick={handleBackHome}>
                         Quay lại trang chủ

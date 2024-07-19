@@ -326,7 +326,7 @@ const UserProfile = () => {
                             Nạp tiền thêm
                         </Button>
                         <Text style={{ fontSize: "20px" }}>
-                            Số dư của bạn là: {amount} VND
+                            Số dư của bạn là: {amount.toLocaleString()} VND
                         </Text>
                         <Modal title="Nạp tiền" visible={isRechargeModalVisible} onOk={handleRechargeOk} onCancel={handleRechargeCancel}>
                             <Input
@@ -335,6 +335,7 @@ const UserProfile = () => {
                                 onChange={handleRechargeAmountChange}
                                 placeholder="Nhập số tiền cần nạp"
                             />
+                            <p>Số tiền cần nạp: {rechargeAmount.toLocaleString()} VND</p>
                         </Modal>
                     </>
                 )}
@@ -352,7 +353,7 @@ const UserProfile = () => {
                             <tbody>
                                 {topUpHistory.map((history, index) => (
                                     <tr key={index}>
-                                        <td>{history.amount} VND</td>
+                                        <td>{history.amount.toLocaleString()} VND</td>
                                         <td>{history.transactionType}</td>
                                     </tr>
                                 ))}
@@ -368,7 +369,6 @@ const UserProfile = () => {
                     <li>Email: {userInfo.email}</li>
                     <li>Số điện thoại: {userInfo.phone}</li>
                     <li>Số dư hiện tại: {amount.toLocaleString()} VND</li>
-                    <li>Tổng số tiền đã nạp: {calculateTotalRecharged().toLocaleString()} VND</li>
                 </ul>
             </div>
 
