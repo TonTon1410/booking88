@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
-import { Form, Input, Button, message, Radio } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { Form, Input, Button, message } from 'antd';
 import { FaPhoneAlt } from "react-icons/fa";
 import { MdMarkEmailRead } from "react-icons/md";
 import { AiOutlineSwapRight } from "react-icons/ai";
@@ -12,6 +12,7 @@ import '../../App.css';
 const Register = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+
   const onFinish = async (values) => {
     const { email, phone, password, confirmPassword } = values;
 
@@ -28,10 +29,8 @@ const Register = () => {
       });
 
       if (response.status === 200) {
-        message.success('Đăng ký thành công! Đang chuyển đến trang đăng nhập...');
-        setTimeout(() => {
-          navigate('/login');
-        }, 2000);
+        message.success('Đăng ký thành công! Vui lòng kiểm tra email để xác nhận tài khoản.');
+        navigate('/login'); // Redirect to verification page with email
       } else {
         message.error('Đăng ký thất bại. Vui lòng thử lại.');
       }
@@ -113,13 +112,10 @@ const Register = () => {
               />
             </Form.Item>
 
-
-
             <Form.Item>
               <Button type="primary" htmlType="submit" className='btn flex'>
                 <span>Đăng ký</span>
                 <AiOutlineSwapRight />
-                
               </Button>
             </Form.Item>
           </Form>

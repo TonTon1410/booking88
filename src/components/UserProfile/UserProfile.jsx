@@ -36,6 +36,8 @@ const UserProfile = () => {
     const userId = user?.id;
     const navigate = useNavigate();
 
+    const BALANCE_THRESHOLD = 100000; // Define your balance threshold here
+
     useEffect(() => {
         const fetchBookingHistory = async () => {
             try {
@@ -107,7 +109,13 @@ const UserProfile = () => {
         }
     }, [userId, user, dispatch, isDataFetched]);
 
-    const handleTabChange = (tab) => setActiveTab(tab);
+    const handleTabChange = (tab) => {
+        setActiveTab(tab);
+
+        if (tab === 'Recharge' && amount < BALANCE_THRESHOLD) {
+            toast.warning(`Số dư của bạn dưới ${BALANCE_THRESHOLD.toLocaleString()} VND. Vui lòng nạp thêm tiền.`);
+        }
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -198,6 +206,10 @@ const UserProfile = () => {
 
     const handleQRCodeModalCancel = () => {
         setIsQRCodeModalVisible(false);
+    };
+
+    const calculateTotalRecharged = () => {
+        return topUpHistory.reduce((total, history) => total + history.amount, 0);
     };
 
     return (
@@ -314,7 +326,7 @@ const UserProfile = () => {
                             Nạp tiền thêm
                         </Button>
                         <Text style={{ fontSize: "20px" }}>
-                            Số dư của bạn là: {amount !== null && amount !== undefined ? amount.toLocaleString() : '0'} VND
+                            Số dư của bạn là: {amount} VND
                         </Text>
                         <Modal title="Nạp tiền" visible={isRechargeModalVisible} onOk={handleRechargeOk} onCancel={handleRechargeCancel}>
                             <Input
@@ -340,7 +352,7 @@ const UserProfile = () => {
                             <tbody>
                                 {topUpHistory.map((history, index) => (
                                     <tr key={index}>
-                                        <td>{history.amount.toLocaleString()} VND</td>
+                                        <td>{history.amount} VND</td>
                                         <td>{history.transactionType}</td>
                                     </tr>
                                 ))}
@@ -355,6 +367,8 @@ const UserProfile = () => {
                 <ul className="account-info">
                     <li>Email: {userInfo.email}</li>
                     <li>Số điện thoại: {userInfo.phone}</li>
+                    <li>Số dư hiện tại: {amount.toLocaleString()} VND</li>
+                    <li>Tổng số tiền đã nạp: {calculateTotalRecharged().toLocaleString()} VND</li>
                 </ul>
             </div>
 
