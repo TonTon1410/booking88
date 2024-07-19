@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Avatar } from "antd";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { CiMenuBurger, CiBitcoin } from "react-icons/ci";
@@ -43,7 +43,11 @@ const Navbar = () => {
     <section className="navBarSection">
       <header className="header flex">
         <div className="logoDiv">
-          <a onClick={handleHomeClick} className="logo flex" style={{ cursor: "pointer" }}>
+          <a
+            onClick={handleHomeClick}
+            className="logo flex"
+            style={{ cursor: "pointer" }}
+          >
             <h1>
               <CiBitcoin className="icon" />
               Booking88
@@ -53,31 +57,33 @@ const Navbar = () => {
         <div className={active}>
           <ul className="navLists flex">
             <li className="navItem">
-              <a href="/courtlist" className="navLink">
+              <Link to="/courtlist" className="navLink">
                 Danh Sách Sân
-              </a>
+              </Link>
             </li>
-            <li className="navItem">
+            {/* <li className="navItem">
               <a href="/News" className="navLink" style={{ cursor: "pointer" }}>
                 Bản Tin
               </a>
-            </li>
+            </li> */}
             <li className="navItem">
-              <a href="/contact" className="navLink">
+              <Link to="/contact" className="navLink">
                 Liên Hệ
-              </a>
+              </Link>
             </li>
             <li className="navItem">
-              <a href="/regulations" className="navLink">
+              <Link to="/regulations" className="navLink">
                 Quy Định Chung
-              </a>
+              </Link>
             </li>
-            {user && ['ADMIN', 'CLUB_STAFF', 'CLUB_OWNER'].includes(user.role) && (<li className="navItem">
-              <a href="/dashboard" className="navLink">
-                Dashboard
-              </a>
-            </li>
-            )}
+            {user &&
+              ["ADMIN", "CLUB_STAFF", "CLUB_OWNER"].includes(user.role) && (
+                <li className="navItem">
+                  <Link to="/dashboard" className="navLink">
+                    Dashboard
+                  </Link>
+                </li>
+              )}
             {user ? (
               <div className="userDropdown" onClick={toggleDropdown}>
                 <Avatar
@@ -94,7 +100,7 @@ const Navbar = () => {
               </div>
             ) : (
               <button className="btn">
-                <a href="/login">Book Now</a>
+                <Link to="/login">Book Now</Link>
               </button>
             )}
           </ul>
@@ -105,8 +111,8 @@ const Navbar = () => {
         <div onClick={showNav} className="toggleNavbar">
           <CiMenuBurger className="icon" />
         </div>
-      </header >
-    </section >
+      </header>
+    </section>
   );
 };
 
