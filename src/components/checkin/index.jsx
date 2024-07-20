@@ -1,6 +1,6 @@
-import { Button, Modal, Table, Tag } from "antd";
+import { Button, message, Modal, Table, Tag, Input, Space } from "antd";
 import { useEffect, useState } from "react";
-import api from "../../config/axios";
+import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 import {
@@ -9,89 +9,153 @@ import {
   SyncOutlined,
 } from "@ant-design/icons";
 import { QRScanner } from "../qr";
+
 function CheckIn() {
-  const [data, setData] = useState([]);
-  const [show, setShow] = useState(false);
+  const [bookingDetails, setBookingDetails] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [show, setShow] = useState(false); // State to handle QRScanner modal
+  const [inputValues, setInputValues] = useState({}); // State to manage input values for each row
   const user = useSelector(selectUser);
-  const fetch = async () => {
+
+  const fetchBookingDetails = async () => {
+    setLoading(true);
     try {
-      const response = await api.get(
-        `/courtSlot/location/${user.idLocationStaff}`
+      const response = await axios.get(
+        `http://157.230.43.225:8080/api/booking/${user.idLocationStaff}`
       );
       console.log(response.data);
-      setData(response.data);
-    } catch (e) {
-      console.log(e);
+
+      if (Array.isArray(response.data)) {
+        setBookingDetails(response.data); // Sửa lại setData thành setBookingDetails
+      } else if (response.data && typeof response.data === "object") {
+        setBookingDetails([response.data]); // Đảm bảo dữ liệu được xử lý dưới dạng mảng
+      } else {
+        console.error("Unexpected API response format:", response.data);
+        message.error("Lỗi khi lấy thông tin đặt lịch");
+        setBookingDetails([]); // Sửa lại setData thành setBookingDetails
+      }
+    } catch (error) {
+      console.error("Error fetching booking details:", error);
+      message.error("Lỗi khi lấy thông tin đặt lịch");
+      setBookingDetails([]); // Sửa lại setData thành setBookingDetails
+    } finally {
+      setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (user.idLocationStaff) {
+      fetchBookingDetails();
+    }
+  }, [user.idLocationStaff]);
+
+  const handleInputChange = (e, record) => {
+    const { value } = e.target;
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      [record.id]: value,
+    }));
+  };
+
+  const handleCheckIn = (record) => {
+    const inputValue = inputValues[record.id];
+    console.log(`Check-in code for booking ID ${record.id}: ${inputValue}`);
+    // Bạn có thể thêm logic xử lý mã check-in ở đây
+  };
+
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
+      title: "Customer Name",
+      dataIndex: ["customer", "name"],
+      key: "customerName",
+      render: (name) => name || "N/A", // Hiển thị "N/A" nếu name là null
     },
     {
-      title: "Date",
-      dataIndex: "date",
-      key: "date",
-    },
-
-    {
-      title: "Court",
-      dataIndex: "court",
-      key: "court",
-      render: (e) => {
-        return e.name;
-      },
+      title: "Customer Email",
+      dataIndex: ["customer", "email"],
+      key: "customerEmail",
     },
     {
-      title: "Slot",
-      dataIndex: "slot",
-      key: "slot",
-      render: (e) => {
-        return e.time;
-      },
+      title: "Location",
+      dataIndex: ["location", "name"],
+      key: "locationName",
     },
     {
-      title: "Name customer",
-      dataIndex: "account",
-      key: "account",
-      render: (e) => {
-        return e.name;
-      },
+      title: "Total Price",
+      dataIndex: "totalPrice",
+      key: "totalPrice",
     },
     {
-      title: "Status",
+      title: "Booking Date",
+      dataIndex: "bookingDate",
+      key: "bookingDate",
+    },
+    {
+      title: "Thanh toán",
       dataIndex: "status",
       key: "status",
-      render: (e) => (
-        <Tag
-          icon={
-            e == "PENDING" ? (
-              <ClockCircleOutlined />
-            ) : e == "ACTIVE" ? (
-              <SyncOutlined spin />
-            ) : (
-              <CheckCircleOutlined />
-            )
-          }
-          color={
-            e == "INACTIVE"
-              ? "rgb(255, 153, 0)"
-              : e == "ACTIVE"
-              ? "#87d068"
-              : "#108ee9"
-          }
-        >
-          {e === "INACTIVE" ? "Done" : e === "ACTIVE" ? "PLAYING" : e}
-        </Tag>
+      render: (status) => (
+        <Tag color={status === "SUCCESS" ? "green" : "red"}>{status}</Tag>
+      ),
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "bookingDetails",
+      key: "courtSlotStatus",
+      render: (bookingDetails) => (
+        <div style={{ flexDirection: "column" }}>
+          {bookingDetails.map((detail) => {
+            const status = detail.courtSlot?.status;
+            return (
+              <Tag
+                key={detail.id}
+                color={
+                  status === "ACTIVE"
+                    ? "green"
+                    : status === "PENDING"
+                    ? "blue"
+                    : "red"
+                }
+              >
+                {status}
+              </Tag>
+            );
+          })}
+        </div>
+      ),
+    },
+    {
+      title: "Booking Details",
+      dataIndex: "bookingDetails",
+      key: "bookingDetails",
+      render: (bookingDetails) => (
+        <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+          {bookingDetails.map((detail) => (
+            <div key={detail.id}>
+              {detail.courtSlot?.date} - {detail.courtSlot?.court?.name} -{" "}
+              {detail.courtSlot?.slot?.time}
+            </div>
+          ))}
+        </div>
+      ),
+    },
+    {
+      title: "Input Code Check-in",
+      key: "inputCodeCheckin",
+      render: (_, record) => (
+        <Space>
+          <Input
+            placeholder="Enter code"
+            value={inputValues[record.id] || ""}
+            onChange={(e) => handleInputChange(e, record)}
+          />
+          <Button size="small" onClick={() => handleCheckIn(record)}>
+            Check-in
+          </Button>
+        </Space>
       ),
     },
   ];
-
-  useEffect(() => {
-    fetch();
-  }, []);
 
   return (
     <div>
@@ -113,7 +177,13 @@ function CheckIn() {
       >
         <QRScanner />
       </Modal>
-      <Table columns={columns} dataSource={data} />
+      <Table
+        columns={columns}
+        dataSource={bookingDetails}
+        rowKey="id"
+        pagination={{ pageSize: 7 }}
+        loading={loading}
+      />
     </div>
   );
 }

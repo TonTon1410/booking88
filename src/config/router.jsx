@@ -32,6 +32,7 @@ import Register_owner from "../pages/Register/Register_owner.jsx";
 import PaymentSuccess from "../components/Payment/PaymentSuccess.jsx";
 import FieldAdmin from "../Dashboard/FieldAdmin.jsx";
 import Regulations from "../components/Regulations/Regulations.jsx"; // Import Regulations
+import LocationStaff from "../Dashboard/Owner/LocationStaff.jsx";
 
 const router = createBrowserRouter([
   {
@@ -168,6 +169,10 @@ const router = createBrowserRouter([
       {
         path: "HistoryBooking",
         element: <HistoryBooking />,
+      },
+      {
+        path: "LocationStaff",
+        element: <LocationStaff />,
       },
     ],
   },
