@@ -124,6 +124,9 @@ const LocationDetail = () => {
     );
   }
 
+  const activeCourts = location.courts.filter(court => court.status === "ACTIVE");
+  const activePromotions = location.promotions.filter(promotion => promotion.status === "ACTIVE");
+
   return (
     <div style={{ padding: "20px" }}>
       <Card title="Thông tin địa điểm" bordered={false}>
@@ -150,10 +153,10 @@ const LocationDetail = () => {
                 <strong>Hotline:</strong> {location.hotline}
               </p>
               <p>
-                <strong>Giờ mở cửa:</strong> {location.openTime}
+                <strong>Giờ mở cửa:</strong> {location.openingTime} giờ
               </p>
               <p>
-                <strong>Giờ đóng cửa:</strong> {location.closeTime}
+                <strong>Giờ đóng cửa:</strong> {location.closingTime} giờ
               </p>
             </Card>
           </Col>
@@ -244,7 +247,7 @@ const LocationDetail = () => {
 
       <Divider orientation="left">Danh sách sân</Divider>
       <Table
-        dataSource={location.courts}
+        dataSource={activeCourts}
         columns={[
           {
             title: "ID",
@@ -260,8 +263,6 @@ const LocationDetail = () => {
             title: "Trạng thái",
             dataIndex: "status",
             key: "status",
-            defaultSortOrder: "descend",
-            sorter: (a, b) => a.status.localeCompare(b.status),
             render: (status) => (
               <Tag color={status === "ACTIVE" ? "green" : "red"}>{status}</Tag>
             ),
@@ -294,8 +295,6 @@ const LocationDetail = () => {
             title: "Trạng thái",
             dataIndex: "status",
             key: "status",
-            defaultSortOrder: "descend",
-            sorter: (a, b) => a.status.localeCompare(b.status),
             render: (status) => (
               <Tag color={status === "ACTIVE" ? "green" : "red"}>{status}</Tag>
             ),
@@ -307,7 +306,7 @@ const LocationDetail = () => {
 
       <Divider orientation="left">Danh sách khuyến mãi</Divider>
       <Table
-        dataSource={location.promotions}
+        dataSource={activePromotions}
         columns={[
           {
             title: "ID",
@@ -338,8 +337,6 @@ const LocationDetail = () => {
             title: "Trạng thái",
             dataIndex: "status",
             key: "status",
-            defaultSortOrder: "descend",
-            sorter: (a, b) => a.status.localeCompare(b.status),
             render: (status) => (
               <Tag color={status === "ACTIVE" ? "green" : "red"}>{status}</Tag>
             ),

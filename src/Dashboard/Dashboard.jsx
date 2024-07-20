@@ -41,8 +41,8 @@ const Dashboard = () => {
         getItem("Quản lý Tài khoản", "account-list", <TeamOutlined />),
       ]);
     } else if (role === "CLUB_STAFF") {
-
       setItems([
+        getItem("Thông Tin Sân", "LocationStaff", <UserOutlined />),
         getItem("Quản lý Check In", "checkin", <TeamOutlined />),
       ]);
     } else if (role === "CLUB_OWNER") {
@@ -53,7 +53,6 @@ const Dashboard = () => {
         getItem("Quản lý Nhân Viên", "account-staff", <TeamOutlined />),
         getItem("Lịch sử đặt sân", "HistoryBooking", <HistoryOutlined />),
         getItem("Doanh thu", "overview", <BarChartOutlined />),
-
       ]);
     }
   }, [role]);
