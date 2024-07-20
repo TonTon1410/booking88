@@ -32,7 +32,12 @@ import Register_owner from "../pages/Register/Register_owner.jsx";
 import PaymentSuccess from "../components/Payment/PaymentSuccess.jsx";
 import FieldAdmin from "../Dashboard/FieldAdmin.jsx";
 import Regulations from "../components/Regulations/Regulations.jsx"; // Import Regulations
+
 import LocationStaff from "../Dashboard/Owner/LocationStaff.jsx";
+import VerifySuccess from "../components/Verify/VerifySuccess.jsx";
+import VerifyFailed from "../components/Verify/VerifyFailed.jsx";
+import PaymentFailed from "../components/Payment/PaymentFailed.jsx";
+
 
 const router = createBrowserRouter([
   {
@@ -93,6 +98,10 @@ const router = createBrowserRouter([
         element: <PaymentSuccess />,
       },
       {
+        path: "payment_failed",
+        element: <PaymentFailed />,
+      },
+      {
         path: "News",
         element: <News />,
       },
@@ -102,7 +111,15 @@ const router = createBrowserRouter([
       },
       {
         path: "regulations",
-        element: <Regulations />, // Add the Regulations route
+        element: <Regulations />, 
+      },
+      {
+        path: "verify_success", 
+        element: <VerifySuccess />,
+      },
+      {
+        path: "verify_failed", 
+        element: <VerifyFailed />,
       },
       {
         path: "*",

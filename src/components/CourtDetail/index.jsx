@@ -11,8 +11,6 @@ import {
   Calendar,
   message,
 } from "antd";
-// import { getDownloadURL, ref } from "firebase/storage";
-// import { storage } from "../../config/firebase";
 import api from "../../config/axios";
 import "../CourtDetail/Index.css";
 import moment from "moment";
@@ -37,8 +35,7 @@ const CourtDetails = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentWeek, setCurrentWeek] = useState(0);
   const [bookingType, setBookingType] = useState("");
-  // const [dayOfWeek, setDayOfWeek] = useState("");
-  const [months, setMonths] = useState("");
+  const [months, setMonths] = useState(1); // Khởi tạo với giá trị 1
   const [startDate, setStartDate] = useState(null);
   const [flexibleBookings, setFlexibleBookings] = useState([]);
   const [totalSlots, setTotalSlots] = useState(0);
@@ -48,7 +45,7 @@ const CourtDetails = () => {
   const [bookedSlots, setBookedSlots] = useState([]);
   const [slotTimes, setSlotTimes] = useState([]);
   const [slotPrices, setSlotPrices] = useState([]);
-  const [slotPrice, setSlotPrice] = useState([]); // Default price if not fetched
+  const [slotPrice, setSlotPrice] = useState([]);
   const [bookingDetails, setBookingDetails] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -68,13 +65,10 @@ const CourtDetails = () => {
 
   let bookingRequest;
   if (bookingDetails.length > 0) {
-    //tao ra yeu cau dat cho o trong booking request moi 
     bookingRequest = bookingDetails?.map((item) => {
-      //map nó sẽ duyệt qua từng phần tử và trả về khi có thay đổi
       return {
         idSlot: item.idSlot,
         date: moment(item.date).format("MM-DD-YYYY"),
-        // date: item.date,
       };
     });
 
@@ -82,7 +76,6 @@ const CourtDetails = () => {
   }
   console.log(bookingType);
   const getPrice = async () => {
-      // dùng để lấy giá từ api price 
     try {
       const response = await api.post("booking/price", {
         idPromotion: promoCode,
@@ -93,7 +86,6 @@ const CourtDetails = () => {
       });
       console.log(response.data);
       setSlotPrices(response.data);
-      // setData(response.data);
     } catch (e) {
       console.log(e);
     }
@@ -108,7 +100,6 @@ const CourtDetails = () => {
   }, [bookingType]);
 
   useEffect(() => {
-    // Fetch slot times and prices from API
     const fetchSlotData = async () => {
       try {
         const response = await api.get(`/location/${id}`);
@@ -119,7 +110,6 @@ const CourtDetails = () => {
         console.error("Error fetching slot data:", error);
       }
     };
-
 
     fetchSlotData();
     fetPromotion();
@@ -151,7 +141,6 @@ const CourtDetails = () => {
       console.log(response.data);
       toast.success("Booking successfully");
       setShowConfirm(false);
-      // setData(response.data);
     } catch (e) {
       console.log(e);
       toast.error(e.response.data);
@@ -159,17 +148,7 @@ const CourtDetails = () => {
   };
 
   const getBookingDetailOfFixed = (days, duration, startFrom, slot) => {
-    // days = ['Monday', 'Tuesday'];
-
-    // duration = 60; // days
-
-    // startFrom = new Date('10/10/2024');
-
-    // slot = 'Test';
-
     const bookingDetail = [];
-
-    // Function to check if a day is in the given days array
     const isInDays = (date) => {
       const dayNames = [
         "Sunday",
@@ -183,8 +162,6 @@ const CourtDetails = () => {
       return days.includes(dayNames[date.getDay()]);
     };
 
-
-    // dùng để tạo danh sách chi tiết đặt chỗ dựa vào currentdate bắt đầu cụ thể từ starform
     for (let i = 0; i < duration; i++) {
       const currentDate = new Date(startFrom);
       currentDate.setDate(currentDate.getDate() + i);
@@ -205,19 +182,10 @@ const CourtDetails = () => {
   };
 
   function getDaysDuration(startDate, durationInMonths) {
-    // Parse the start date
     const start = new Date(startDate);
-
-    // Create a new date object for the end date
     const end = new Date(start);
-
-    // Add the specified number of months to the end date
     end.setMonth(end.getMonth() + durationInMonths);
-
-    // Calculate the difference in milliseconds
     const diffInMilliseconds = end - start;
-
-    // Convert milliseconds to days
     const millisecondsPerDay = 1000 * 60 * 60 * 24;
     const diffInDays = Math.round(diffInMilliseconds / millisecondsPerDay);
 
@@ -232,7 +200,6 @@ const CourtDetails = () => {
       setBookingDetails([
         {
           date: moment(selectedDate.$d).format("MM-DD-YYYY"),
-
           time: getLableSlot(selectedTime),
           idSlot: selectedTime,
         },
@@ -241,7 +208,6 @@ const CourtDetails = () => {
       setBookingDetails(
         flexibleBookings.map((item) => ({
           date: moment(item.date.$d).format("MM-DD-YYYY"),
-
           time: getLableSlot(item.idSlot),
           idSlot: item.idSlot,
         }))
@@ -277,7 +243,7 @@ const CourtDetails = () => {
 
   const openModal = (date) => {
     setSelectedDay(date);
-    setSelectedSlots([]); // Reset selected slots when a new date is selected
+    setSelectedSlots([]);
     setIsModalOpen(true);
   };
 
@@ -294,7 +260,6 @@ const CourtDetails = () => {
   };
 
   function disabledDate(current) {
-    // Can not select days before today
     return current && current < moment().startOf("day");
   }
 
@@ -302,14 +267,11 @@ const CourtDetails = () => {
     return slots.filter((item) => item.id === id)[0].time;
   };
 
-  // console.log([...,\])
-
   const weekDates = getWeekDates(currentWeek);
 
   const renderTimeslots = () => {
     const now = new Date();
 
-    //kiểm tra giờ trong quá khứ và check giờ đã được chọn
     return slotTimes.map((time, index) => {
       const slotTime = new Date(selectedDay);
       slotTime.setHours(time);
@@ -319,7 +281,6 @@ const CourtDetails = () => {
       const isPast =
         selectedDay &&
         (selectedDay < new Date(now.setHours(0, 0, 0, 0)) ||
-        
           (selectedDay.toDateString() === now.toDateString() &&
             slotTime <= now));
       const isBooked = bookedSlots.some(
@@ -421,9 +382,9 @@ const CourtDetails = () => {
                   </Select>
                 </div>
                 <div className="mb-4">
-                  <label className="block mb-2">Chon slot</label>
+                  <label className="block mb-2">Chọn slot</label>
                   <Select
-                    className="w-100 d-block "
+                    className="w-100 d-block"
                     defaultValue={"Select slot"}
                     value={selectedTime}
                     onChange={(value) => setSelectedTime(value)}
@@ -441,7 +402,8 @@ const CourtDetails = () => {
                     type="number"
                     className="w-full"
                     value={months}
-                    onChange={(e) => setMonths(e.target.value)}
+                    min={1}
+                    onChange={(e) => setMonths(Math.max(1, parseInt(e.target.value, 10)))}
                     required
                   />
                 </div>
@@ -515,7 +477,7 @@ const CourtDetails = () => {
                 {flexibleBookings.length > 0 && (
                   <div>
                     <h4 className="text-lg font-bold mb-2">
-                      Lịch linh hoạt đã chọn ( vui lòng chọn trên 5 slots)
+                      Lịch linh hoạt đã chọn (vui lòng chọn trên 5 slots)
                     </h4>
                     {flexibleBookings.map((booking, index) => (
                       <div key={index} className="flex items-center mb-2">
@@ -596,4 +558,3 @@ const CourtDetails = () => {
 };
 
 export default CourtDetails;
-    
