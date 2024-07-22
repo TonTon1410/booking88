@@ -93,6 +93,7 @@ const Navbar = () => {
                 />
                 {dropdownActive && (
                   <div className="dropdownMenu">
+                    <button onClick={() => navigate("/history")}>Lịch sử đặt sân</button>
                     <button onClick={handleProfile}>Thông tin</button>
                     <button onClick={handleLogout}>Đăng Xuất</button>
                   </div>

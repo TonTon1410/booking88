@@ -271,42 +271,78 @@ try {
                 )}
 
 
-                {activeTab === 'bookingHistory' && (
-                    <div className="account-section active">
-                        <h2>Lịch sử đặt lịch</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Ngày đặt</th>
-                                    <th>Trạng thái</th>
-                                    <th>Mã đặt lịch</th>
-                                    <th>Chi tiết</th>
-                                    <th>Hủy đặt lịch</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {bookingHistory.map((history) => (
-<tr key={history.id}>
-                                        <td>{moment(history.bookingDate).format('DD/MM/YYYY')}</td>
-                                        <td style={{ color: history.status === 'CANCEL' ? 'red' : 'green' }}>
-                                            {history.status}
-                                        </td>
-
-                                        <td>{history.codebooking}</td>
-                                        <td>
-                                            <Button onClick={() => handleQRCodeClick(history.codebooking)}>Xem QR Code</Button>
-                                        </td>
-                                        <td>
-                                            {history.status !== 'CANCEL' && (
-                                                <Button onClick={() => handleCancelBooking(history.id)}>Hủy</Button>
-                                            )}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
+{activeTab === "bookingHistory" && (
+          <div className="account-section active">
+            <h2>Lịch sử đặt lịch</h2>
+            <table className="booking-history-table">
+              <thead>
+                <tr>
+                  <th>Ngày đặt lịch</th>
+                  <th>Sân</th>
+                  <th>Thời gian</th>
+                  <th>Số tiền</th>
+                  <th>Loại đặt sân</th>
+                  <th>Trạng thái</th>
+                  <th>Hủy đặt lịch</th>
+                  <th>Check-In</th>
+                  <th>Mã check in</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bookingHistory.map((history) => (
+                  <tr key={history.id}>
+                    <td>{history.bookingDate}</td>
+                    <td>{history.location.name}</td>
+                    <td>
+                      {history.bookingDetails
+                        .map((detail) => detail.courtSlot?.slot?.time || "N/A")
+                        .join(", ")}
+                    </td>{" "}
+                    <td>{history.totalPrice}</td>
+                    <td>{history.bookingType}</td>
+                    <td>{history.status}</td>
+                    <td>
+                      {history.status === "CANCEL" ? (
+                        <Text>Đã hủy</Text>
+                      ) : (
+                        <Button
+                          type="danger"
+                          onClick={() =>
+                            handleConfirmCancelBooking(
+                              history.id,
+                              history.bookingDetails[0]?.courtSlot?.id
+                            )
+                          }
+                        >
+                          Hủy
+                        </Button>
+                      )}
+                    </td>
+                    <td>
+                      <div
+                        onClick={() =>
+                          handleQRCodeClick(
+                            history.bookingDetails[0]?.courtSlot?.id
+                          )
+                        }
+                      >
+                        <QRCode
+                          value={history.bookingDetails[0]?.courtSlot?.id || ""}
+                          size={64}
+                        />
+                      </div>
+                    </td>
+                    <td>
+                      {history.bookingDetails
+                        .map((detail) => detail.courtSlot?.codebooking || "N/A")
+                        .join(", ")}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
 
                 {activeTab === 'topUpHistory' && (
                     <div className="account-section active">
