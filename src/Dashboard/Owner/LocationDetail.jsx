@@ -32,17 +32,19 @@ const LocationDetail = () => {
 
   useEffect(() => {
     const fetchLocation = async () => {
-      try {
-        const response = await api.get(`/location/owner/${user.id}`);
-        setLocation(response.data);
-      } catch (error) {
-        console.error("Error fetching location:", error);
-        message.error("Lỗi khi lấy thông tin địa điểm");
+      if (user && user.id) {
+        try {
+          const response = await api.get(`/location/owner/${user.id}`);
+          setLocation(response.data);
+        } catch (error) {
+          console.error("Error fetching location:", error);
+          message.error("Lỗi khi lấy thông tin địa điểm");
+        }
       }
     };
 
     fetchLocation();
-  }, [user.id]);
+  }, [user]);
 
   const showEditModal = () => {
     if (location) {
@@ -66,7 +68,7 @@ const LocationDetail = () => {
     setIsModalOpen(false);
   };
 
-  const handleImageChange = async ({ file, fileList }) => {
+  const handleImageChange = async ({ file }) => {
     const image = await uploadFile(file);
     setImageFileList(image);
   };
@@ -83,6 +85,7 @@ const LocationDetail = () => {
         photo: imageFileList,
         priceSlot: values.priceSlot,
         ownerId: user.id,
+        timeSlot: 1, // Set default timeSlot value
       });
       message.success("Cập nhật thông tin địa điểm thành công");
       const response = await api.get(`/location/owner/${user.id}`);
@@ -93,6 +96,16 @@ const LocationDetail = () => {
       message.error("Lỗi khi cập nhật thông tin địa điểm");
     }
   };
+
+  if (!user || !user.id) {
+    return (
+      <Result
+        status="warning"
+        title="Loading..."
+        subTitle="Please wait while we fetch your data."
+      />
+    );
+  }
 
   if (!location) {
     return (
@@ -124,8 +137,11 @@ const LocationDetail = () => {
     );
   }
 
-  const activeCourts = location.courts.filter(court => court.status === "ACTIVE");
-  const activePromotions = location.promotions.filter(promotion => promotion.status === "ACTIVE");
+  const activeCourts =
+    location.courts?.filter((court) => court.status === "ACTIVE") || [];
+  const activePromotions =
+    location.promotions?.filter((promotion) => promotion.status === "ACTIVE") ||
+    [];
 
   return (
     <div style={{ padding: "20px" }}>
@@ -274,7 +290,7 @@ const LocationDetail = () => {
 
       <Divider orientation="left">Danh sách slots</Divider>
       <Table
-        dataSource={location.slots}
+        dataSource={location.slots || []}
         columns={[
           {
             title: "ID",
