@@ -1,3 +1,4 @@
+import axios from 'axios';
 import api from '../config/axios';
 
 const userApi = {
@@ -57,7 +58,7 @@ const userApi = {
   },
   getWalletAmount: async (userId) => {
     try {
-      const response = await api.get(`/wallet/amount/${userId}`);
+      const response = await api.get(`/wallet/wallet/amount/${userId}`);
       console.log('Wallet Amount Response:', response.data);
       return response.data;
     } catch (error) {
@@ -65,9 +66,9 @@ const userApi = {
       throw error;
     }
   },
-  cancelBooking: async (bookingId, bookingSlotId) => {
+  cancelBooking: async (bookingId) => {
     try {
-      const response = await api.put(`/booking/Cancelbookings/${bookingId}`);
+      const response = await api.put(`/booking/cancelbookings/${bookingId}`);
       console.log('Cancel Booking Response:', response.data);
       return response.data;
     } catch (error) {

@@ -1,6 +1,6 @@
-import { Button, message, Modal, Table, Tag, Input, Space } from "antd";
+import { Button, Input, Modal, Table, Tag } from "antd";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../config/axios";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 import {
@@ -11,151 +11,120 @@ import {
 import { QRScanner } from "../qr";
 
 function CheckIn() {
-  const [bookingDetails, setBookingDetails] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [show, setShow] = useState(false); // State to handle QRScanner modal
-  const [inputValues, setInputValues] = useState({}); // State to manage input values for each row
+  const [data, setData] = useState([]);
+  const [show, setShow] = useState(false);
+  const [inputs, setInputs] = useState({}); // State to manage input values
   const user = useSelector(selectUser);
-
-  const fetchBookingDetails = async () => {
-    setLoading(true);
+console.log(user);
+  const fetch = async () => {
     try {
-      const response = await axios.get(
-        `http://157.230.43.225:8080/api/booking/${user.idLocationStaff}`
+      const response = await api.get(
+        `/courtSlot/location/${user.idLocationStaff}`
       );
-      console.log(response.data);
-
-      if (Array.isArray(response.data)) {
-        setBookingDetails(response.data); // Sửa lại setData thành setBookingDetails
-      } else if (response.data && typeof response.data === "object") {
-        setBookingDetails([response.data]); // Đảm bảo dữ liệu được xử lý dưới dạng mảng
-      } else {
-        console.error("Unexpected API response format:", response.data);
-        message.error("Lỗi khi lấy thông tin đặt lịch");
-        setBookingDetails([]); // Sửa lại setData thành setBookingDetails
-      }
-    } catch (error) {
-      console.error("Error fetching booking details:", error);
-      message.error("Lỗi khi lấy thông tin đặt lịch");
-      setBookingDetails([]); // Sửa lại setData thành setBookingDetails
-    } finally {
-      setLoading(false);
+      setData(response.data);
+      setInputs(response.data.reduce((acc, item) => ({ ...acc, [item.id]: '' }), {})); 
+      console.log(data)
+    } catch (e) {
+      console.log(e);
     }
   };
 
-  useEffect(() => {
-    if (user.idLocationStaff) {
-      fetchBookingDetails();
-    }
-  }, [user.idLocationStaff]);
-
-  const handleInputChange = (e, record) => {
-    const { value } = e.target;
-    setInputValues((prevValues) => ({
-      ...prevValues,
-      [record.id]: value,
-    }));
+  const handleInputChange = (id, value) => {
+    setInputs((prevInputs) => ({ ...prevInputs, [id]: value }));
   };
 
-  const handleCheckIn = (record) => {
-    const inputValue = inputValues[record.id];
-    console.log(`Check-in code for booking ID ${record.id}: ${inputValue}`);
-    // Bạn có thể thêm logic xử lý mã check-in ở đây
+  const handleSend = async (id) => {
+    try {
+      const response = await api.put(`/booking/checking/${id}`, null, {
+        params: { code: inputs[id] }, 
+      });
+      console.log(`Response from API for id: ${id}`, response.data);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const columns = [
     {
-      title: "Customer Name",
-      dataIndex: ["customer", "name"],
-      key: "customerName",
-      render: (name) => name || "N/A", // Hiển thị "N/A" nếu name là null
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
     },
     {
-      title: "Customer Email",
-      dataIndex: ["customer", "email"],
-      key: "customerEmail",
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
     },
     {
-      title: "Location",
-      dataIndex: ["location", "name"],
-      key: "locationName",
+      title: "Court",
+      dataIndex: "court",
+      key: "court",
+      render: (e) => e.name,
     },
     {
-      title: "Total Price",
-      dataIndex: "totalPrice",
-      key: "totalPrice",
+      title: "Slot",
+      dataIndex: "slot",
+      key: "slot",
+      render: (e) => e.time,
     },
     {
-      title: "Booking Date",
-      dataIndex: "bookingDate",
-      key: "bookingDate",
+      title: "Name customer",
+      dataIndex: "account",
+      key: "account",
+      render: (e) => e.name,
     },
     {
-      title: "Thanh toán",
+      title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (status) => (
-        <Tag color={status === "SUCCESS" ? "green" : "red"}>{status}</Tag>
+      render: (e) => (
+        <Tag
+          icon={
+            e === "PENDING" ? (
+              <ClockCircleOutlined />
+            ) : e === "ACTIVE" ? (
+              <SyncOutlined spin />
+            ) : (
+              <CheckCircleOutlined />
+            )
+          }
+          color={
+            e === "INACTIVE"
+              ? "rgb(255, 153, 0)"
+              : e === "ACTIVE"
+              ? "#87d068"
+              : "#108ee9"
+          }
+        >
+          {e === "INACTIVE" ? "Done" : e === "ACTIVE" ? "PLAYING" : e}
+        </Tag>
       ),
     },
     {
-      title: "Trạng thái",
-      dataIndex: "bookingDetails",
-      key: "courtSlotStatus",
-      render: (bookingDetails) => (
-        <div style={{ flexDirection: "column" }}>
-          {bookingDetails.map((detail) => {
-            const status = detail.courtSlot?.status;
-            return (
-              <Tag
-                key={detail.id}
-                color={
-                  status === "ACTIVE"
-                    ? "green"
-                    : status === "PENDING"
-                    ? "blue"
-                    : "red"
-                }
-              >
-                {status}
-              </Tag>
-            );
-          })}
-        </div>
-      ),
-    },
-    {
-      title: "Booking Details",
-      dataIndex: "bookingDetails",
-      key: "bookingDetails",
-      render: (bookingDetails) => (
-        <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-          {bookingDetails.map((detail) => (
-            <div key={detail.id}>
-              {detail.courtSlot?.date} - {detail.courtSlot?.court?.name} -{" "}
-              {detail.courtSlot?.slot?.time}
-            </div>
-          ))}
-        </div>
-      ),
-    },
-    {
-      title: "Input Code Check-in",
-      key: "inputCodeCheckin",
-      render: (_, record) => (
-        <Space>
+      title: "Code",
+      key: "Code",
+      render: (record) => (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <Input
-            placeholder="Enter code"
-            value={inputValues[record.id] || ""}
-            onChange={(e) => handleInputChange(e, record)}
+            style={{ marginRight: '8px', width: '120px' }}
+            value={inputs[record.id]}
+            onChange={(e) => handleInputChange(record.id, e.target.value)}
+            placeholder="Enter value"
           />
-          <Button size="small" onClick={() => handleCheckIn(record)}>
-            Check-in
+          <Button
+            type="primary"
+            onClick={() => handleSend(record.id)}
+          >
+            Gửi
           </Button>
-        </Space>
+        </div>
       ),
     },
   ];
+
+  useEffect(() => {
+    fetch();
+  }, []);
 
   return (
     <div>
@@ -177,13 +146,7 @@ function CheckIn() {
       >
         <QRScanner />
       </Modal>
-      <Table
-        columns={columns}
-        dataSource={bookingDetails}
-        rowKey="id"
-        pagination={{ pageSize: 7 }}
-        loading={loading}
-      />
+      <Table columns={columns} dataSource={data} />
     </div>
   );
 }
