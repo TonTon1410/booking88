@@ -220,7 +220,6 @@ const CourtDetails = () => {
     }
 
     console.table(bookingDetails);
-
     setShowConfirm(true);
   };
 
@@ -320,7 +319,6 @@ const CourtDetails = () => {
       );
     });
   };
-
   return (
     <div
       style={{
@@ -355,7 +353,7 @@ const CourtDetails = () => {
                 <Option value="">Chọn loại lịch</Option>
                 <Option value="fixed">Lịch cố định</Option>
                 <Option value="flexible">Lịch linh hoạt</Option>
-                <Option value="now">Lịch ngay</Option>
+                <Option value="now">Lịch ngày</Option>
               </Select>
             </div>
 
@@ -412,7 +410,7 @@ const CourtDetails = () => {
                   <label className="block mb-2">Bắt đầu từ ngày</label>
                   <DatePicker
                     className="w-full"
-                    value={startDate}
+                    value={startDate ? moment(startDate) : null}
                     onChange={(date) => setStartDate(date)}
                     required
                   />
@@ -429,7 +427,7 @@ const CourtDetails = () => {
                     <DatePicker
                       disabledDate={disabledDate}
                       className="w-1/2"
-                      value={selectedDate}
+                      value={selectedDate ? moment(selectedDate) : null}
                       onChange={(date) => setSelectedDate(date)}
                     />
                     <Select

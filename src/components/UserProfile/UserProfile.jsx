@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaInfoCircle, FaEnvelope, FaHistory, FaWallet } from 'react-icons/fa';
+import moment from 'moment';
 import userApi from '../../api/UserProfileApi';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,6 +10,7 @@ import { selectUser, login } from '../../redux/features/counterSlice';
 import { Button, Typography, Input, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import QRCode from 'react-qr-code';
+import axios from 'axios';
 
 const { confirm } = Modal;
 const { Text } = Typography;
@@ -39,49 +41,42 @@ const UserProfile = () => {
     const BALANCE_THRESHOLD = 100000; // Define your balance threshold here
 
     useEffect(() => {
-        const fetchBookingHistory = async () => {
-            try {
-                if (userId) {
+        if (userId) {
+            const fetchBookingHistory = async () => {
+                try {
                     const data = await userApi.getBookingHistory(userId);
                     setBookingHistory(data);
+                } catch (error) {
+                    console.error('Failed to fetch booking history:', error);
+                    toast.error('Lấy lịch sử đặt lịch thất bại. Vui lòng thử lại.');
                 }
-            } catch (error) {
-                console.error('Failed to fetch booking history:', error);
-                toast.error('Lấy lịch sử đặt lịch thất bại. Vui lòng thử lại.');
-            }
-        };
+            };
 
-        const getAmount = async () => {
-            try {
-                const data = await userApi.getWalletAmount(userId);
-                setAmount(data);
-            } catch (error) {
-                console.error('Failed to fetch wallet amount:', error);
-                toast.error('Lấy số dư thất bại. Vui lòng thử lại.');
-            }
-        };
+            const getAmount = async () => {
+                try {
+                    const data = await userApi.getWalletAmount(userId);
+                    setAmount(data.amount || 0);
+                } catch (error) {
+                    console.error('Failed to fetch wallet amount:', error);
+                    toast.error('Lấy số dư thất bại. Vui lòng thử lại.');
+                }
+            };
 
-        fetchBookingHistory();
-        getAmount();
+            fetchBookingHistory();
+            getAmount();
+        }
     }, [userId]);
 
     useEffect(() => {
         const fetchUserInfo = async () => {
-            if (!userId) {
-                setUserInfo({
-                    name: user?.name || '',
-                    phone: user?.phone || '',
-                    email: user?.email || ''
-                });
-                return;
-            }
+            if (!userId) return;
 
             try {
                 const data = await userApi.getAccountById(userId);
-                if (data && data.name && data.phone && data.email) {
+                if (data) {
                     setUserInfo({
                         name: data.name,
-                        phone: data.phone,
+phone: data.phone,
                         email: data.email
                     });
                     dispatch(login(data));
@@ -107,7 +102,7 @@ const UserProfile = () => {
             fetchTopUpHistory();
             setIsDataFetched(true);
         }
-    }, [userId, user, dispatch, isDataFetched]);
+    }, [userId, dispatch, isDataFetched]);
 
     const handleTabChange = (tab) => {
         setActiveTab(tab);
@@ -135,7 +130,7 @@ const UserProfile = () => {
             toast.success('Thông tin cá nhân đã được cập nhật thành công!');
         } catch (error) {
             console.error('Failed to update user info:', error);
-            toast.error('Cập nhật thông tin thất bại. Vui lòng thử nhập Email hoặc Số điện thoại khác.');
+            toast.error('Cập nhật thông tin thất bại. Vui lòng thử lại.');
         }
     };
 
@@ -171,32 +166,19 @@ const UserProfile = () => {
         setRechargeAmount(Number(e.target.value));
     };
 
-    const handleCancelBooking = async (bookingId, bookingSlotId) => {
-        try {
-            await userApi.cancelBooking(bookingId, bookingSlotId);
+    const handleCancelBooking = async (bookingId) => {
+try {
+            await userApi.cancelBooking(bookingId);
             toast.success('Đã hủy đặt lịch thành công!');
-            setBookingHistory(prevHistory =>
-                prevHistory.map(history =>
-                    history.id === bookingId
-                        ? { ...history, status: 'CANCEL' }
-                        : history
+            setBookingHistory(prev =>
+                prev.map(history =>
+                    history.id === bookingId ? { ...history, status: 'CANCEL' } : history
                 )
             );
         } catch (error) {
             console.error('Failed to cancel booking:', error);
             toast.error('Hủy đặt lịch thất bại. Vui lòng thử lại.');
         }
-    };
-
-    const handleConfirmCancelBooking = (bookingId, bookingSlotId) => {
-        confirm({
-            title: 'Bạn có chắc chắn muốn hủy đặt lịch?',
-            content: 'Hành động này không thể hoàn tác.',
-            onOk: () => handleCancelBooking(bookingId, bookingSlotId),
-            onCancel: () => {
-                console.log('Cancel booking cancelled');
-            }
-        });
     };
 
     const handleQRCodeClick = (qrData) => {
@@ -217,7 +199,7 @@ const UserProfile = () => {
             <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
             <div className="account-nav">
                 <button className={`nav-link ${activeTab === 'Recharge' ? 'active' : ''}`} onClick={() => handleTabChange('Recharge')}>
-                    <FaWallet /> Nạp tiền 
+                    <FaWallet /> Nạp tiền
                 </button>
                 <button className={`nav-link ${activeTab === 'personalDetails' ? 'active' : ''}`} onClick={() => handleTabChange('personalDetails')}>
                     <FaInfoCircle /> Thông tin tài khoản
@@ -244,7 +226,7 @@ const UserProfile = () => {
                             </div>
                             <div className="form-group">
                                 <label>Email</label>
-                                <input type="email" name="email" value={userInfo.email} onChange={handleChange} />
+<input type="email" name="email" value={userInfo.email} onChange={handleChange} />
                             </div>
                             <div className="form-group">
                                 <label>Số điện thoại</label>
@@ -260,67 +242,15 @@ const UserProfile = () => {
                         <h2>Đặt lại mật khẩu</h2>
                         <form onSubmit={handleForgotPasswordSubmit}>
                             <div className="form-group">
-                                <label>Email của bạn</label>
-                                <input type="email" value={userInfo.email} disabled />
+                                <label>Email</label>
+                                <input type="email" name="email" value={userInfo.email} onChange={handleChange} />
                             </div>
                             <button type="submit">Gửi yêu cầu</button>
                         </form>
                     </div>
                 )}
 
-                {activeTab === 'bookingHistory' && (
-                    <div className="account-section active">
-                        <h2>Lịch sử đặt lịch</h2>
-                        <table className="booking-history-table">
-                            <thead>
-                                <tr>
-                                    <th>Ngày đặt lịch</th>
-                                    <th>Sân</th>
-                                    <th>Thời gian</th>
-                                    <th>Số tiền</th>
-                                    <th>Loại đặt sân</th>
-                                    <th>Trạng thái</th>
-                                    <th>Hủy đặt lịch</th>
-                                    <th>Check-In</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {bookingHistory.map((history) => (
-                                    <tr key={history.id}>
-                                        <td>{history.bookingDate}</td>
-                                        <td>{history.location.name}</td>
-                                        <td>
-                                            <ul>
-                                                {history.bookingDetails.map(detail => (
-                                                    <li key={detail.courtSlot?.id || detail.id}>{detail.courtSlot?.slot?.time || 'N/A'}</li>
-                                                ))}
-                                            </ul>
-                                        </td>
-                                        <td>{history.totalPrice}</td>
-                                        <td>{history.bookingType}</td>
-                                        <td>{history.status}</td>
-                                        <td>
-                                            {history.status === "CANCEL" ? (
-                                                <Text>Đã hủy</Text>
-                                            ) : (
-                                                <Button type="danger" onClick={() => handleConfirmCancelBooking(history.id, history.bookingDetails[0]?.courtSlot?.id)}>
-                                                    Hủy
-                                                </Button>
-                                            )}
-                                        </td>
-                                        <td>
-                                            <Button onClick={() => handleQRCodeClick(history.id)}>
-                                                Xem QR Codes
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
-
-                {activeTab === 'Recharge' && (
+{activeTab === 'Recharge' && (
                     <>
                         <Button style={{ display: "block", marginBottom: "20px" }} onClick={showRechargeModal}>
                             Nạp tiền thêm
@@ -340,36 +270,70 @@ const UserProfile = () => {
                     </>
                 )}
 
-                {activeTab === 'topUpHistory' && (
+
+                {activeTab === 'bookingHistory' && (
                     <div className="account-section active">
-                        <h2>Lịch sử nạp tiền</h2>
-                        <table className="topup-history-table">
+                        <h2>Lịch sử đặt lịch</h2>
+                        <table>
                             <thead>
                                 <tr>
-                                    <th>Số tiền</th>
-                                    <th>Loại giao dịch</th>
+                                    <th>Ngày đặt</th>
+                                    <th>Trạng thái</th>
+                                    <th>Mã đặt lịch</th>
+                                    <th>Chi tiết</th>
+                                    <th>Hủy đặt lịch</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {topUpHistory.map((history, index) => (
-                                    <tr key={index}>
-                                        <td>{history.amount.toLocaleString()} VND</td>
-                                        <td>{history.transactionType}</td>
+                                {bookingHistory.map((history) => (
+<tr key={history.id}>
+                                        <td>{moment(history.bookingDate).format('DD/MM/YYYY')}</td>
+                                        <td style={{ color: history.status === 'CANCEL' ? 'red' : 'green' }}>
+                                            {history.status}
+                                        </td>
+
+                                        <td>{history.codebooking}</td>
+                                        <td>
+                                            <Button onClick={() => handleQRCodeClick(history.codebooking)}>Xem QR Code</Button>
+                                        </td>
+                                        <td>
+                                            {history.status !== 'CANCEL' && (
+                                                <Button onClick={() => handleCancelBooking(history.id)}>Hủy</Button>
+                                            )}
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
                 )}
-            </div>
 
-            <div className="account-sidebar">
-                <h3>{userInfo.name}</h3>
-                <ul className="account-info">
-                    <li>Email: {userInfo.email}</li>
-                    <li>Số điện thoại: {userInfo.phone}</li>
-                    <li>Số dư hiện tại: {amount.toLocaleString()} VND</li>
-                </ul>
+                {activeTab === 'topUpHistory' && (
+                    <div className="account-section active">
+                        <h2>Lịch sử nạp tiền</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Mã giao dịch</th>
+                                    <th>Ngày nạp</th>
+                                    <th>Số tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {topUpHistory.map((topUp) => (
+                                    <tr key={topUp.id}>
+                                        <td>{topUp.transactionCode}</td>
+                                        <td>{moment(topUp.topUpDate).format('DD/MM/YYYY')}</td>
+                                        <td>{topUp.amount.toLocaleString()} VND</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        <div>
+                            <strong>Tổng số tiền đã nạp: {calculateTotalRecharged().toLocaleString()} VND</strong>
+                        </div>
+                    </div>
+                )}
             </div>
 
             <Modal
@@ -379,12 +343,11 @@ const UserProfile = () => {
                 onCancel={handleQRCodeModalCancel}
                 footer={null}
             >
-                {selectedQRCode && bookingHistory.find(history => history.id === selectedQRCode)?.bookingDetails.map((detail, index) => (
-                    <div key={index} style={{ marginBottom: '20px' }}>
-                        <Text>{detail.bookingDate}:</Text>
-                        <QRCode value={detail?.courtSlot?.id || ''} size={128} />
+                {selectedQRCode && (
+                    <div>
+                        <QRCode value={selectedQRCode} size={128} />
                     </div>
-                ))}
+                )}
             </Modal>
         </div>
     );
