@@ -46,13 +46,7 @@ function MyCalendar({ message = [] }) {
     ) : null;
   };
 
-  const handleShowQr = (value) => {
-    setShow(true);
-    console.log(value);
-    // navigate(`/booking/${value.id}`);
-    // setShowQrCode(true);
-    // setQrCodeId(value.id);
-  };
+
   const dateCellRender = (value) => {
     const listData = getListData(value);
     console.log(listData);

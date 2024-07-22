@@ -24,7 +24,6 @@ import HistoryBooking from "../Dashboard/Owner/HistoryBooking.jsx";
 import BookingStaff from "../Dashboard/Owner/BookingStaff.jsx";
 
 
-import News from "../components/News/News.jsx";
 import Contact from "../components/Contact/Contact.jsx";
 import Promotion from "../components/promotion/index.jsx";
 import Overview from "../components/overview/index.jsx";
@@ -102,10 +101,6 @@ const router = createBrowserRouter([
       {
         path: "payment_failed",
         element: <PaymentFailed />,
-      },
-      {
-        path: "News",
-        element: <News />,
       },
       {
         path: "Contact",

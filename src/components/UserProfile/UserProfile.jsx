@@ -10,7 +10,6 @@ import { selectUser, login } from '../../redux/features/counterSlice';
 import { Button, Typography, Input, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import QRCode from 'react-qr-code';
-import axios from 'axios';
 
 const { confirm } = Modal;
 const { Text } = Typography;
@@ -76,7 +75,7 @@ const UserProfile = () => {
                 if (data) {
                     setUserInfo({
                         name: data.name,
-phone: data.phone,
+                        phone: data.phone,
                         email: data.email
                     });
                     dispatch(login(data));
@@ -167,7 +166,7 @@ phone: data.phone,
     };
 
     const handleCancelBooking = async (bookingId) => {
-try {
+        try {
             await userApi.cancelBooking(bookingId);
             toast.success('Đã hủy đặt lịch thành công!');
             setBookingHistory(prev =>
@@ -226,7 +225,7 @@ try {
                             </div>
                             <div className="form-group">
                                 <label>Email</label>
-<input type="email" name="email" value={userInfo.email} onChange={handleChange} />
+                                <input type="email" name="email" value={userInfo.email} onChange={handleChange} />
                             </div>
                             <div className="form-group">
                                 <label>Số điện thoại</label>
@@ -250,7 +249,7 @@ try {
                     </div>
                 )}
 
-{activeTab === 'Recharge' && (
+                {activeTab === 'Recharge' && (
                     <>
                         <Button style={{ display: "block", marginBottom: "20px" }} onClick={showRechargeModal}>
                             Nạp tiền thêm
@@ -270,79 +269,68 @@ try {
                     </>
                 )}
 
-
-{activeTab === "bookingHistory" && (
-          <div className="account-section active">
-            <h2>Lịch sử đặt lịch</h2>
-            <table className="booking-history-table">
-              <thead>
-                <tr>
-                  <th>Ngày đặt lịch</th>
-                  <th>Sân</th>
-                  <th>Thời gian</th>
-                  <th>Số tiền</th>
-                  <th>Loại đặt sân</th>
-                  <th>Trạng thái</th>
-                  <th>Hủy đặt lịch</th>
-                  <th>Check-In</th>
-                  <th>Mã check in</th>
-                </tr>
-              </thead>
-              <tbody>
-                {bookingHistory.map((history) => (
-                  <tr key={history.id}>
-                    <td>{history.bookingDate}</td>
-                    <td>{history.location.name}</td>
-                    <td>
-                      {history.bookingDetails
-                        .map((detail) => detail.courtSlot?.slot?.time || "N/A")
-                        .join(", ")}
-                    </td>{" "}
-                    <td>{history.totalPrice}</td>
-                    <td>{history.bookingType}</td>
-                    <td>{history.status}</td>
-                    <td>
-                      {history.status === "CANCEL" ? (
-                        <Text>Đã hủy</Text>
-                      ) : (
-                        <Button
-                          type="danger"
-                          onClick={() =>
-                            handleConfirmCancelBooking(
-                              history.id,
-                              history.bookingDetails[0]?.courtSlot?.id
-                            )
-                          }
-                        >
-                          Hủy
-                        </Button>
-                      )}
-                    </td>
-                    <td>
-                      <div
-                        onClick={() =>
-                          handleQRCodeClick(
-                            history.bookingDetails[0]?.courtSlot?.id
-                          )
-                        }
-                      >
-                        <QRCode
-                          value={history.bookingDetails[0]?.courtSlot?.id || ""}
-                          size={64}
-                        />
-                      </div>
-                    </td>
-                    <td>
-                      {history.bookingDetails
-                        .map((detail) => detail.courtSlot?.codebooking || "N/A")
-                        .join(", ")}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+                {activeTab === "bookingHistory" && (
+                    <div className="account-section active">
+                        <h2>Lịch sử đặt lịch</h2>
+                        <table className="booking-history-table">
+                            <thead>
+                                <tr>
+                                    <th>Ngày đặt lịch</th>
+                                    <th>Sân</th>
+                                    <th>Thời gian</th>
+                                    <th>Số tiền</th>
+                                    <th>Loại đặt sân</th>
+                                    <th>Trạng thái</th>
+                                    <th>Hủy đặt lịch</th>
+                                    <th>Check-In</th>
+                                    <th>Mã check in</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {bookingHistory.map((history) => (
+                                    <tr key={history.id}>
+                                        <td>{history.bookingDate}</td>
+                                        <td>{history.location.name}</td>
+                                        <td>
+                                            {history.bookingDetails
+                                                .map((detail) => detail.courtSlot?.slot?.time || "N/A")
+                                                .join(", ")}
+                                        </td>
+                                        <td>{history.totalPrice}</td>
+                                        <td>{history.bookingType}</td>
+                                        <td style={{ color: history.status === 'CANCEL' ? 'red' : 'green' }}>
+                                            {history.status}
+                                        </td>
+                                        <td>
+                                            {history.status === "CANCEL" ? (
+                                                <Text>Đã hủy</Text>
+                                            ) : (
+                                                <Button
+                                                    type="danger"
+                                                    onClick={() =>
+                                                        handleCancelBooking(history.id)
+                                                    }
+                                                >
+                                                    Hủy
+                                                </Button>
+                                            )}
+                                        </td>
+                                        <td>
+                                            <div onClick={() => handleQRCodeClick(history.bookingDetails[0]?.courtSlot?.id)}>
+                                                <QRCode value={history.bookingDetails[0]?.courtSlot?.id || ""} size={64} />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {history.bookingDetails
+                                                .map((detail) => detail.courtSlot?.codebooking || "N/A")
+                                                .join(", ")}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
 
                 {activeTab === 'topUpHistory' && (
                     <div className="account-section active">
@@ -350,24 +338,23 @@ try {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Mã giao dịch</th>
                                     <th>Ngày nạp</th>
                                     <th>Số tiền</th>
+                                    <th>Trạng thái</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {topUpHistory.map((topUp) => (
                                     <tr key={topUp.id}>
-                                        <td>{topUp.transactionCode}</td>
                                         <td>{moment(topUp.topUpDate).format('DD/MM/YYYY')}</td>
                                         <td>{topUp.amount.toLocaleString()} VND</td>
+                                        <td style={{ color: topUp.transactionType === 'BOOKING_SUCCESS'  ? 'red' : 'green' }}>
+                                            {topUp.transactionType}
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
-                        <div>
-                            <strong>Tổng số tiền đã nạp: {calculateTotalRecharged().toLocaleString()} VND</strong>
-                        </div>
                     </div>
                 )}
             </div>
