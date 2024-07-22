@@ -3,7 +3,6 @@ import { GoogleAuthProvider, getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
 
-
 const firebaseConfig = {
   apiKey: "AIzaSyA30guEVzhYhr_Q8eV3GygtunWTCSIWBgA",
   authDomain: "booking88-9b258.firebaseapp.com",
@@ -14,13 +13,10 @@ const firebaseConfig = {
   measurementId: "G-4HQEHR9EWM"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const provider = new GoogleAuthProvider();
 const auth = getAuth();
 const storage = getStorage();
 const db = getFirestore();
 
-
-
-export{provider, auth, app, storage, db}
+export { provider, auth, app, storage, db };

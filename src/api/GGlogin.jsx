@@ -10,7 +10,17 @@ function GGLogin() {
     try {
       const res = await userApi.loginGoogle(token);
       console.log(res);
-      navigate('/');
+      if (res.user) {
+        // If user object is returned, assume login is successful
+        console.log('User created or logged in:', res.user);
+        // Save user data or token as needed
+        // For example, save token to localStorage
+        localStorage.setItem('authToken', res.token);
+        // Navigate to home page or dashboard
+        navigate('/');
+      } else {
+        console.error('Login failed:', res);
+      }
     } catch (error) {
       console.error('Error during Google login:', error);
     }
@@ -19,12 +29,13 @@ function GGLogin() {
   const handleLoginGoogle = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      const token = await result.user.accessToken;
+      const token = await result.user.getIdToken(); // Get Firebase ID token
       await loginGoogle(token);
     } catch (error) {
       console.error('Error during sign-in with Google:', error);
     }
   };
+
 
   return (
     <div>

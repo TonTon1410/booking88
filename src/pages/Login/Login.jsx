@@ -111,11 +111,11 @@ const Login = () => {
             </Form.Item>
           </Form>
           <div className="line"></div>
-          <div className="field button-field">
+          {/* <div className="field button-field">
             <GoogleOAuthProvider clientId={clientId}>
               <GGLogin />
             </GoogleOAuthProvider>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
