@@ -148,7 +148,7 @@ const CreateNewField = ({ setShowForm, setFields }) => {
         name="timeSlot"
         rules={[{ required: true, message: "Vui lòng nhập thời gian mỗi slot!" }]}
       >
-        <InputNumber min={0} addonAfter="Phút" />
+        <InputNumber min={0} addonAfter="Giờ" />
       </Form.Item>
       {user.role === 'ADMIN' ? (
         <Form.Item

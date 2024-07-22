@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { HeartOutlined, UserOutlined, BarChartOutlined, PlusOutlined, EditOutlined, TeamOutlined } from "@ant-design/icons";
+import { HeartOutlined, UserOutlined, BarChartOutlined, PlusOutlined, HistoryOutlined, EditOutlined, TeamOutlined } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, Button, theme } from "antd";
 import { Footer } from "antd/es/layout/layout";
 import { Link, Outlet, useLocation } from "react-router-dom";
@@ -41,22 +41,18 @@ const Dashboard = () => {
         getItem("Quản lý Tài khoản", "account-list", <TeamOutlined />),
       ]);
     } else if (role === "CLUB_STAFF") {
-
       setItems([
-        // getItem("Quản lý Sân", "LocationDetail", <HeartOutlined />),
-        // getItem("Quản lý Tài Khoản", "account-list", <TeamOutlined />),
-        // getItem("Quản lý Mã Giảm Giá", "promotion", <TeamOutlined />),
+        getItem("Thông Tin Sân", "LocationStaff", <UserOutlined />),
         getItem("Quản lý Check In", "checkin", <TeamOutlined />),
       ]);
     } else if (role === "CLUB_OWNER") {
       setItems([
-        getItem("Thông Tin Sân", "LocationDetail", <HeartOutlined />),
+        getItem("Thông Tin Sân", "LocationDetail", <UserOutlined />),
         getItem("Cập Nhật Sân", "ManagerField", <EditOutlined />),
-        getItem("Quản lý Mã Giảm Giá", "promotion", <TeamOutlined />),
+        getItem("Quản lý Mã Giảm Giá", "promotion", <FaRegMoneyBillAlt />),
         getItem("Quản lý Nhân Viên", "account-staff", <TeamOutlined />),
-        getItem("Lịch sử đặt sân", "HistoryBooking", <EditOutlined />),
-        getItem("Doanh thu", "overview", <FaRegMoneyBillAlt />),
-
+        getItem("Lịch sử đặt sân", "HistoryBooking", <HistoryOutlined />),
+        getItem("Doanh thu", "overview", <BarChartOutlined />),
       ]);
     }
   }, [role]);

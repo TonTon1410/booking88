@@ -101,7 +101,10 @@ const LocationDetail = () => {
         title="Chưa có sân!"
         subTitle="Vui lòng vào phần liên hệ để đăng kí thông tin sân"
         extra={
-          <Button type="primary" onClick={() => setIsCreateFieldModalOpen(true)}>
+          <Button
+            type="primary"
+            onClick={() => setIsCreateFieldModalOpen(true)}
+          >
             Tạo sân mới
           </Button>
         }
@@ -120,6 +123,9 @@ const LocationDetail = () => {
       </Result>
     );
   }
+
+  const activeCourts = location.courts.filter(court => court.status === "ACTIVE");
+  const activePromotions = location.promotions.filter(promotion => promotion.status === "ACTIVE");
 
   return (
     <div style={{ padding: "20px" }}>
@@ -147,10 +153,10 @@ const LocationDetail = () => {
                 <strong>Hotline:</strong> {location.hotline}
               </p>
               <p>
-                <strong>Giờ mở cửa:</strong> {location.openTime}
+                <strong>Giờ mở cửa:</strong> {location.openingTime} giờ
               </p>
               <p>
-                <strong>Giờ đóng cửa:</strong> {location.closeTime}
+                <strong>Giờ đóng cửa:</strong> {location.closingTime} giờ
               </p>
             </Card>
           </Col>
@@ -163,7 +169,8 @@ const LocationDetail = () => {
                 </Tag>
               </p>
               <p>
-                <strong>Chủ sở hữu:</strong> {location.owner ? location.owner.name : 'N/A'}
+                <strong>Chủ sở hữu:</strong>{" "}
+                {location.owner ? location.owner.name : "N/A"}
               </p>
               <Button type="primary" onClick={showEditModal}>
                 Sửa thông tin địa điểm
@@ -240,7 +247,7 @@ const LocationDetail = () => {
 
       <Divider orientation="left">Danh sách sân</Divider>
       <Table
-        dataSource={location.courts}
+        dataSource={activeCourts}
         columns={[
           {
             title: "ID",
@@ -256,8 +263,6 @@ const LocationDetail = () => {
             title: "Trạng thái",
             dataIndex: "status",
             key: "status",
-            defaultSortOrder: "descend",
-            sorter: (a, b) => a.status.localeCompare(b.status),
             render: (status) => (
               <Tag color={status === "ACTIVE" ? "green" : "red"}>{status}</Tag>
             ),
@@ -290,8 +295,6 @@ const LocationDetail = () => {
             title: "Trạng thái",
             dataIndex: "status",
             key: "status",
-            defaultSortOrder: "descend",
-            sorter: (a, b) => a.status.localeCompare(b.status),
             render: (status) => (
               <Tag color={status === "ACTIVE" ? "green" : "red"}>{status}</Tag>
             ),
@@ -303,7 +306,7 @@ const LocationDetail = () => {
 
       <Divider orientation="left">Danh sách khuyến mãi</Divider>
       <Table
-        dataSource={location.promotions}
+        dataSource={activePromotions}
         columns={[
           {
             title: "ID",
@@ -334,8 +337,6 @@ const LocationDetail = () => {
             title: "Trạng thái",
             dataIndex: "status",
             key: "status",
-            defaultSortOrder: "descend",
-            sorter: (a, b) => a.status.localeCompare(b.status),
             render: (status) => (
               <Tag color={status === "ACTIVE" ? "green" : "red"}>{status}</Tag>
             ),
