@@ -82,13 +82,14 @@ const HistoryBooking = () => {
       dataIndex: "bookingDetails",
       key: "courtSlotStatus",
       render: (bookingDetails) => (
-        <div style={{ flexDirection: "column" }}>
+        <div style={{ display: "flex", flexDirection: "column" }}>
           {bookingDetails.map((detail) => {
             const status = detail.courtSlot?.status;
             return (
               <Tag
                 key={detail.id}
                 color={status === "ACTIVE" ? "green" : "red"}
+                style={{ marginBottom: "5px" }} // Thêm khoảng cách giữa các Tag
               >
                 {status}
               </Tag>

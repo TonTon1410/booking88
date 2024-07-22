@@ -21,6 +21,8 @@ import AccountStaff from "../Dashboard/Owner/AccountStaff.jsx";
 import ManagerField from "../Dashboard/Owner/ManagerField.jsx";
 import LocationDetail from "../Dashboard/Owner/LocationDetail.jsx";
 import HistoryBooking from "../Dashboard/Owner/HistoryBooking.jsx";
+import BookingStaff from "../Dashboard/Owner/BookingStaff.jsx";
+
 
 import News from "../components/News/News.jsx";
 import Contact from "../components/Contact/Contact.jsx";
@@ -190,6 +192,10 @@ const router = createBrowserRouter([
       {
         path: "LocationStaff",
         element: <LocationStaff />,
+      },
+      {
+        path: "BookingStaff",
+        element: <BookingStaff />,
       },
     ],
   },

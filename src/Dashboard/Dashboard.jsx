@@ -44,6 +44,8 @@ const Dashboard = () => {
       setItems([
         getItem("Thông Tin Sân", "LocationStaff", <UserOutlined />),
         getItem("Quản lý Check In", "checkin", <TeamOutlined />),
+        getItem("Đặt lịch trực tiếp", "BookingStaff", <TeamOutlined />),
+
       ]);
     } else if (role === "CLUB_OWNER") {
       setItems([

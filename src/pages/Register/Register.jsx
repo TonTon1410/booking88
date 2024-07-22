@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button, message } from 'antd';
@@ -9,12 +8,12 @@ import { BsFillShieldLockFill } from "react-icons/bs";
 import logo from '../../assets/logologin.png';
 import '../../App.css';
 
-const Register = () => {
+const RegisterOwner = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
-    const { email, phone, password, confirmPassword } = values;
+    const { email, phone, password, confirmPassword, name } = values;
 
     if (password !== confirmPassword) {
       message.error('Mật khẩu không khớp');
@@ -25,12 +24,15 @@ const Register = () => {
       const response = await axios.post('http://157.230.43.225:8080/api/register', {
         email,
         phone,
-        password
+        password,
+        name,
       });
 
       if (response.status === 200) {
-        message.success('Đăng ký thành công! Vui lòng kiểm tra email để xác nhận tài khoản.');
-        navigate('/login'); // Redirect to verification page with email
+        message.success('Đăng ký thành công! Đang chuyển đến trang đăng nhập...');
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000);
       } else {
         message.error('Đăng ký thất bại. Vui lòng thử lại.');
       }
@@ -55,6 +57,15 @@ const Register = () => {
             onFinish={onFinish}
             className='form grid'
           >
+            <Form.Item
+              name="name"
+              rules={[{ required: true, message: 'Vui lòng nhập tên!' }]}
+            >
+              <Input
+                placeholder="Tên"
+              />
+            </Form.Item>
+
             <Form.Item
               name="email"
               rules={[{ required: true, message: 'Vui lòng nhập email!' }]}
@@ -125,4 +136,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterOwner;

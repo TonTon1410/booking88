@@ -153,10 +153,10 @@ const LocationDetail = () => {
                 <strong>Hotline:</strong> {location.hotline}
               </p>
               <p>
-                <strong>Giờ mở cửa:</strong> {location.openingTime} giờ
+                <strong>Giờ mở cửa:</strong> {location.openTime} giờ
               </p>
               <p>
-                <strong>Giờ đóng cửa:</strong> {location.closingTime} giờ
+                <strong>Giờ đóng cửa:</strong> {location.closeTime} giờ
               </p>
             </Card>
           </Col>

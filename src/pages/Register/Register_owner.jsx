@@ -7,7 +7,6 @@ import { AiOutlineSwapRight } from "react-icons/ai";
 import { BsFillShieldLockFill } from "react-icons/bs";
 import logo from '../../assets/logologin.png';
 import '../../App.css';
-import React from 'react';
 
 const RegisterOwner = () => {
   const [form] = Form.useForm();
