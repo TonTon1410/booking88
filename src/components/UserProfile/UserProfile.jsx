@@ -302,18 +302,25 @@ const UserProfile = () => {
                                             {history.status}
                                         </td>
                                         <td>
-                                            {history.status === "CANCEL" ? (
-                                                <Text>Đã hủy</Text>
-                                            ) : (
-                                                <Button
-                                                    type="danger"
-                                                    onClick={() =>
-                                                        handleCancelBooking(history.id)
-                                                    }
-                                                >
-                                                    Hủy
-                                                </Button>
-                                            )}
+                                            {
+                                                history.bookingType === 'SLOT' ? (
+                                                    history.status === "CANCEL" ? (
+                                                        <Text>Đã hủy</Text>
+                                                    ) : (
+                                                        <Button
+                                                            type="danger"
+                                                            onClick={() =>
+                                                                handleCancelBooking(history.id)
+                                                            }
+                                                        >
+                                                            Hủy
+                                                        </Button>
+                                                    )
+                                                ) : (
+                                                    null
+                                                )
+                                            }
+                                        
                                         </td>
                                         <td>
                                             <div onClick={() => handleQRCodeClick(history.bookingDetails[0]?.courtSlot?.id)}>
