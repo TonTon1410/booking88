@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { FaInfoCircle, FaEnvelope, FaHistory, FaWallet } from 'react-icons/fa';
 import moment from 'moment';
 import userApi from '../../api/UserProfileApi';
@@ -225,7 +225,7 @@ const UserProfile = () => {
                             </div>
                             <div className="form-group">
                                 <label>Email</label>
-                                <input type="email" name="email" value={userInfo.email} onChange={handleChange} />
+                                <input type="email" name="email" value={userInfo.email} disabled />
                             </div>
                             <div className="form-group">
                                 <label>Số điện thoại</label>
@@ -242,7 +242,7 @@ const UserProfile = () => {
                         <form onSubmit={handleForgotPasswordSubmit}>
                             <div className="form-group">
                                 <label>Email</label>
-                                <input type="email" name="email" value={userInfo.email} onChange={handleChange} />
+                                <input type="email" name="email" value={userInfo.email} disabled />
                             </div>
                             <button type="submit">Gửi yêu cầu</button>
                         </form>

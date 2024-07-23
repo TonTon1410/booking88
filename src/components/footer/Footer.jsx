@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { IoIosSend } from "react-icons/io";
 import { SiGmail } from "react-icons/si";
 import { FaFacebookF, FaPhoneAlt } from "react-icons/fa";
 import Aos from "aos";
@@ -30,70 +29,95 @@ const Footer = () => {
               </a>
             </div>
 
-            <div className="footerParagraph flex">
-              Thông tin web?
+            <div className="footerParagraph">
+              Booking88 is your go-to platform for reserving badminton courts. Our platform provides easy booking, comprehensive information about various courts, and excellent customer service.
             </div>
             
             <div data-aos="fade-up" className="footerSocials flex">
-              <a href="mailto:your-email@example.com" className="socialLink">
+              <a href="mailto:booking88@gmail.com" className="socialLink">
                 <SiGmail className="icon" />
               </a>
               <a href="https://www.facebook.com/yourpage" className="socialLink">
                 <FaFacebookF className="icon" />
               </a>
-              <a href="tel:+1234567890" className="socialLink">
+              <a href="tel:+84123456789" className="socialLink">
                 <FaPhoneAlt className="icon" />
               </a>
             </div>
           </div>
+          
           <div className="footerLinks grid">
             <div data-aos="fade-up" className="linkGroup">
-              <span className="groupTitle">
-                Our agency
-              </span>
-              <li className="footerList fees">
-                <MdNavigateNext className="icon" />
-                Services
-              </li>
-              <li className="footerList fees">
-                <MdNavigateNext className="icon" />
-                Insurance
-              </li>
-              <li className="footerList fees">
-                <MdNavigateNext className="icon" />
-                Agency
-              </li>
-              <li className="footerList fees">
-                <MdNavigateNext className="icon" />
-                Tourism
-              </li>
-              <li className="footerList fees">
-                <MdNavigateNext className="icon" />
-                Payment
-              </li>
-              <li className="footerList fees">
-                <MdNavigateNext className="icon" />
-                <a href="https://www.google.com/maps/place/FPT+University" target="_blank" rel="noopener noreferrer">
-                  FPT University Map
-                </a>
-              </li>
+              <span className="groupTitle">Our Agency</span>
+              <ul>
+                <li className="footerList">
+                  <MdNavigateNext className="icon" />
+                  Services
+                </li>
+                <li className="footerList">
+                  <MdNavigateNext className="icon" />
+                  Insurance
+                </li>
+                <li className="footerList">
+                  <MdNavigateNext className="icon" />
+                  Agency
+                </li>
+                <li className="footerList">
+                  <MdNavigateNext className="icon" />
+                  Tourism
+                </li>
+                <li className="footerList">
+                  <MdNavigateNext className="icon" />
+                  Payment
+                </li>
+              </ul>
             </div>
-            <div data-aos="fade-up" className="mapGroup">
-              <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.6358562389224!2d106.6799833153142!3d10.762912292327595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175292920df659f%3A0x58b4180a2b0a508e!2sFPT+University!5e0!3m2!1sen!2s!4v1595400140861!5m2!1sen!2s" 
-                width="600" 
-                height="450" 
-                frameBorder="0" 
-                style={{ border: 0 }} 
-                allowFullScreen="" 
-                aria-hidden="false" 
-                tabIndex="0"
-              ></iframe>
+            <div data-aos="fade-up" className="linkGroup">
+              <span className="groupTitle">Badminton Courts</span>
+              <ul>
+                <li className="footerList">
+                  <MdNavigateNext className="icon" />
+                  Court Locations
+                </li>
+                <li className="footerList">
+                  <MdNavigateNext className="icon" />
+                  Booking Guidelines
+                </li>
+                <li className="footerList">
+                  <MdNavigateNext className="icon" />
+                  Pricing
+                </li>
+                <li className="footerList">
+                  <MdNavigateNext className="icon" />
+                  Facilities
+                </li>
+                <li className="footerList">
+                  <MdNavigateNext className="icon" />
+                  Customer Reviews
+                </li>
+              </ul>
+            </div>
+            <div data-aos="fade-up" className="linkGroup">
+              <span className="groupTitle">Contact Us</span>
+              <ul>
+                <li className="footerList">
+                  <MdNavigateNext className="icon" />
+                  Address: 123 Đường ABC, Quận 9, Thành phố Hồ Chí Minh
+                </li>
+                <li className="footerList">
+                  <MdNavigateNext className="icon" />
+                  Phone: (+84) 123-456-789
+                </li>
+                <li className="footerList">
+                  <MdNavigateNext className="icon" />
+                  Email: booking88@gmail.com
+                </li>
+              </ul>
             </div>
           </div>
 
           <div className="footerDiv flex">
-            <small>Trang web hỗ trợ đặt lịch sân cầu lông hàng đầu Việt Nam</small>
+            <small>Top platform for booking badminton courts in Vietnam</small>
             <small>© Project SWP391 - 2024</small>
           </div>
         </div>
