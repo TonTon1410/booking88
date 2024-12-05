@@ -140,12 +140,12 @@ form{
 i.gg-google{
 	right: 83px;
 }
-body{
-	background-image: url("#");
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-position: center;
-}
+/*body{*/
+/*	background-image: url("../../assets/pg.png");*/
+/*	background-size: cover;*/
+/*	background-repeat: no-repeat;*/
+/*	background-position: center;*/
+/*}*/
 a.google{
 	border: 1px solid #CACACA;
 }
